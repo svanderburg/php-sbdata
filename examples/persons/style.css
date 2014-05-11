@@ -1,0 +1,36 @@
+body
+{
+	color: #000000;
+}
+
+.mandatory
+{
+	color: #ff0000;
+}
+
+.table
+{
+	display: table;
+}
+
+.tr
+{
+	display: table-row;
+}
+
+.td
+{
+	display: table-cell;
+}
+
+.th
+{
+	font-weight: bold;
+	display: table-cell;
+}
+
+.invalid
+{
+	border-style: solid;
+	border-color: #ff0000;
+}

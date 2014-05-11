@@ -1,0 +1,54 @@
+<?php
+require_once("TextField.class.php");
+
+/**
+ * Represents the structure of an individual data element containing a file reference.
+ */
+class FileField extends TextField
+{
+	/** Required MIME type for the file */
+	public $mimeType;
+	
+	/**
+	 * Constructs a new FileField instance
+	 *
+	 * @param string $title Title of the field
+	 * @param string $mimeType Required MIME type for the file
+	 * @param bool $mandatory Indicates whether a given value is mandatory
+	 */
+	public function __construct($title, $mimeType = null, $mandatory = false)
+	{
+		parent::__construct($title, $mandatory);
+		$this->mimeType = $mimeType;
+	}
+	
+	/**
+	 * @see TextField::checkField()
+	 */
+	public function checkField($name)
+	{
+		if(!array_key_exists($name, $_FILES) || $_FILES[$name]["error"] != UPLOAD_ERR_OK)
+			return false;
+		
+		if($this->mimeType !== null)
+		{
+			$type = $_FILES[$name]["type"]; // Identified mime type of the upload
+
+			if(is_string($this->mimeType) && $type != $this->mimeType) // Check if mimetype of the file corresponds to what we require
+				return false;
+			else if(is_array($this->mimeType))
+			{
+				foreach($this->mimeType as $mimeType) // If an array of mimetypes is given check whether a supported one exist
+				{
+					if($mimeType == $type)
+						return true;
+				}
+				
+				return false; // No supported mimetypes found
+			}
+		}
+		
+		return true;
+	}
+}
+?>
