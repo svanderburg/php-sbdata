@@ -27,28 +27,33 @@ class FileField extends TextField
 	 */
 	public function checkField($name)
 	{
-		if(!array_key_exists($name, $_FILES) || $_FILES[$name]["error"] != UPLOAD_ERR_OK)
-			return false;
-		
-		if($this->mimeType !== null)
+		if(!$this->mandatory && $this->value == "") // If a file is not mandatory and not given everthing is fine
+			return true;
+		else
 		{
-			$type = $_FILES[$name]["type"]; // Identified mime type of the upload
-
-			if(is_string($this->mimeType) && $type != $this->mimeType) // Check if mimetype of the file corresponds to what we require
+			if(!array_key_exists($name, $_FILES) || $_FILES[$name]["error"] != UPLOAD_ERR_OK) // Check whether the file has been uploaded
 				return false;
-			else if(is_array($this->mimeType))
+			
+			if($this->mimeType !== null)
 			{
-				foreach($this->mimeType as $mimeType) // If an array of mimetypes is given check whether a supported one exist
+				$type = $_FILES[$name]["type"]; // Identified mime type of the upload
+	
+				if(is_string($this->mimeType) && $type != $this->mimeType) // Check if mimetype of the file corresponds to what we require
+					return false;
+				else if(is_array($this->mimeType))
 				{
-					if($mimeType == $type)
-						return true;
+					foreach($this->mimeType as $mimeType) // If an array of mimetypes is given check whether a supported one exist
+					{
+						if($mimeType == $type)
+							return true;
+					}
+					
+					return false; // No supported mimetypes found
 				}
-				
-				return false; // No supported mimetypes found
 			}
+			
+			return true;
 		}
-		
-		return true;
 	}
 }
 ?>
