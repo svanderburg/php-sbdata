@@ -1,4 +1,11 @@
 <?php
+require_once("textfield.inc.php");
+
+function displayTextArea(TextField $field)
+{
+	displayTextField($field);
+}
+
 function displayEditableTextAreaField($name, TextAreaField $field)
 {
 	?>
