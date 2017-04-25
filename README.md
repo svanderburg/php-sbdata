@@ -40,8 +40,8 @@ earlier `EmailField` instance to check whether a provided e-mail adresses is
 valid:
 
 ```php
-field->value = "hello@world.com";
-$valid = field->checkField("email"); // Returns true, since it's valid
+$field->value = "hello@world.com";
+$valid = $field->checkField("email"); // Returns true, since it's valid
 ```
 
 Displaying a field
@@ -365,33 +365,46 @@ Currently the following `Field` classes are provided by this library:
 * `EmailField` Displays a field as e-mail hyperlink and text input field.
 * `HiddenField`. Displays a field as hidden field.
 * `KeyLinkField`. Displays a link to a page responsible for displaying an object.
-* `NumericIntTextField`. Displays a field as text and text input field which only accepts numeric integer values.
+* `NumericIntTextField`. Displays a field as text and text input field which
+  only accepts numeric integer values.
 * `TextAreaField`. Displays a field as text and text area.
 * `URLField`. Displays a field as a hyperlink and text input field.
 * `DateField`. Displays a field as text and validates it as a date value.
-* `ArrayComboBoxField`. Displays a field as text or combobox. It retrieves key-value pairs from an array.
-* `DBComboBoxField`. Displays a field as text or combobox. It retrieves key-value pairs from a relational database.
-* `FileField`. Displays a file path or file upload input field. It can optionally check if the file has the right MIME type.  It also adds the corresponding encoding type to the form that encapsulates it. The actual file can be retrieved through the `$_FILES["fieldname"]` variable.
+* `CheckBoxField`. Displays a field as a checkbox and uses a preconfigured
+  value to determine whether it has been checked or not.
+* `ArrayComboBoxField`. Displays a field as text or combobox. It retrieves
+  key-value pairs from an array.
+* `DBComboBoxField`. Displays a field as text or combobox. It retrieves
+  key-value pairs from a relational database.
+* `FileField`. Displays a file path or file upload input field. It can
+   optionally check if the file has the right MIME type.  It also adds the
+   corresponding encoding type to the form that encapsulates it. The actual file
+   can be retrieved through the `$_FILES["fieldname"]` variable.
 
 Examples
 ========
 This package includes three example web applications that can be found in the
 `examples/` folder:
 
-* The `address` is an example demonstrating the capabilities of a form and the available form fields.
+* The `address` is an example demonstrating the capabilities of a form and the
+  available form fields.
 * The `upload` is an example demonstrating a simple file upload of a text file.
-* The `persons` is an example demonstrating an `ArrayTable` of persons in which records can be updated and deleted.
-* The `books` is an example demonstrating an `DBTable` of books, which can be created, viewed, updated and deleted. It requires the `db.sql` schema to deployed to an RDBMS.
+* The `persons` is an example demonstrating an `ArrayTable` of persons in which
+  records can be updated and deleted.
+* The `books` is an example demonstrating an `DBTable` of books, which can be
+  created, viewed, updated and deleted. It requires the `db.sql` schema to be
+  deployed to an RDBMS.
 
 API documentation
 =================
-This package includes API documentation, which can be generated with [Doxygen](http://www.doxygen.org).
-The Makefile in this package contains a `doc` target and produces the
-corresponding HTML files in `apidoc`:
+This package includes API documentation, which can be generated with
+[Doxygen](http://www.doxygen.org). The Makefile in this package contains a `doc`
+target and produces the corresponding HTML files in `apidoc`:
 
     $ make doc
 
 License
 =======
-The contents of this package is available under the [Apache Software License](http://www.apache.org/licenses/LICENSE-2.0.html)
+The contents of this package is available under the
+[Apache Software License](http://www.apache.org/licenses/LICENSE-2.0.html)
 version 2.0

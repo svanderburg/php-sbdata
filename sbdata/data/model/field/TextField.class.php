@@ -9,7 +9,7 @@ class TextField extends Field
 	/** Preferred size of the text field */
 	public $size;
 	
-	/** Maximum size of the text field or null for infinity size */
+	/** Maximum size of the text field or null for infinite size */
 	public $maxlength;
 	
 	/**

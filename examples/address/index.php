@@ -10,6 +10,7 @@ require_once("data/model/field/EmailField.class.php");
 require_once("data/model/field/URLField.class.php");
 require_once("data/model/field/TextAreaField.class.php");
 require_once("data/model/field/DateField.class.php");
+require_once("data/model/field/CheckBoxField.class.php");
 require_once("data/model/field/comboboxfield/ArrayComboBoxField.class.php");
 
 /* Define a form */
@@ -25,6 +26,7 @@ $form = new Form(array(
 	"email" => new EmailField("Email"),
 	"homepage" => new URLField("Homepage"),
 	"birthdate" => new DateField("Birth date", true, true),
+	"drivinglicense" => new CheckBoxField("Driving license", false, "1"),
 	"comments" => new TextAreaField("Comments", false, 30, 15)
 ));
 

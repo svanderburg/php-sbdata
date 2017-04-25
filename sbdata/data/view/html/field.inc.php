@@ -7,6 +7,7 @@ require_once("field/textfield.inc.php");
 require_once("field/urlfield.inc.php");
 require_once("field/emailfield.inc.php");
 require_once("field/numericinttextfield.inc.php");
+require_once("field/checkboxfield.inc.php");
 require_once("field/comboboxfield/arraycomboboxfield.inc.php");
 require_once("field/comboboxfield/dbcomboboxfield.inc.php");
 
