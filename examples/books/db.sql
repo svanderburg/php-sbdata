@@ -1,13 +1,13 @@
 create table publisher (
 	PUBLISHER_ID	INTEGER			NOT NULL,
-	name			VARCHAR(255)	NOT NULL check(name <> ''),
+	Name			VARCHAR(255)	NOT NULL check(name <> ''),
 	PRIMARY KEY(PUBLISHER_ID)
 );
 
 create table book (
 	BOOK_ID			INTEGER			NOT NULL,
-	title			VARCHAR(255)	NOT NULL check(Title <> ''),
-	subTitle		VARCHAR(255),
+	Title			VARCHAR(255)	NOT NULL check(Title <> ''),
+	Subtitle		VARCHAR(255),
 	PUBLISHER_ID	INTEGER			NOT NULL,
 	PRIMARY KEY(BOOK_ID),
 	FOREIGN KEY(PUBLISHER_ID) references publisher(PUBLISHER_ID) on update cascade on delete restrict 

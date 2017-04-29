@@ -41,6 +41,19 @@ class Form
 	}
 	
 	/**
+	 * Exports the field values to an associative array having the same keys.
+	 */
+	public function exportValues()
+	{
+		$values = array();
+
+		foreach($this->fields as $key => $field)
+			$values[$key] = $field->value;
+
+		return $values;
+	}
+	
+	/**
 	 * Checks whether the field values in the form are valid. 
 	 */
 	public function checkFields()

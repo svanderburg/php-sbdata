@@ -22,8 +22,8 @@ $idField = new HiddenField(false);
 
 $form = new Form(array(
 	"BOOK_ID" => $idField,
-	"title" => new TextField("Title", true),
-	"subTitle" => new TextField("Subtitle", false, 30, 255),
+	"Title" => new TextField("Title", true),
+	"Subtitle" => new TextField("Subtitle", false, 30, 255),
 	"PUBLISHER_ID" => new DBComboBoxField("Publisher", $stmt, true),
 ));
 
@@ -34,18 +34,12 @@ if(count($_POST) > 0) // Insert or update a book if POST parameters are provided
 	
 	if($form->checkValid())
 	{
-		$book = new Book();
-		$book->title = $form->fields["title"]->value;
-		$book->subTitle = $form->fields["subTitle"]->value;
-		$book->PUBLISHER_ID = $form->fields["PUBLISHER_ID"]->value;
+		$book = $form->exportValues();
 		
 		if($form->fields["BOOK_ID"]->value == "") // Empty book id means insert operation
-			$book->insert($dbh);
+			Book::insert($dbh, $book);
 		else // Otherwise update the book
-		{
-			$book->BOOK_ID = $form->fields["BOOK_ID"]->value;
-			$book->update($dbh);
-		}
+			Book::update($dbh, $book);
 		
 		header("Location: books.php");
 		exit;
@@ -57,8 +51,10 @@ else if(count($_GET) > 0) // If a book id through a GET parameter is provided, d
 	
 	if($idField->checkField("BOOK_ID"))
 	{
-		$book = Book::queryOne($dbh, $idField->value);
-		$form->importValues((array)$book);
+		$stmt = Book::queryOne($dbh, $idField->value);
+
+		if(($book = $stmt->fetch()) !== false)
+			$form->importValues($book);
 	}
 }
 /* Display the page and form */

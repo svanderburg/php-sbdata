@@ -22,8 +22,8 @@ $idField = new KeyLinkField("Id", $baseURL, true, 20, 255);
 
 $table = new DBTable(array(
 	"BOOK_ID" => $idField,
-	"title" => new TextField("Title", true, 30, 255),
-	"subTitle" => new TextField("Subtitle", false, 30, 255),
+	"Title" => new TextField("Title", true, 30, 255),
+	"Subtitle" => new TextField("Subtitle", false, 30, 255),
 	"PUBLISHER_ID" => new NumericIntTextField("Publisher", true, 10),
 ));
 
@@ -37,13 +37,8 @@ if(count($_POST) > 0) // If POST parameters are given, try to update a record
 	/* Update the record if it is valid */
 	if($submittedForm->checkValid())
 	{
-		$book = new Book();
-		$book->BOOK_ID = $submittedForm->fields["BOOK_ID"]->value;
-		$book->title = $submittedForm->fields["title"]->value;
-		$book->subTitle = $submittedForm->fields["subTitle"]->value;
-		$book->PUBLISHER_ID = $submittedForm->fields["PUBLISHER_ID"]->value;
-			
-		$book->update($dbh);
+		$book = $submittedForm->exportValues();
+		Book::update($dbh, $book);
 	}
 }
 else
@@ -57,10 +52,8 @@ else
 		
 		if($idField->checkField("BOOK_ID"))
 		{
-			$book = new Book();
-			$book->BOOK_ID = $idField->value; 
-			$book->delete($dbh);
-			
+			Book::delete($dbh, $idField->value);
+
 			header("Location: books.php#table-row-".$_REQUEST["__id"]);
 			exit;
 		}

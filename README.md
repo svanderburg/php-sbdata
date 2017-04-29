@@ -82,6 +82,7 @@ $form = new Form(array(
     "email" => new EmailField("Email"),
     "homepage" => new URLField("Homepage"),
     "birthdate" => new DateField("Birth date", true, true),
+    "drivinglicense" => new CheckBoxField("Driving license", false, "1"),
     "comments" => new TextAreaField("Comments", false, 30, 15)
 ));
 ```
@@ -112,6 +113,7 @@ $address = array(
     "email" => "foo", // Invalid email address
     "homepage" => "http://foo.bar",
     "birthdate" => "1984-01-01",
+    "drivinglicense" => "1",
     "comments" => ""
 );
 
@@ -187,6 +189,7 @@ $table = new ArrayTable(array(
     "email" => new EmailField("Email"),
     "homepage" => new URLField("Homepage"),
     "birthdate" => new DateField("Birth date", true, true),
+    "drivinglicense" => new CheckBoxField("Driving license", false, "1"),
     "comments" => new TextAreaField("Comments", false, 30, 15)
 ));
 ```
@@ -229,6 +232,7 @@ $table = new DBTable(array(
     "email" => new EmailField("Email"),
     "homepage" => new URLField("Homepage"),
     "birthdate" => new DateField("Birth date", true, true),
+    "drivinglicense" => new CheckBoxField("Driving license", false, "1"),
     "comments" => new TextAreaField("Comments", false, 30, 15)
 ));
 ```
@@ -241,18 +245,19 @@ following structure:
 
 ```sql
 create table persons
-( PERSON_ID    INTEGER      NOT NULL,
-  firstname    VARCHAR(255) NOT NULL check(firstname <> ''),
-  lastname     VARCHAR(255) NOT NULL check(lastname <> ''),
-  address      VARCHAR(255) NOT NULL check(address <> ''),
-  number       INTEGER      NOT NULL,
-  zipcode      VARCHAR(6)   NOT NULL check(zipcode <> ''),
-  city         VARCHAR(255) NOT NULL check(city <> ''),
-  country      VARCHAR(255) NOT NULL check(country in ('Netherlands', 'Belgium')),
-  email        VARCHAR(255) NOT NULL check(email <> ''),
-  homepage     VARCHAR(255),
-  birthdate    DATE         NOT NULL,
-  comments     TEXT,
+( PERSON_ID      INTEGER      NOT NULL,
+  firstname      VARCHAR(255) NOT NULL check(firstname <> ''),
+  lastname       VARCHAR(255) NOT NULL check(lastname <> ''),
+  address        VARCHAR(255) NOT NULL check(address <> ''),
+  number         INTEGER      NOT NULL,
+  zipcode        VARCHAR(6)   NOT NULL check(zipcode <> ''),
+  city           VARCHAR(255) NOT NULL check(city <> ''),
+  country        VARCHAR(255) NOT NULL check(country in ('Netherlands', 'Belgium')),
+  email          VARCHAR(255) NOT NULL check(email <> ''),
+  homepage       VARCHAR(255),
+  birthdate      DATE         NOT NULL,
+  drivinglicense TINYINT    NOT NULL,
+  comments       TEXT,
   PRIMARY KEY(PERSON_ID)
 );
 ```
