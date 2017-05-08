@@ -50,7 +50,7 @@ function displayEditableForm(Form $form, $submitLabel, $generalErrorMessage, $fi
 	
 	/* Display the form */
 	?>
-	<form method="post" action=""<?php print(composeEncTypeAttribute($form)); ?>>
+	<form method="post" action="<?php print(htmlspecialchars($_SERVER["PHP_SELF"])); ?>"<?php print(composeEncTypeAttribute($form)); ?>>
 		<?php
 		/* Display each field */
 		foreach($form->fields as $name => $field)
@@ -60,7 +60,7 @@ function displayEditableForm(Form $form, $submitLabel, $generalErrorMessage, $fi
 			else
 			{
 				?>
-				<p>
+				<div>
 					<label><?php print($field->title); displayMandatorySign($field); ?></label>
 					<?php
 					displayEditableField($name, $field);
@@ -73,7 +73,7 @@ function displayEditableForm(Form $form, $submitLabel, $generalErrorMessage, $fi
 						<?php
 					}
 					?>
-				</p>
+				</div>
 				<?php
 			}
 		} 
