@@ -375,6 +375,7 @@ Currently the following `Field` classes are provided by this library:
 * `TextAreaField`. Displays a field as text and text area.
 * `URLField`. Displays a field as a hyperlink and text input field.
 * `DateField`. Displays a field as text and validates it as a date value.
+* `PasswordField`. Display a field as a password field and restricts viewing it.
 * `CheckBoxField`. Displays a field as a checkbox and uses a preconfigured
   value to determine whether it has been checked or not.
 * `ArrayComboBoxField`. Displays a field as text or combobox. It retrieves
