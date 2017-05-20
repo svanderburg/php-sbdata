@@ -26,10 +26,10 @@ class EmailField extends TextField
 			return false;
 		else
 		{
-			if(filter_var($this->value, FILTER_VALIDATE_EMAIL) === false)
-				return false;
-			else
+			if(!$this->mandatory && $this->value === "")
 				return true;
+			else
+				return(filter_var($this->value, FILTER_VALIDATE_EMAIL) !== false);
 		}
 	}
 }

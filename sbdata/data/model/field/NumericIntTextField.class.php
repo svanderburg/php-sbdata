@@ -21,7 +21,10 @@ class NumericIntTextField extends TextField
 	{
 		if(!parent::checkField($name))
 			return false;
-		
-		return preg_match('/[0-9]+$/', $this->value);
+
+		if(!$this->mandatory && $this->value === "")
+			return true;
+		else
+			return preg_match('/[0-9]+$/', $this->value);
 	}
 }

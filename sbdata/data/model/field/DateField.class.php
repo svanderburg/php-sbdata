@@ -26,8 +26,10 @@ class DateField extends TextField
 	{
 		if(!parent::checkField($name))
 			return false;
-		
-		if(preg_match("/^[0-9]{4}\-[0-9]{2}\-[0-9]{2}$/", $this->value) === 1)
+
+		if(!$this->mandatory && $this->value === "")
+			return true;
+		else if(preg_match("/^[0-9]{4}\-[0-9]{2}\-[0-9]{2}$/", $this->value) === 1)
 			return checkdate(substr($this->value, 5, 2), substr($this->value, 8, 2), substr($this->value, 0, 4));
 		else
 			return false;

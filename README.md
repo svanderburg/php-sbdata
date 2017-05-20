@@ -371,7 +371,9 @@ Currently the following `Field` classes are provided by this library:
 * `HiddenField`. Displays a field as hidden field.
 * `KeyLinkField`. Displays a link to a page responsible for displaying an object.
 * `NumericIntTextField`. Displays a field as text and text input field which
-  only accepts numeric integer values.
+  only accepts numeric integer values. It is also possible to use a read-only
+  variant of this field: `ReadOnlyNumericIntTextField` that is particularly
+  useful for records having a numeric key that is not allowed to change.
 * `TextAreaField`. Displays a field as text and text area.
 * `URLField`. Displays a field as a hyperlink and text input field.
 * `DateField`. Displays a field as text and validates it as a date value.

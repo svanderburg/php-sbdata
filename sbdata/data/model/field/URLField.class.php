@@ -26,10 +26,10 @@ class URLField extends TextField
 			return false;
 		else
 		{
-			if(filter_var($this->value, FILTER_VALIDATE_URL) === false)
-				return false;
-			else
+			if(!$this->mandatory && $this->value === "")
 				return true;
+			else
+				return (filter_var($this->value, FILTER_VALIDATE_URL) !== false);
 		}
 	}
 }
