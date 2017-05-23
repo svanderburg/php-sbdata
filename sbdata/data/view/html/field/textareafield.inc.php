@@ -1,7 +1,7 @@
 <?php
 require_once("textfield.inc.php");
 
-function displayTextArea(TextField $field)
+function displayTextAreaField(TextField $field)
 {
 	displayTextField($field);
 }
