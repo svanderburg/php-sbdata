@@ -27,7 +27,7 @@ class FileField extends TextField
 	 */
 	public function checkField($name)
 	{
-		if(!$this->mandatory && $this->value == "") // If a file is not mandatory and not given everthing is fine
+		if(!$this->mandatory && (!array_key_exists($name, $_FILES) || !array_key_exists("tmp_name", $_FILES[$name]) || $_FILES[$name]["tmp_name"] === "")) // If a file is not mandatory and no file has been provided then everything is ok
 			return true;
 		else
 		{
@@ -37,21 +37,21 @@ class FileField extends TextField
 			if($this->mimeType !== null)
 			{
 				$type = $_FILES[$name]["type"]; // Identified mime type of the upload
-	
-				if(is_string($this->mimeType) && $type != $this->mimeType) // Check if mimetype of the file corresponds to what we require
+
+				if(is_string($this->mimeType) && $type !== $this->mimeType) // Check if mimetype of the file corresponds to what we require
 					return false;
 				else if(is_array($this->mimeType))
 				{
 					foreach($this->mimeType as $mimeType) // If an array of mimetypes is given check whether a supported one exist
 					{
-						if($mimeType == $type)
+						if($mimeType === $type)
 							return true;
 					}
 					
 					return false; // No supported mimetypes found
 				}
 			}
-			
+
 			return true;
 		}
 	}
