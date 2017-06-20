@@ -303,13 +303,13 @@ implement a function that returns a string representing the link to a delete URL
 ```php
 function deletePersonLink(Form $form)
 {
-    return "?__action=delete&amp;PERSON_ID=".$form->fields["PERSON_ID"]->value;
+    return "?__operation=delete&amp;PERSON_ID=".$form->fields["PERSON_ID"]->value;
 }
 ```
 
 A delete function is a function taking a `Form` as parameter, which can be used
 to retrieve the values of the corresponding table row. In this example, we return
-a link to the same page that sets the `__action` and `PERSON_ID` `GET`
+a link to the same page that sets the `__operation` and `PERSON_ID` `GET`
 parameters.
 
 These parameters can be used to compose a delete operation on the array or the

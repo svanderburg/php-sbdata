@@ -20,7 +20,7 @@ class DBComboBoxField extends TextField
 	public function __construct($title, $stmt, $mandatory = false)
 	{
 		parent::__construct($title, $mandatory);
-		$this->stmt = $stmt;		
+		$this->stmt = $stmt;
 	}
 	
 	/**

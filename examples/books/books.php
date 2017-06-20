@@ -45,7 +45,7 @@ else
 {
 	$submittedForm = null;
 	
-	if(count($_GET) > 0 && array_key_exists("__action", $_GET) && array_key_exists("__action", $_GET) == "delete") // If delete operation is specified, delete the record
+	if(count($_GET) > 0 && array_key_exists("__operation", $_GET) && array_key_exists("__operation", $_GET) == "delete") // If delete operation is specified, delete the record
 	{
 		/* Check the field */
 		$idField->value = $_GET["BOOK_ID"];
@@ -94,7 +94,7 @@ require_once("data/view/html/table.inc.php");
 				<?php
 				function deleteBookLink(Form $form)
 				{
-					return "?__action=delete&amp;__id=".$form->fields["__id"]->value."&amp;BOOK_ID=".$form->fields["BOOK_ID"]->value;
+					return "?__operation=delete&amp;__id=".$form->fields["__id"]->value."&amp;BOOK_ID=".$form->fields["BOOK_ID"]->value;
 				}
 				
 				displayTable($table, "deleteBookLink");
@@ -109,7 +109,7 @@ require_once("data/view/html/table.inc.php");
 				<?php
 				function deleteBookLink(Form $form)
 				{
-					return "?__action=delete&amp;__id=".$form->fields["__id"]->value."&amp;BOOK_ID=".$form->fields["BOOK_ID"]->value;
+					return "?__operation=delete&amp;__id=".$form->fields["__id"]->value."&amp;BOOK_ID=".$form->fields["BOOK_ID"]->value;
 				}
 				
 				displayEditableTable($table, $submittedForm, "deleteBookLink");

@@ -15,7 +15,7 @@ require_once("data/model/field/comboboxfield/ArrayComboBoxField.class.php");
 
 /* Define a form */
 $form = new Form(array(
-	"firstname" => new TextField("First name", true), 
+	"firstname" => new TextField("First name", true),
 	"lastname" => new TextField("Last name", true),
 	"address" => new TextField("Street", true),
 	"number" => new NumericIntTextField("House number", true),

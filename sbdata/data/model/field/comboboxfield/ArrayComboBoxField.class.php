@@ -14,10 +14,10 @@ class ArrayComboBoxField extends TextField
 	 * Constructs a new ArrayComboBoxField instance.
 	 * 
 	 * @param string $title Title of the field
-	 * @param unknown_type $values
-	 * @param unknown_type $mandatory
+	 * @param array $values An array in which the keys correspond to the input names and values to their descriptions
+	 * @param bool $mandatory Indicates whether a given value is mandatory
 	 */
-	public function __construct($title, $values, $mandatory = false)
+	public function __construct($title, array $values, $mandatory = false)
 	{
 		parent::__construct($title, $mandatory);
 		$this->values = $values;

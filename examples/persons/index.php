@@ -80,7 +80,7 @@ else
 {
 	$submittedForm = null;
 
-	if(count($_GET) > 0 && array_key_exists("__action", $_GET) && $_GET["__action"] == "delete") // If a delete has been made, delete the element from the array
+	if(count($_GET) > 0 && array_key_exists("__operation", $_GET) && $_GET["__operation"] == "delete") // If a delete has been made, delete the element from the array
 	{
 		/* Check id validity */	
 		$idField->value = $_GET["id"];
@@ -132,7 +132,7 @@ require_once("data/view/html/table.inc.php");
 			<?php
 			function deletePersonLink(Form $form)
 			{
-				return "?__action=delete&amp;id=".$form->fields["id"]->value;
+				return "?__operation=delete&amp;id=".$form->fields["id"]->value;
 			}
 			
 			displayEditableTable($table, $submittedForm, "deletePersonLink");
