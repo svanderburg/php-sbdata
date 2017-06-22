@@ -15,25 +15,27 @@ require_once("field/comboboxfield/dbcomboboxfield.inc.php");
 
 /**
  * Displays a field in a non-editable way.
- * 
+ *
  * @param Field $field Field to display
+ * @param Form $form Form where the field belongs to (optional)
  */
-function displayField(Field $field)
+function displayField(Field $field, Form $form = null)
 {
 	/* Dynamically invoke the corresponding the display function belonging to the given class */
 	$functionName = "display".get_class($field);
-	$functionName($field);
+	$functionName($field, $form);
 }
 
 /**
  * Displays a field in an editable way.
  *
  * @param Field $field Field to display
+ * @param Form $form Form where the field belongs to (optional)
  */
-function displayEditableField($name, Field $field)
+function displayEditableField($name, Field $field, Form $form = null)
 {
 	/* Dynamically invoke the corresponding the display function belonging to the given class */
 	$functionName = "displayEditable".get_class($field);
-	$functionName($name, $field);
+	$functionName($name, $field, $form);
 }
 ?>

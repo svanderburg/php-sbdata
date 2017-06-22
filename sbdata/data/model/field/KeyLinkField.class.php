@@ -6,22 +6,22 @@ require_once("TextField.class.php");
  */
 class KeyLinkField extends TextField
 {
-	/** Base URL of the link */
-	public $baseURL;
-	
+	/* Name of the function that composes the URL where the field should be linked to */
+	public $composeURLFunction;
+
 	/**
 	 * Constructs a new KeyLinkField instance
-	 * 
+	 *
 	 * @param string $title Title of the field
-	 * @param string $baseURL Base URL of the link
+	 * @param string $composeURLFunction Name of the function that composes the URL where the field should be linked to
 	 * @param bool $mandatory Indicates whether a given value is mandatory
 	 * @param int $size Preferred size of the text field
 	 * @param int $maxlength Maximum size of the text field or null for infinity size
 	 */
-	public function __construct($title, $baseURL, $mandatory = false, $size = 20, $maxlength = null)
+	public function __construct($title, $composeURLFunction, $mandatory = false, $size = 20, $maxlength = null)
 	{
 		parent::__construct($title, $mandatory, $size, $maxlength);
-		$this->baseURL = $baseURL;
+		$this->composeURLFunction = $composeURLFunction;
 	}
 }
 ?>

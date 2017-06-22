@@ -362,6 +362,47 @@ After constructing the form you can, for example, import the `$_POST` object int
 it and check its validity. The recipe is exactly the same as described earlier in
 the form examples shown earlier.
 
+Displaying links for foreign keys
+---------------------------------
+Some entities may have relations with other entities. For a record having a
+relation with another record (typically through a foreign key), you may want to
+display a link that redirects the user to the related item.
+
+By constructing a `KeyLinkField` we can compose such a link, for example:
+
+```php
+function composeBookLink(KeyLinkField $field, Form $form)
+{
+    return "book.php?BOOK_ID=".$field->value;
+}
+
+function composePublisherLink(KeyLinkField $field, Form $form)
+{
+    return "publisher.php?PUBLISHER_ID=".$form->fields["PUBLISHER_ID"]->value;
+}
+
+$table = new DBTable(array(
+    "BOOK_ID" => new KeyLinkField("Id", "composeBookLink", true, 20, 255),
+    "Title" => new TextField("Title", true, 30, 255),
+    "Subtitle" => new TextField("Subtitle", false, 30, 255),
+    "PUBLISHER_ID" => new MetaDataField(true, 10, 10),
+    "PublisherName" => new KeyLinkField("Id", "composePublisherLink", true, 20, 255)
+));
+```
+
+The above example defines a table with two key link fields:
+
+* The `BOOK_ID` field corresponds to a hyperlink of the book id redirecting the
+  user to the book page displaying an individual book. It uses the
+  `composeBookLink` function to construct the book's URL from the field value
+  (that contains the key value).
+* The `PublisherName` field corresponds to a hyperlink displaying the publisher
+  name redirecting the user to a page displaying the publisher properties.
+  To construct the hyperlink, we need to use the publisher's id column. Since we
+  do not want to display the id, we can hide it by declaring the `PUBLISHER_ID`
+  field as a `MetaDataField`. The `composePublisherLink` function composes the
+  link URL and can use any field property to construct the address.
+
 Fields
 ======
 Currently the following `Field` classes are provided by this library:
@@ -370,6 +411,8 @@ Currently the following `Field` classes are provided by this library:
 * `EmailField` Displays a field as e-mail hyperlink and text input field.
 * `HiddenField`. Displays a field as hidden field.
 * `KeyLinkField`. Displays a link to a page responsible for displaying an object.
+* `MetaDataField`. Includes meta data (typically foreign keys) in a form that
+  can be used as meta data for the key link fields.
 * `NumericIntTextField`. Displays a field as text and text input field which
   only accepts numeric integer values. It is also possible to use a read-only
   variant of this field: `ReadOnlyNumericIntTextField` that is particularly

@@ -1,4 +1,11 @@
 <?php
+require_once("textfield.inc.php");
+
+function displayFileField(FileField $field)
+{
+	displayTextField($field);
+}
+
 function displayEditableFileField($name, FileField $field)
 {
 	?>

@@ -23,7 +23,7 @@ function displayTable(Table $table, $deleteFun = null, $deleteLabel = "Delete")
 			
 			foreach($table->columns as $name => $field)
 			{
-				if(!$field instanceof HiddenField)
+				if(!$field instanceof HiddenField && !$field instanceof MetaDataField)
 				{
 					?>
 					<th><?php print($field->title); ?></th>
@@ -41,10 +41,10 @@ function displayTable(Table $table, $deleteFun = null, $deleteLabel = "Delete")
 				<?php
 				foreach($form->fields as $name => $field)
 				{
-					if(!$field instanceof HiddenField)
+					if(!$field instanceof HiddenField && !$field instanceof MetaDataField)
 					{
 						?>
-						<td><?php displayField($field); ?></td>
+						<td><?php displayField($field, $form); ?></td>
 						<?php
 					}
 				} 
@@ -74,7 +74,7 @@ function displayEditableTable(Table $table, Form $submittedForm = null, $deleteF
 			
 			foreach($table->columns as $name => $field)
 			{
-				if(!$field instanceof HiddenField)
+				if(!$field instanceof HiddenField && !$field instanceof MetaDataField)
 				{
 					?>
 					<div class="th"><?php print($field->title); displayMandatorySign($field); ?></div>
@@ -86,7 +86,7 @@ function displayEditableTable(Table $table, Form $submittedForm = null, $deleteF
 		<?php
 		/* Display the editable records */
 		$count = 0;
-				
+
 		while($form = $table->fetchForm())
 		{
 			/* Compose an encType attribute if the form contains a file field */
@@ -105,16 +105,16 @@ function displayEditableTable(Table $table, Form $submittedForm = null, $deleteF
 				{
 					if($field instanceof HiddenField)
 						displayHiddenField($name, $field);
-					else
+					else if(!$field instanceof MetaDataField)
 					{
 						?>
-						<div class="td<?php if(!$field->valid) print(" invalid"); ?>"><?php displayEditableField($name, $field); ?></div>
+						<div class="td<?php if(!$field->valid) print(" invalid"); ?>"><?php displayEditableField($name, $field, $form); ?></div>
 						<?php
 					}
 				}
 				?>
 				<div class="td"><a name="table-row-<?php print($count); ?>"><button><?php print($editLabel); ?></button></a></div>
-				<div class="td"><?php displayDeleteLink($form, $deleteFun, $deleteLabel); ?></div>		
+				<div class="td"><?php displayDeleteLink($form, $deleteFun, $deleteLabel); ?></div>
 			</form>
 			<?php
 			$count++;

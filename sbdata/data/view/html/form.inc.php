@@ -8,12 +8,12 @@ function displayForm(Form $form)
 		<?php
 		foreach($form->fields as $name => $field)
 		{
-			if(!$field instanceof HiddenField)
+			if(!$field instanceof HiddenField && !$field instanceof MetaDataField)
 			{
 				?>
 				<tr>
 					<th><?php print($field->title); ?></th>
-					<td><?php displayField($field); ?></td>
+					<td><?php displayField($field, $form); ?></td>
 				</tr>
 				<?php
 			}
@@ -57,13 +57,13 @@ function displayEditableForm(Form $form, $submitLabel, $generalErrorMessage, $fi
 		{
 			if($field instanceof HiddenField)
 				displayHiddenField($name, $field);
-			else
+			else if(!$field instanceof MetaDataField)
 			{
 				?>
 				<div>
 					<label><?php print($field->title); displayMandatorySign($field); ?></label>
 					<?php
-					displayEditableField($name, $field);
+					displayEditableField($name, $field, $form);
 					
 					/* If field is invalid, display a description */
 					if(!$field->valid)

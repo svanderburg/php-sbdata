@@ -16,7 +16,7 @@ class ArrayTable extends Table
 	 */
 	public function __construct(array $columns)
 	{
-		parent::__construct($columns);	
+		parent::__construct($columns);
 	}
 	
 	/**

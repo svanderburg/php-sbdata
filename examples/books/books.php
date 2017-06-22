@@ -10,15 +10,18 @@ require_once("data/model/field/KeyLinkField.class.php");
 require_once("data/model/field/TextField.class.php");
 require_once("data/model/field/NumericIntTextField.class.php");
 
-/* Determine what the base URL is for edit or view mode */
-if(array_key_exists("viewmode", $_GET) && $_GET["viewmode"] == "1")
-	$baseURL = "book.php?viewmode=1&amp;BOOK_ID=";
-else
-	$baseURL = "book.php?BOOK_ID=";
+function composeBookLink(KeyLinkField $field, Form $form)
+{
+	/* Determine the URL for edit or view mode */
+	if(array_key_exists("viewmode", $_GET) && $_GET["viewmode"] == "1")
+		return "book.php?viewmode=1&amp;BOOK_ID=".$field->value;
+	else
+		return "book.php?BOOK_ID=".$field->value;
+}
 
 /* Configure a table model */
 
-$idField = new KeyLinkField("Id", $baseURL, true, 20, 255);
+$idField = new KeyLinkField("Id", "composeBookLink", true, 20, 255);
 
 $table = new DBTable(array(
 	"BOOK_ID" => $idField,
