@@ -1,7 +1,7 @@
 <?php
 function displayTextField(TextField $field)
 {
-	print($field->value);
+	print(htmlentities($field->value));
 }
 
 function displayEditableTextField($name, TextField $field)
