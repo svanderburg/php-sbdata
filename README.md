@@ -378,7 +378,10 @@ function composeBookLink(KeyLinkField $field, Form $form)
 
 function composePublisherLink(KeyLinkField $field, Form $form)
 {
-    return "publisher.php?PUBLISHER_ID=".$form->fields["PUBLISHER_ID"]->value;
+    if($form->fields["PUBLISHER_ID"]->value === null)
+        return null;
+    else
+        return "publisher.php?PUBLISHER_ID=".$form->fields["PUBLISHER_ID"]->value;
 }
 
 $table = new DBTable(array(
@@ -402,6 +405,9 @@ The above example defines a table with two key link fields:
   do not want to display the id, we can hide it by declaring the `PUBLISHER_ID`
   field as a `MetaDataField`. The `composePublisherLink` function composes the
   link URL and can use any field property to construct the address.
+  The relationship with a publisher is optional -- if a book has no publisher
+  (e.g. its key is NULL), then we can return `null` to prevent a link from being
+  generated.
 
 Fields
 ======

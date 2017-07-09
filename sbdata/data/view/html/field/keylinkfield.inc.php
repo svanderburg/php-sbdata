@@ -4,9 +4,16 @@ require_once("hiddenfield.inc.php");
 function displayKeyLinkField(KeyLinkField $field, Form $form)
 {
 	$composeURLFunction = $field->composeURLFunction;
-	?>
-	<a href="<?php print($composeURLFunction($field, $form)); ?>"><?php print(htmlentities($field->value)); ?></a>
-	<?php
+	$linkURL = $composeURLFunction($field, $form);
+
+	if($linkURL === null)
+		print(htmlentities($field->value));
+	else
+	{
+		?>
+		<a href="<?php print($linkURL); ?>"><?php print(htmlentities($field->value)); ?></a>
+		<?php
+	}
 }
 
 function displayEditableKeyLinkField($name, KeyLinkField $field, Form $form)
