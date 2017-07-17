@@ -13,7 +13,7 @@ function displayDeleteLink(Form $form, $deleteFun, $deleteLabel)
 	<?php
 }
 
-function displayTable(Table $table, $deleteFun = null, $deleteLabel = "Delete")
+function displayTable(Table $table, $deleteFun = null, $noItemsLabel = "No items", $deleteLabel = "Delete")
 {
 	?>
 	<table>
@@ -34,44 +34,55 @@ function displayTable(Table $table, $deleteFun = null, $deleteLabel = "Delete")
 		</tr>
 		<?php
 		/* Display the records */
-		while($form = $table->fetchForm())
+		if($table->computeNumberOfRows() === 0)
 		{
 			?>
 			<tr>
-				<?php
-				foreach($form->fields as $name => $field)
-				{
-					if(!$field instanceof HiddenField && !$field instanceof MetaDataField)
-					{
-						?>
-						<td><?php displayField($field, $form); ?></td>
-						<?php
-					}
-				} 
-				
-				if($deleteFun !== null)
-				{
-					?>
-					<td><?php displayDeleteLink($form, $deleteFun, $deleteLabel); ?></td>
-					<?php
-				}
-				?>
+				<td colspan="<?php print($table->computeNumberOfDisplayableColumns()); ?>"><?php print($noItemsLabel); ?></td>
 			</tr>
 			<?php
+		}
+		else
+		{
+			while($form = $table->fetchForm())
+			{
+				?>
+				<tr>
+					<?php
+					foreach($form->fields as $name => $field)
+					{
+						if(!$field instanceof HiddenField && !$field instanceof MetaDataField)
+						{
+							?>
+							<td><?php displayField($field, $form); ?></td>
+							<?php
+						}
+					}
+
+					if($deleteFun !== null)
+					{
+						?>
+						<td><?php displayDeleteLink($form, $deleteFun, $deleteLabel); ?></td>
+						<?php
+					}
+					?>
+				</tr>
+				<?php
+			}
 		}
 		?>
 	</table>
 	<?php
 }
 
-function displayEditableTable(Table $table, Form $submittedForm = null, $deleteFun, $editLabel = "Edit", $deleteLabel = "Delete")
+function displayEditableTable(Table $table, Form $submittedForm = null, $deleteFun, $noItemsLabel = "No items", $editLabel = "Edit", $deleteLabel = "Delete")
 {
 	?>
 	<div class="table">
 		<div class="tr">
 			<?php
 			/* Display table header */
-			
+
 			foreach($table->columns as $name => $field)
 			{
 				if(!$field instanceof HiddenField && !$field instanceof MetaDataField)
@@ -85,39 +96,51 @@ function displayEditableTable(Table $table, Form $submittedForm = null, $deleteF
 		</div>
 		<?php
 		/* Display the editable records */
-		$count = 0;
-
-		while($form = $table->fetchForm())
+		
+		if($table->computeNumberOfRows() === 0)
 		{
-			/* Compose an encType attribute if the form contains a file field */
-			$encTypeAttribute = composeEncTypeAttribute($form);
-			
-			$form->checkFields(); // Check field validity
-			
-			if($submittedForm !== null && $submittedForm->fields["__id"]->value == $count && !$submittedForm->checkValid())
-				$form = $submittedForm; // If a submitted form is given use that
-			else
-				$form->fields["__id"]->value = $count; // Otherwise, use the generated one and add the row id value to it
 			?>
-			<form class="tr" method="post" action="<?php print($_SERVER["PHP_SELF"]); ?>#table-row-<?php print($count); ?>"<?php print($encTypeAttribute); ?>>
-				<?php
-				foreach($form->fields as $name => $field)
-				{
-					if($field instanceof HiddenField)
-						displayHiddenField($name, $field);
-					else if(!$field instanceof MetaDataField)
-					{
-						?>
-						<div class="td<?php if(!$field->valid) print(" invalid"); ?>"><?php displayEditableField($name, $field, $form); ?></div>
-						<?php
-					}
-				}
-				?>
-				<div class="td"><a name="table-row-<?php print($count); ?>"><button><?php print($editLabel); ?></button></a></div>
-				<div class="td"><?php displayDeleteLink($form, $deleteFun, $deleteLabel); ?></div>
-			</form>
+			<div class="tr">
+				<div class="td"><?php print($noItemsLabel); ?></div>
+			</div>
 			<?php
-			$count++;
+		}
+		else
+		{
+			$count = 0;
+
+			while($form = $table->fetchForm())
+			{
+				/* Compose an encType attribute if the form contains a file field */
+				$encTypeAttribute = composeEncTypeAttribute($form);
+
+				$form->checkFields(); // Check field validity
+
+				if($submittedForm !== null && $submittedForm->fields["__id"]->value == $count && !$submittedForm->checkValid())
+					$form = $submittedForm; // If a submitted form is given use that
+				else
+					$form->fields["__id"]->value = $count; // Otherwise, use the generated one and add the row id value to it
+				?>
+				<form class="tr" method="post" action="<?php print($_SERVER["PHP_SELF"]); ?>#table-row-<?php print($count); ?>"<?php print($encTypeAttribute); ?>>
+					<?php
+					foreach($form->fields as $name => $field)
+					{
+						if($field instanceof HiddenField)
+							displayHiddenField($name, $field);
+						else if(!$field instanceof MetaDataField)
+						{
+							?>
+							<div class="td<?php if(!$field->valid) print(" invalid"); ?>"><?php displayEditableField($name, $field, $form); ?></div>
+							<?php
+						}
+					}
+					?>
+					<div class="td"><a name="table-row-<?php print($count); ?>"><button><?php print($editLabel); ?></button></a></div>
+					<div class="td"><?php displayDeleteLink($form, $deleteFun, $deleteLabel); ?></div>
+				</form>
+				<?php
+				$count++;
+			}
 		}
 		?>
 	</div>

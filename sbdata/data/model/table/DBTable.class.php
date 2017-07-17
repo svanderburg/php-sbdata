@@ -34,5 +34,13 @@ class DBTable extends Table
 		else
 			return null;
 	}
+
+	/**
+	 * @see Table::computeNumberOfRows()
+	 */
+	public function computeNumberOfRows()
+	{
+		return $this->stmt->rowCount();
+	}
 }
 ?>

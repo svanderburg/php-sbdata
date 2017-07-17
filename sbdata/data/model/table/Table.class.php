@@ -1,6 +1,7 @@
 <?php
 require_once(dirname(__FILE__)."/../Form.class.php");
 require_once(dirname(__FILE__)."/../field/HiddenField.class.php");
+require_once(dirname(__FILE__)."/../field/MetaDataField.class.php");
 
 /**
  * A table represents a collection of forms (with fields).
@@ -44,8 +45,33 @@ abstract class Table
 	/**
 	 * Iterates over the collection of forms in the table and returns each one of them
 	 * until the last one has been reached.
-	 * 
+	 *
 	 * @return Form A form instance representing a table row, or null if all table rows have been visited.
 	 */
 	public abstract function fetchForm();
+
+	/**
+	 * Returns the number of rows to be displayed.
+	 *
+	 * @return int The number of rows
+	 */
+	public abstract function computeNumberOfRows();
+
+	/**
+	 * Computes the number of displayable columns.
+	 *
+	 * @return Number of displayable columns
+	 */
+	public function computeNumberOfDisplayableColumns()
+	{
+		$count = 0;
+
+		foreach($this->columns as $id => $field)
+		{
+			if(!$field instanceof HiddenField && !$field instanceof MetaDataField)
+				$count++;
+		}
+
+		return $count;
+	}
 }
