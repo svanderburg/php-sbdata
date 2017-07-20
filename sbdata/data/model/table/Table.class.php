@@ -10,16 +10,21 @@ abstract class Table
 {
 	/** An associative array of fields that should be checked and displayed */
 	public $columns;
-	
+
+	/** An associative array of labels mapping to function names displaying action links */
+	public $actions;
+
 	/**
 	 * Constructs a new Table instance.
-	 * 
+	 *
 	 * @param array $columns An associative array of fields that should be checked and displayed
+	 * @param array $actions An associative array of labels mapping to function names displaying action links
 	 */
-	public function __construct(array $columns)
+	public function __construct(array $columns, array $actions = null)
 	{
 		$this->columns = $columns;
-		
+		$this->actions = $actions;
+
 		/* Add __id column that is used to track which row in the table is modified */
 		$this->columns["__id"] = new HiddenField(true);
 	}
@@ -60,7 +65,7 @@ abstract class Table
 	/**
 	 * Computes the number of displayable columns.
 	 *
-	 * @return Number of displayable columns
+	 * @return int Number of displayable columns
 	 */
 	public function computeNumberOfDisplayableColumns()
 	{

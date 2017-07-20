@@ -11,12 +11,13 @@ class ArrayTable extends Table
 	
 	/**
 	 * Constructs a new ArrayTable instace.
-	 * 
+	 *
 	 * @param array $columns An associative array of fields that should be checked and displayed
+	 * @param array $actions An associative array of labels mapping to function names displaying action links
 	 */
-	public function __construct(array $columns)
+	public function __construct(array $columns, array $actions = null)
 	{
-		parent::__construct($columns);
+		parent::__construct($columns, $actions);
 	}
 	
 	/**

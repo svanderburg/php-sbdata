@@ -14,6 +14,11 @@ require_once("data/model/field/URLField.class.php");
 
 $idField = new HiddenField("id", true);
 
+function deletePersonLink(Form $form)
+{
+	return "?__operation=delete&amp;id=".$form->fields["id"]->value;
+}
+
 $table = new ArrayTable(array(
 	"id" => $idField,
 	"firstname" => new TextField("First name", true), 
@@ -25,6 +30,8 @@ $table = new ArrayTable(array(
 	"city" => new TextField("City", true),
 	"email" => new EmailField("Email"),
 	"homepage" => new URLField("Homepage")
+), array(
+	"Delete" => "deletePersonLink"
 ));
 
 /* Define a test rowset */
@@ -130,12 +137,9 @@ require_once("data/view/html/table.inc.php");
 			?>
 			<p><a href="<?php print($_SERVER["PHP_SELF"]); ?>?viewmode=1">View</a></p>
 			<?php
-			function deletePersonLink(Form $form)
-			{
-				return "?__operation=delete&amp;id=".$form->fields["id"]->value;
-			}
 			
-			displayEditableTable($table, $submittedForm, "deletePersonLink");
+			
+			displayEditableTable($table, $submittedForm);
 		}
 		?>
 	</body>

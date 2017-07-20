@@ -12,12 +12,13 @@ class DBTable extends Table
 	
 	/**
 	 * Constructs a new DBTable instance.
-	 * 
+	 *
 	 * @param array $columns An executed PDOStatement object that fetches the data to be displayed from a RDBMS
+	 * @param array $actions An associative array of labels mapping to function names displaying action links
 	 */
-	public function __construct(array $columns)
+	public function __construct(array $columns, array $actions)
 	{
-		parent::__construct($columns);
+		parent::__construct($columns, $actions);
 	}
 	
 	/**
@@ -25,14 +26,14 @@ class DBTable extends Table
 	 */
 	public function fetchForm()
 	{
-		if($row = $this->stmt->fetch())
+		if(($row = $this->stmt->fetch()) === false)
+			return null;
+		else
 		{
 			$form = $this->constructForm();
 			$form->importValues($row);
 			return $form;
 		}
-		else
-			return null;
 	}
 
 	/**

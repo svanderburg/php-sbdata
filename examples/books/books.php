@@ -23,11 +23,18 @@ function composeBookLink(KeyLinkField $field, Form $form)
 
 $idField = new KeyLinkField("Id", "composeBookLink", true, 20, 255);
 
+function deleteBookLink(Form $form)
+{
+	return "?__operation=delete&amp;__id=".$form->fields["__id"]->value."&amp;BOOK_ID=".$form->fields["BOOK_ID"]->value;
+}
+
 $table = new DBTable(array(
 	"BOOK_ID" => $idField,
 	"Title" => new TextField("Title", true, 30, 255),
 	"Subtitle" => new TextField("Subtitle", false, 30, 255),
 	"PUBLISHER_ID" => new NumericIntTextField("Publisher", true, 10),
+), array(
+	"Delete" => "deleteBookLink"
 ));
 
 if(count($_POST) > 0) // If POST parameters are given, try to update a record
@@ -76,7 +83,7 @@ require_once("data/view/html/table.inc.php");
 	
 	<body>
 		<?php
-		if($stmt = Book::queryAll($dbh))
+		if(($stmt = Book::queryAll($dbh)) !== false)
 		{
 			$table->stmt = $stmt;
 			
@@ -95,12 +102,7 @@ require_once("data/view/html/table.inc.php");
 					<a href="<?php print($_SERVER["PHP_SELF"]); ?>">Edit</a>
 				</p>
 				<?php
-				function deleteBookLink(Form $form)
-				{
-					return "?__operation=delete&amp;__id=".$form->fields["__id"]->value."&amp;BOOK_ID=".$form->fields["BOOK_ID"]->value;
-				}
-				
-				displayTable($table, "deleteBookLink");
+				displaySemiEditableTable($table);
 			}
 			else
 			{
@@ -110,12 +112,7 @@ require_once("data/view/html/table.inc.php");
 					<a href="<?php print($_SERVER["PHP_SELF"]); ?>?viewmode=1">View</a>
 				</p>
 				<?php
-				function deleteBookLink(Form $form)
-				{
-					return "?__operation=delete&amp;__id=".$form->fields["__id"]->value."&amp;BOOK_ID=".$form->fields["BOOK_ID"]->value;
-				}
-				
-				displayEditableTable($table, $submittedForm, "deleteBookLink");
+				displayEditableTable($table, $submittedForm);
 			}
 		}
 		else

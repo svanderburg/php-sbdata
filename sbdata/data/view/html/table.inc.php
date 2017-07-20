@@ -6,65 +6,115 @@ require_once("field/emailfield.inc.php");
 require_once("field/keylinkfield.inc.php");
 require_once("form.inc.php");
 
-function displayDeleteLink(Form $form, $deleteFun, $deleteLabel)
+function displayActionLink(Form $form, $actionFunction, $label)
+{
+	$url = $actionFunction($form);
+
+	if($url !== null)
+	{
+		?>
+		<a href="<?php print($url); ?>"><?php print($label); ?></a>
+		<?php
+	}
+}
+
+function displayTableHeader(Table $table)
 {
 	?>
-	<a href="<?php print($deleteFun($form)); ?>"><?php print($deleteLabel); ?></a>
+	<tr>
+		<?php
+		foreach($table->columns as $name => $field)
+		{
+			if(!$field instanceof HiddenField && !$field instanceof MetaDataField)
+			{
+				?>
+				<th><?php print($field->title); ?></th>
+				<?php
+			}
+		}
+		?>
+	</tr>
 	<?php
 }
 
-function displayTable(Table $table, $deleteFun = null, $noItemsLabel = "No items", $deleteLabel = "Delete")
+function displayNoItemsLabel(Table $table, $noItemsLabel)
+{
+	?>
+	<tr>
+		<td colspan="<?php print($table->computeNumberOfDisplayableColumns()); ?>"><?php print($noItemsLabel); ?></td>
+	</tr>
+	<?php
+}
+
+function displayFields(Form $form)
+{
+	foreach($form->fields as $name => $field)
+	{
+		if(!$field instanceof HiddenField && !$field instanceof MetaDataField)
+		{
+			?>
+			<td><?php displayField($field, $form); ?></td>
+			<?php
+		}
+	}
+}
+
+function displayTable(Table $table, $noItemsLabel = "No items")
 {
 	?>
 	<table>
-		<tr>
-			<?php
-			/* Display table header */
-			
-			foreach($table->columns as $name => $field)
-			{
-				if(!$field instanceof HiddenField && !$field instanceof MetaDataField)
-				{
-					?>
-					<th><?php print($field->title); ?></th>
-					<?php
-				}
-			}
-			?>
-		</tr>
 		<?php
-		/* Display the records */
+		displayTableHeader($table);
+
 		if($table->computeNumberOfRows() === 0)
-		{
-			?>
-			<tr>
-				<td colspan="<?php print($table->computeNumberOfDisplayableColumns()); ?>"><?php print($noItemsLabel); ?></td>
-			</tr>
-			<?php
-		}
+			displayNoItemsLabel($table, $noItemsLabel);
 		else
 		{
-			while($form = $table->fetchForm())
+			while(($form = $table->fetchForm()) !== null)
+			{
+				?>
+				<tr>
+					<?php displayFields($form); ?>
+				</tr>
+				<?php
+			}
+		}
+		?>
+	</table>
+	<?php
+}
+
+function displayActionLinks(Table $table, Form $form)
+{
+	if($table->actions !== null)
+	{
+		foreach($table->actions as $label => $actionFunction)
+		{
+			?>
+			<td><?php displayActionLink($form, $actionFunction, $label); ?></td>
+			<?php
+		}
+	}
+}
+
+function displaySemiEditableTable(Table $table, $noItemsLabel = "No items")
+{
+	?>
+	<table>
+		<?php
+		displayTableHeader($table);
+
+		if($table->computeNumberOfRows() === 0)
+			displayNoItemsLabel($table, $noItemsLabel);
+		else
+		{
+			while(($form = $table->fetchForm()) !== null)
 			{
 				?>
 				<tr>
 					<?php
-					foreach($form->fields as $name => $field)
-					{
-						if(!$field instanceof HiddenField && !$field instanceof MetaDataField)
-						{
-							?>
-							<td><?php displayField($field, $form); ?></td>
-							<?php
-						}
-					}
-
-					if($deleteFun !== null)
-					{
-						?>
-						<td><?php displayDeleteLink($form, $deleteFun, $deleteLabel); ?></td>
-						<?php
-					}
+					displayFields($form);
+					displayActionLinks($table, $form);
 					?>
 				</tr>
 				<?php
@@ -75,7 +125,7 @@ function displayTable(Table $table, $deleteFun = null, $noItemsLabel = "No items
 	<?php
 }
 
-function displayEditableTable(Table $table, Form $submittedForm = null, $deleteFun, $noItemsLabel = "No items", $editLabel = "Edit", $deleteLabel = "Delete")
+function displayEditableTable(Table $table, Form $submittedForm = null, $noItemsLabel = "No items", $editLabel = "Edit")
 {
 	?>
 	<div class="table">
@@ -136,7 +186,17 @@ function displayEditableTable(Table $table, Form $submittedForm = null, $deleteF
 					}
 					?>
 					<div class="td"><a name="table-row-<?php print($count); ?>"><button><?php print($editLabel); ?></button></a></div>
-					<div class="td"><?php displayDeleteLink($form, $deleteFun, $deleteLabel); ?></div>
+					<?php
+					if($table->actions !== null)
+					{
+						foreach($table->actions as $label => $actionFunction)
+						{
+							?>
+							<div class="td"><?php displayActionLink($form, $actionFunction, $label); ?></div>
+							<?php
+						}
+					}
+					?>
 				</form>
 				<?php
 				$count++;

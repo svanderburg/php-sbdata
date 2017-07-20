@@ -98,7 +98,7 @@ maximum length.
 Checking object validity
 ------------------------
 A `Form` instance can be used to check whether some aribitrary object (actually
-an associative array) is valid. For example the following example yields false:
+an associative array) is valid. For example, the following example yields false:
 
 ```php
 $address = array(
@@ -256,7 +256,7 @@ create table persons
   email          VARCHAR(255) NOT NULL check(email <> ''),
   homepage       VARCHAR(255),
   birthdate      DATE         NOT NULL,
-  drivinglicense TINYINT    NOT NULL,
+  drivinglicense TINYINT      NOT NULL,
   comments       TEXT,
   PRIMARY KEY(PERSON_ID)
 );
@@ -291,14 +291,12 @@ table cells. It also formats each cell according to their type.
 
 Displaying a table with basic editing capablities
 -------------------------------------------------
-We may also want to add basic editing capabilities to a table. For example, the
-key column's values may want to link to a page giving the user the ability to edit
-the record. A column value can be turned into a link by defining it as a
-`KeyLinkField` column.
+We may also want to add basic editing capabilities to a table, such as a delete
+link for each table row. However, there is no way to implement a generic delete
+operation.
 
-Moreover, we may also want to add a delete link to each table row. However, there
-is no way to implement a generic delete operation. To support deletes we must
-implement a function that returns a string representing the link to a delete URL:
+To support deletes we must implement an *action* function that returns a string
+representing the link to a delete URL:
 
 ```php
 function deletePersonLink(Form $form)
@@ -307,28 +305,53 @@ function deletePersonLink(Form $form)
 }
 ```
 
-A delete function is a function taking a `Form` as parameter, which can be used
+An action function is a function taking a `Form` as parameter, which can be used
 to retrieve the values of the corresponding table row. In this example, we return
 a link to the same page that sets the `__operation` and `PERSON_ID` `GET`
 parameters.
 
-These parameters can be used to compose a delete operation on the array or the
-database table.
-
-We can provide an additional parameter that refers to the delete function that we
-have just defined. The result is that each row has a delete link which URL is
-composed by our custom delete function:
+Action links can be attached to a table by providing a second array parameter:
 
 ```php
-displayTable($table, "deletePersonLink");
+$table = new DBTable(array(
+    "PERSON_ID" => new HiddenField("Id", true),
+    "firstname" => new TextField("First name", true),
+    "lastname" => new TextField("Last name", true),
+    "address" => new TextField("Street", true),
+    "number" => new NumericIntTextField("House number", true),
+    "zipcode" => new TextField("Zipcode", true, 6, 6),
+    "phone" => new TextField("Phone", false, 10, 10),
+    "city" => new TextField("City", true),
+    "country" => new ArrayComboBoxField("Country", array("Netherlands", "Belgium"), true),
+    "email" => new EmailField("Email"),
+    "homepage" => new URLField("Homepage"),
+    "birthdate" => new DateField("Birth date", true, true),
+    "drivinglicense" => new CheckBoxField("Driving license", false, "1"),
+    "comments" => new TextAreaField("Comments", false, 30, 15)
+), array(
+    "Delete" => "deletePersonLink"
+));
 ```
+
+In the above example, we create a link with label: "Delete" that refers to a
+page executing the delete operation.
+
+To display a table with action links, you must use the following function
+invocation:
+
+```php
+displaySemiEditableTable($table);
+```
+
+In addition to a delete link, we can use the action array to define other kinds
+of operations as well.
 
 Displaying an editable table
 ----------------------------
 We can also compose an editable grid to make every cell in the table editable:
 
 ```php
-displayEditableTable($table, $submittedForm, "deleteBookLink");
+displayEditableTable($table, $submittedForm);
 ```
 
 The above function composes `div` elements with classes corresponding to table
@@ -364,9 +387,9 @@ the form examples shown earlier.
 
 Displaying links for foreign keys
 ---------------------------------
-Some entities may have relations with other entities. For a record having a
+Some entities may have relationships with other entities. For a record having a
 relation with another record (typically through a foreign key), you may want to
-display a link that redirects the user to the related item.
+display a link that redirects the user to the related record.
 
 By constructing a `KeyLinkField` we can compose such a link, for example:
 
