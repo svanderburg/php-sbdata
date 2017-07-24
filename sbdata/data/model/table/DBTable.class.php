@@ -16,7 +16,7 @@ class DBTable extends Table
 	 * @param array $columns An executed PDOStatement object that fetches the data to be displayed from a RDBMS
 	 * @param array $actions An associative array of labels mapping to function names displaying action links
 	 */
-	public function __construct(array $columns, array $actions)
+	public function __construct(array $columns, array $actions = null)
 	{
 		parent::__construct($columns, $actions);
 	}
