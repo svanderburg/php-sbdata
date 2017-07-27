@@ -28,7 +28,7 @@ following code example defines an e-mail field meaning that a data element shoul
 be validated and displayed as such:
 
 ```php
-require_once("data/model/field/EmailField.class.php");
+use SBData\Model\Field\EmailField;
 
 $field = new EmailField("Email"); // Defines an e-mail field with title: 'Email'
 ```
@@ -50,8 +50,7 @@ Another use case is to display a field, which can be done in various ways. The
 following code fragment simply displays a field in an appropriate way:
 
 ```php
-require_once("data/view/html/field.inc.php");
-displayField($field); // Displays an e-mail hyperlink
+\SBData\View\HTML\Field\displayField($field); // Displays an e-mail hyperlink
 ```
 
 Another option is to generate an editable field so that a user can provide his
@@ -59,7 +58,7 @@ own value for it through a web browser. The following code fragment generates an
 input element from the `EmailField` object:
 
 ```php
-displayEditableField("email", $field); // Displays a text input field with name: 'email'
+\SBData\View\HTML\Field\displayEditableField("email", $field); // Displays a text input field with name: 'email'
 ```
 
 Defining a form model
@@ -68,7 +67,15 @@ Usually fields are not very useful on their own. One of the primary goals of thi
 library is to encapsulate multiple fields into forms. For example:
 
 ```php
-require_once("data/model/Form.class.php");
+use SBData\Model\Form;
+use SBData\Model\Field\CheckBoxField;
+use SBData\Model\Field\DateField;
+use SBData\Model\Field\EmailField;
+use SBData\Model\Field\NumericIntTextField;
+use SBData\Model\Field\TextField;
+use SBData\Model\Field\TextAreaField;
+use SBData\Model\Field\URLField;
+use SBData\Model\Field\ComboBoxField\ArrayComboBoxField;
 
 $form = new Form(array(
     "firstname" => new TextField("First name", true),
@@ -139,9 +146,7 @@ display a form including the data. The following function invocation simply
 displays the form values:
 
 ```php
-require_once("data/view/html/form.inc.php");
-
-displayForm($form);
+\SBData\View\HTML\displayForm($form);
 ```
 
 The above function also automatically formats the fields. For example, the
@@ -152,7 +157,7 @@ Displaying an editable form
 We can also display an editable variant of the same form:
 
 ```php
-displayEditableForm($form,
+\SBData\View\HTML\displayEditableForm($form,
     "Submit",
     "One or more fields are incorrectly specified and marked with a red color!",
     "This field is incorrectly specified!");
@@ -175,7 +180,7 @@ implements an object that is an instance of `ArrayTable` that can be used to
 validate and display arrays of objects:
 
 ```php
-require_once("data/model/table/ArrayTable.class.php");
+use SBData\Model\Table\ArrayTable;
 
 $table = new ArrayTable(array(
     "firstname" => new TextField("First name", true),
@@ -217,7 +222,7 @@ Besides arrays we can also construct a table (objects that are instances of
 `DBTable` that work on records stored in a relational database:
 
 ```php
-require_once("data/model/table/DBTable.class.php");
+use SBData\Model\Table\DBTable;
 
 $table = new DBTable(array(
     "PERSON_ID" => new HiddenField("Id", true),
@@ -282,8 +287,7 @@ Displaying a table
 A table including its records can be displayed in a straight forward way:
 
 ```php
-require_once("data/view/html/table.inc.php");
-displayTable($table);
+\SBData\View\HTML\displayTable($table);
 ```
 
 The above function invocation composes a `table` element with rows, headers and
@@ -340,7 +344,7 @@ To display a table with action links, you must use the following function
 invocation:
 
 ```php
-displaySemiEditableTable($table);
+\SBData\View\HTML\displaySemiEditableTable($table);
 ```
 
 In addition to a delete link, we can use the action array to define other kinds
@@ -351,7 +355,7 @@ Displaying an editable table
 We can also compose an editable grid to make every cell in the table editable:
 
 ```php
-displayEditableTable($table, $submittedForm);
+\SBData\View\HTML\displayEditableTable($table, $submittedForm);
 ```
 
 The above function composes `div` elements with classes corresponding to table
