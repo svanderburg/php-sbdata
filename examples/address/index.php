@@ -1,17 +1,17 @@
 <?php
 error_reporting(E_STRICT | E_ALL);
 
-set_include_path("../../sbdata");
+require(dirname(__FILE__)."/../../vendor/autoload.php");
 
-require_once("data/model/Form.class.php");
-require_once("data/model/field/TextField.class.php");
-require_once("data/model/field/NumericIntTextField.class.php");
-require_once("data/model/field/EmailField.class.php");
-require_once("data/model/field/URLField.class.php");
-require_once("data/model/field/TextAreaField.class.php");
-require_once("data/model/field/DateField.class.php");
-require_once("data/model/field/CheckBoxField.class.php");
-require_once("data/model/field/comboboxfield/ArrayComboBoxField.class.php");
+use SBData\Model\Form;
+use SBData\Model\Field\CheckBoxField;
+use SBData\Model\Field\DateField;
+use SBData\Model\Field\EmailField;
+use SBData\Model\Field\NumericIntTextField;
+use SBData\Model\Field\TextField;
+use SBData\Model\Field\TextAreaField;
+use SBData\Model\Field\URLField;
+use SBData\Model\Field\ComboBoxField\ArrayComboBoxField;
 
 /* Define a form */
 $form = new Form(array(
@@ -39,7 +39,6 @@ if(count($_POST) > 0)
 }
 
 /* Display the page and form */
-require_once("data/view/html/form.inc.php");
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
@@ -52,9 +51,9 @@ require_once("data/view/html/form.inc.php");
 	<body>
 		<?php
 		if(count($_POST) > 0 && $valid)
-			displayForm($form);
+			\SBData\View\HTML\displayForm($form);
 		else
-			displayEditableForm($form, "Submit", "One or more fields are incorrectly specified and marked with a red color!", "This field is incorrectly specified!");
+			\SBData\View\HTML\displayEditableForm($form, "Submit", "One or more fields are incorrectly specified and marked with a red color!", "This field is incorrectly specified!");
 		?>
 	</body>
 </html>

@@ -1,14 +1,16 @@
 <?php
 error_reporting(E_STRICT | E_ALL);
 
-set_include_path("../../sbdata");
+require(dirname(__FILE__)."/../../vendor/autoload.php");
+require_once("includes/db.php");
 
-require_once("includes/db.inc.php");
-require_once("includes/entity/Book.class.php");
-require_once("data/model/table/DBTable.class.php");
-require_once("data/model/field/KeyLinkField.class.php");
-require_once("data/model/field/TextField.class.php");
-require_once("data/model/field/NumericIntTextField.class.php");
+use SBData\Model\Form;
+use SBData\Model\Table\DBTable;
+use SBData\Model\Field\HiddenField;
+use SBData\Model\Field\KeyLinkField;
+use SBData\Model\Field\NumericIntTextField;
+use SBData\Model\Field\TextField;
+use Examples\Books\Entity\Book;
 
 function composeBookLink(KeyLinkField $field, Form $form)
 {
@@ -71,7 +73,6 @@ else
 }
 
 /* Display the page and table */
-require_once("data/view/html/table.inc.php");
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
@@ -92,7 +93,7 @@ require_once("data/view/html/table.inc.php");
 				?>
 				<p><a href="<?php print($_SERVER["PHP_SELF"]); ?>?viewmode=2">Semi edit</a></p>
 				<?php
-				displayTable($table);
+				\SBData\View\HTML\displayTable($table);
 			}
 			else if(array_key_exists("viewmode", $_GET) && $_GET["viewmode"] == "2") // If semi-edit mode is selected, display ordinary table with delete links
 			{
@@ -102,7 +103,7 @@ require_once("data/view/html/table.inc.php");
 					<a href="<?php print($_SERVER["PHP_SELF"]); ?>">Edit</a>
 				</p>
 				<?php
-				displaySemiEditableTable($table);
+				\SBData\View\HTML\displaySemiEditableTable($table);
 			}
 			else
 			{
@@ -112,7 +113,7 @@ require_once("data/view/html/table.inc.php");
 					<a href="<?php print($_SERVER["PHP_SELF"]); ?>?viewmode=1">View</a>
 				</p>
 				<?php
-				displayEditableTable($table, $submittedForm);
+				\SBData\View\HTML\displayEditableTable($table, $submittedForm);
 			}
 		}
 		else

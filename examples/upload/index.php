@@ -1,10 +1,10 @@
 <?php
 error_reporting(E_STRICT | E_ALL);
 
-set_include_path("../../sbdata");
+require(dirname(__FILE__)."/../../vendor/autoload.php");
 
-require_once("data/model/Form.class.php");
-require_once("data/model/field/FileField.class.php");
+use SBData\Model\Form;
+use SBData\Model\Field\FileField;
 
 /* Define a form */
 $form = new Form(array(
@@ -20,7 +20,6 @@ if(count($_FILES) == 1)
 }
 
 /* Display the page and form */
-require_once("data/view/html/form.inc.php");
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
@@ -44,7 +43,7 @@ print($contents);
 			<?php
 		}
 		else
-			displayEditableForm($form, "Submit", "One or more fields are incorrectly specified and marked with a red color!", "This field is incorrectly specified!");
+			\SBData\View\HTML\displayEditableForm($form, "Submit", "One or more fields are incorrectly specified and marked with a red color!", "This field is incorrectly specified!");
 		?>
 	</body>
 </html>

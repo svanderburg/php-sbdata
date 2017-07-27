@@ -1,14 +1,15 @@
 <?php
 error_reporting(E_STRICT | E_ALL);
 
-set_include_path("../../sbdata");
+require(dirname(__FILE__)."/../../vendor/autoload.php");
 
-require_once("data/model/table/ArrayTable.class.php");
-require_once("data/model/field/HiddenField.class.php");
-require_once("data/model/field/TextField.class.php");
-require_once("data/model/field/NumericIntTextField.class.php");
-require_once("data/model/field/EmailField.class.php");
-require_once("data/model/field/URLField.class.php");
+use SBData\Model\Form;
+use SBData\Model\Field\EmailField;
+use SBData\Model\Field\HiddenField;
+use SBData\Model\Field\NumericIntTextField;
+use SBData\Model\Field\TextField;
+use SBData\Model\Field\URLField;
+use SBData\Model\Table\ArrayTable;
 
 /* Define a table displaying the test rowset */
 
@@ -113,7 +114,6 @@ else
 	
 
 /* Display the page and table */
-require_once("data/view/html/table.inc.php");
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
@@ -130,16 +130,14 @@ require_once("data/view/html/table.inc.php");
 			?>
 			<p><a href="<?php print($_SERVER["PHP_SELF"]); ?>">Edit</a></p>
 			<?php
-			displayTable($table);
+			\SBData\View\HTML\displayTable($table);
 		}
 		else // Otherwise display editable table
 		{
 			?>
 			<p><a href="<?php print($_SERVER["PHP_SELF"]); ?>?viewmode=1">View</a></p>
 			<?php
-			
-			
-			displayEditableTable($table, $submittedForm);
+			\SBData\View\HTML\displayEditableTable($table, $submittedForm);
 		}
 		?>
 	</body>
