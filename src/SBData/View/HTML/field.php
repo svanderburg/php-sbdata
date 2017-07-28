@@ -14,7 +14,7 @@ function displayField(Field $field, Form $form = null)
 {
 	/* Dynamically invoke the corresponding the display function belonging to the given class */
 	$reflect = new ReflectionClass($field);
-	$functionName = "\SBData\View\HTML\Field\display".$reflect->getShortName();
+	$functionName = '\\'.$field->package."\View\HTML\Field\display".$reflect->getShortName();
 	$functionName($field, $form);
 }
 
@@ -28,7 +28,7 @@ function displayEditableField($name, Field $field, Form $form = null)
 {
 	/* Dynamically invoke the corresponding the display function belonging to the given class */
 	$reflect = new ReflectionClass($field);
-	$functionName = "\SBData\View\HTML\Field\displayEditable".$reflect->getShortName();
+	$functionName = '\\'.$field->package."\View\HTML\Field\displayEditable".$reflect->getShortName();
 	$functionName($name, $field, $form);
 }
 ?>

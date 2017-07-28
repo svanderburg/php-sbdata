@@ -19,6 +19,9 @@ abstract class Field
 	/** Stores the value of the field */
 	public $value;
 	
+	/** Namespace root where this field belongs to */
+	public $package = "SBData";
+	
 	/**
 	 * Constructs a new Field instance
 	 * 
