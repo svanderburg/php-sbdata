@@ -29,7 +29,10 @@ class ArrayComboBoxField extends TextField
 	 */
 	public function checkField($name)
 	{
-		return array_key_exists($this->value, $this->values);
+		if(!$this->mandatory && $this->value == "")
+			return true;
+		else
+			return array_key_exists($this->value, $this->values);
 	}
 }
 ?>
