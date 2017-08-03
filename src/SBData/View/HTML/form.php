@@ -54,7 +54,7 @@ function displayEditableForm(Form $form, $submitLabel, $generalErrorMessage, $fi
 	
 	/* Display the form */
 	?>
-	<form method="post" action="<?php print(htmlspecialchars($_SERVER["PHP_SELF"])); ?>"<?php print(composeEncTypeAttribute($form)); ?>>
+	<form method="post" action="<?php print(htmlspecialchars($form->actionURL === null ? $_SERVER["PHP_SELF"] : $form->actionURL)); ?>"<?php print(composeEncTypeAttribute($form)); ?>>
 		<?php
 		/* Display each field */
 		foreach($form->fields as $name => $field)

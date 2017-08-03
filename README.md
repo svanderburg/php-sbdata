@@ -465,6 +465,23 @@ Currently the following `Field` classes are provided by this library:
    corresponding encoding type to the form that encapsulates it. The actual file
    can be retrieved through the `$_FILES["fieldname"]` variable.
 
+Constructing custom fields
+==========================
+The field API is extendable allowing you to define your own fields for custom
+validation and/or presentation. A custom field can be created by defining your
+own field *model* by implementing a class that inherits from `Field` (or more
+conveniently: `TextField`) and your own field *view* functions.
+
+The constructor of your custom field needs to set the `$this->package` attribute
+with the namespace that contains the corresponding view function.
+
+The view functions must be implemented by creating a PHP module providing a
+`display<className>` (for read-mode) and `displayEditable<className>`
+(for write mode) functions that output the HTML code needed to display it.
+
+This package contains an example named: `captcha` demonstrating how a custom
+field can be implemented.
+
 Examples
 ========
 This package includes three example web applications that can be found in the
@@ -478,6 +495,8 @@ This package includes three example web applications that can be found in the
 * The `books` is an example demonstrating an `DBTable` of books, which can be
   created, viewed, updated and deleted. It requires the `db.sql` schema to be
   deployed to an RDBMS.
+* The `captcha` is an example demonstrating how to create custom fields. In this
+  example, we expose the functionality of the simple CAPTCHA API as a field.
 
 API documentation
 =================
