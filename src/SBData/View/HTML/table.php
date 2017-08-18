@@ -36,11 +36,11 @@ function displayTableHeader(Table $table)
 	<?php
 }
 
-function displayNoItemsLabel(Table $table, $noItemsLabel)
+function displayNoItemsLabel(Table $table, $noItemsLabel, $displayAnchors, $anchorPrefix)
 {
 	?>
 	<tr>
-		<td colspan="<?php print($table->computeNumberOfDisplayableColumns()); ?>"><?php print($noItemsLabel); ?></td>
+		<td colspan="<?php print($table->computeNumberOfDisplayableColumns()); ?>"><?php if($displayAnchors) { ?><a name="<?php print($anchorPrefix); ?>-0"></a><?php }; print($noItemsLabel); ?></td>
 	</tr>
 	<?php
 }
@@ -71,7 +71,7 @@ function displayTable(Table $table, $displayAnchors = false, $noItemsLabel = "No
 		displayTableHeader($table);
 
 		if($table->computeNumberOfRows() === 0)
-			displayNoItemsLabel($table, $noItemsLabel);
+			displayNoItemsLabel($table, $noItemsLabel, $displayAnchors, $anchorPrefix);
 		else
 		{
 			$count = 0;
@@ -112,7 +112,7 @@ function displaySemiEditableTable(Table $table, $displayAnchors = false, $noItem
 		displayTableHeader($table);
 
 		if($table->computeNumberOfRows() === 0)
-			displayNoItemsLabel($table, $noItemsLabel);
+			displayNoItemsLabel($table, $noItemsLabel, $displayAnchors, $anchorPrefix);
 		else
 		{
 			$count = 0;
@@ -135,7 +135,7 @@ function displaySemiEditableTable(Table $table, $displayAnchors = false, $noItem
 	<?php
 }
 
-function displayEditableTable(Table $table, Form $submittedForm = null, $noItemsLabel = "No items", $editLabel = "Edit")
+function displayEditableTable(Table $table, Form $submittedForm = null, $noItemsLabel = "No items", $editLabel = "Edit", $anchorPrefix = "table-row")
 {
 	?>
 	<div class="table">
@@ -161,7 +161,7 @@ function displayEditableTable(Table $table, Form $submittedForm = null, $noItems
 		{
 			?>
 			<div class="tr">
-				<div class="td"><?php print($noItemsLabel); ?></div>
+				<div class="td"><?php if($displayAnchors) { ?><a name="<?php print($anchorPrefix); ?>-0"></a><?php }; print($noItemsLabel); ?></div>
 			</div>
 			<?php
 		}
@@ -181,7 +181,7 @@ function displayEditableTable(Table $table, Form $submittedForm = null, $noItems
 				else
 					$form->fields["__id"]->value = $count; // Otherwise, use the generated one and add the row id value to it
 				?>
-				<form class="tr" method="post" action="<?php print($_SERVER["PHP_SELF"]); ?>#table-row-<?php print($count); ?>"<?php print($encTypeAttribute); ?>>
+				<form class="tr" method="post" action="<?php print($_SERVER["PHP_SELF"]."#".$anchorPrefix."-".$count); ?>"<?php print($encTypeAttribute); ?>>
 					<?php
 					foreach($form->fields as $name => $field)
 					{
@@ -195,7 +195,7 @@ function displayEditableTable(Table $table, Form $submittedForm = null, $noItems
 						}
 					}
 					?>
-					<div class="td"><a name="table-row-<?php print($count); ?>"><button><?php print($editLabel); ?></button></a></div>
+					<div class="td"><a name="<?php print($anchorPrefix."-".$count); ?>"><button><?php print($editLabel); ?></button></a></div>
 					<?php
 					if($table->actions !== null)
 					{
