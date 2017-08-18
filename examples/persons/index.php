@@ -90,7 +90,7 @@ else
 
 	if(count($_GET) > 0 && array_key_exists("__operation", $_GET) && $_GET["__operation"] == "delete") // If a delete has been made, delete the element from the array
 	{
-		/* Check id validity */	
+		/* Check id validity */
 		$idField->value = $_GET["id"];
 		
 		if($idField->checkField("id"))
@@ -111,7 +111,6 @@ else
 		}
 	}
 }
-	
 
 /* Display the page and table */
 ?>
@@ -130,7 +129,7 @@ else
 			?>
 			<p><a href="<?php print($_SERVER["PHP_SELF"]); ?>">Edit</a></p>
 			<?php
-			\SBData\View\HTML\displayTable($table);
+			\SBData\View\HTML\displaySemiEditableTable($table);
 		}
 		else // Otherwise display editable table
 		{

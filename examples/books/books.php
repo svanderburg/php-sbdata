@@ -6,6 +6,7 @@ require_once("includes/db.php");
 
 use SBData\Model\Form;
 use SBData\Model\Table\DBTable;
+use SBData\Model\Table\Anchor\AnchorRow;
 use SBData\Model\Field\HiddenField;
 use SBData\Model\Field\KeyLinkField;
 use SBData\Model\Field\NumericIntTextField;
@@ -27,7 +28,7 @@ $idField = new KeyLinkField("Id", "composeBookLink", true, 20, 255);
 
 function deleteBookLink(Form $form)
 {
-	return "?__operation=delete&amp;__id=".$form->fields["__id"]->value."&amp;BOOK_ID=".$form->fields["BOOK_ID"]->value;
+	return "?__operation=delete&amp;__id=".$form->fields["__id"]->value."&amp;BOOK_ID=".$form->fields["BOOK_ID"]->value.AnchorRow::composePreviousRowParameter($form);
 }
 
 $table = new DBTable(array(
@@ -66,7 +67,7 @@ else
 		{
 			Book::delete($dbh, $idField->value);
 
-			header("Location: books.php#table-row-".$_REQUEST["__id"]);
+			header("Location: books.php".AnchorRow::composeRowFragment());
 			exit;
 		}
 	}
@@ -103,7 +104,7 @@ else
 					<a href="<?php print($_SERVER["PHP_SELF"]); ?>">Edit</a>
 				</p>
 				<?php
-				\SBData\View\HTML\displaySemiEditableTable($table);
+				\SBData\View\HTML\displaySemiEditableTable($table, true);
 			}
 			else
 			{

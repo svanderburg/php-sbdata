@@ -25,8 +25,7 @@ abstract class Table
 		$this->columns = $columns;
 		$this->actions = $actions;
 
-		/* Add __id column that is used to track which row in the table is modified */
-		$this->columns["__id"] = new HiddenField(true);
+		$this->columns["__id"] = new HiddenField(false); // Add __id column that is used to track which row in the table is modified
 	}
 	
 	/**

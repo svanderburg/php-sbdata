@@ -45,20 +45,25 @@ function displayNoItemsLabel(Table $table, $noItemsLabel)
 	<?php
 }
 
-function displayFields(Form $form)
+function displayFields(Form $form, $displayAnchors, $count, $anchorPrefix)
 {
+	$form->fields["__id"]->value = $count;
+	$first = true;
+
 	foreach($form->fields as $name => $field)
 	{
 		if(!$field instanceof HiddenField && !$field instanceof MetaDataField)
 		{
 			?>
-			<td><?php displayField($field, $form); ?></td>
+			<td><?php if($displayAnchors && $first) { ?><a name="<?php print($anchorPrefix."-".$count); ?>"></a><?php }; displayField($field, $form); ?></td>
 			<?php
 		}
+
+		$first = false;
 	}
 }
 
-function displayTable(Table $table, $noItemsLabel = "No items")
+function displayTable(Table $table, $displayAnchors = false, $noItemsLabel = "No items", $anchorPrefix = "table-row")
 {
 	?>
 	<table>
@@ -69,13 +74,16 @@ function displayTable(Table $table, $noItemsLabel = "No items")
 			displayNoItemsLabel($table, $noItemsLabel);
 		else
 		{
+			$count = 0;
+
 			while(($form = $table->fetchForm()) !== null)
 			{
 				?>
 				<tr>
-					<?php displayFields($form); ?>
+					<?php displayFields($form, $displayAnchors, $count, $anchorPrefix); ?>
 				</tr>
 				<?php
+				$count++;
 			}
 		}
 		?>
@@ -96,7 +104,7 @@ function displayActionLinks(Table $table, Form $form)
 	}
 }
 
-function displaySemiEditableTable(Table $table, $noItemsLabel = "No items")
+function displaySemiEditableTable(Table $table, $displayAnchors = false, $noItemsLabel = "No items", $anchorPrefix = "table-row")
 {
 	?>
 	<table>
@@ -107,16 +115,19 @@ function displaySemiEditableTable(Table $table, $noItemsLabel = "No items")
 			displayNoItemsLabel($table, $noItemsLabel);
 		else
 		{
+			$count = 0;
+
 			while(($form = $table->fetchForm()) !== null)
 			{
 				?>
 				<tr>
 					<?php
-					displayFields($form);
+					displayFields($form, $displayAnchors, $count, $anchorPrefix);
 					displayActionLinks($table, $form);
 					?>
 				</tr>
 				<?php
+				$count++;
 			}
 		}
 		?>

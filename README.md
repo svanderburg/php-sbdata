@@ -436,6 +436,82 @@ The above example defines a table with two key link fields:
   (e.g. its key is NULL), then we can return `null` to prevent a link from being
   generated.
 
+Using row anchors
+-----------------
+For tables that provide edit functionality, we may want to track which row in
+the table has changed.
+
+Typically, an action link (such as a 'delete' operation) refers to a different
+page that carries out the modification and then redirects the user back to the
+page displaying the table.
+
+The inconvenience is that the browser loses knowledge about its previous scroll
+position returning the user to the top of the page. This is quite inconvenient
+when a page contains a table that exceeds the page height.
+
+The editable table provides anchor links by default that can be used to track
+the origins of a change. These can also be enabled for semi-editable and
+"ordinary" tables by setting the `$displayAnchors` parameter to `true` (by
+default it is `false`):
+
+```php
+\SBData\View\HTML\displaySemiEditableTable($table, true); // Anchor links enabled
+```
+
+When defining a form action or a `KeyLinkField`, we can use the `__id` field to
+retrieve the row id:
+
+```php
+function deletePersonLink(Form $form)
+{
+    $rowId = $form->fields["__id"]->value; // refers to the anchor id of the row for which the action has been triggered
+    return "?__operation=delete&amp;PERSON_ID=".$form->fields["PERSON_ID"]->value;
+}
+```
+
+We can use a number of convenience functions to make the generation of action
+links and redirections easier:
+
+```php
+use SBData\Model\Table\Anchor\AnchorRow;
+```
+
+We can use the `AnchorRow::composePreviousRowParameter()` function to compose a
+`GET` parameter that refers to the previous row id -- when we delete a row, we
+typically want to scroll to the position of the row that comes before it:
+
+
+```php
+function deletePersonLink(Form $form)
+{
+    return "?__operation=delete&amp;PERSON_ID=".$form->fields["PERSON_ID"]->value.AnchorRow::composePreviousRowParameter($form);
+}
+```
+
+For example, when a delete operation has been triggered for the third table
+row, then the above function invocation appends `&amp;__id=2` to the generated
+URL.
+
+We can use the `AnchorRow::composeRowFragment()` to compose the fragment part of
+the redirection URL:
+
+```php
+header("Location: books.php".AnchorRow::composeRowFragment());
+```
+
+For example, if the above action was triggered from a row with id 2, then the
+corresponding redirect header will be:
+
+```
+Location: books.php#table-row-2
+```
+
+By default, the convenience functions use `__id` as a GET parameter and
+`table-row-` as prefix for the anchors. When it is desired to display multiple
+tables on one page, you may want to change this prefix. This can be done by
+providing a `$prefix` parameter to the above functions. See the API
+documentation for more information.
+
 Fields
 ======
 Currently the following `Field` classes are provided by this library:
