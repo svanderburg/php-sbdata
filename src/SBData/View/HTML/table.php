@@ -161,7 +161,7 @@ function displayEditableTable(Table $table, Form $submittedForm = null, $noItems
 		{
 			?>
 			<div class="tr">
-				<div class="td"><?php if($displayAnchors) { ?><a name="<?php print($anchorPrefix); ?>-0"></a><?php }; print($noItemsLabel); ?></div>
+				<div class="td"><a name="<?php print($anchorPrefix); ?>-0"></a><?php print($noItemsLabel); ?></div>
 			</div>
 			<?php
 		}
