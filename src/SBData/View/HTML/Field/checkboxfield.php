@@ -11,7 +11,7 @@ function displayCheckBoxField(CheckBoxField $field)
 function displayEditableCheckBoxField($name, CheckBoxField $field)
 {
 	?>
-	<input name="<?php print($name); ?>" type="checkbox" value="<?php print($field->checkedValue); ?>"<?php if($field->value == $field->checkedValue) print(" checked"); ?>>
+	<input name="<?php print($name); ?>" type="checkbox" value="<?php print($field->checkedValue); ?>"<?php if(($field->value === null && $field->initiallyChecked) || $field->value == $field->checkedValue) print(" checked"); ?>>
 	<?php
 }
 ?>
