@@ -11,6 +11,43 @@ and we need proper error reporting.
 This library provides abstractions to make the development of such features more
 convenient.
 
+Installation
+============
+This package can be embedded in any PHP project by using
+[PHP composer](https://getcomposer.org). Add the following items to your
+project's `composer.json` file:
+
+```json
+{
+  "repositories": [
+    {
+      "type": "git",
+      "url": "https://github.com/svanderburg/php-sbdata.git"
+    }
+  ],
+
+  "require": {
+    "svanderburg/php-sbdata": "@dev",
+  }
+}
+```
+
+and run:
+
+```bash
+$ composer install
+```
+
+Installing development dependencies
+===================================
+When it is desired to modify the code or run the examples inside this
+repository, the development dependencies must be installed by opening
+the base directory and running:
+
+```bash
+$ composer install
+```
+
 Usage
 =====
 The abstactions in this library can be used in a straight forward way. First,
@@ -576,11 +613,12 @@ This package includes three example web applications that can be found in the
 
 API documentation
 =================
-This package includes API documentation, which can be generated with
-[Doxygen](http://www.doxygen.org). The Makefile in this package contains a `doc`
-target and produces the corresponding HTML files in `apidoc`:
+This package includes API documentation that can be generated with
+[phpDocumentor](https://www.phpdoc.org):
 
-    $ make doc
+```bash
+$ vendor/bin/phpdoc
+```
 
 License
 =======
