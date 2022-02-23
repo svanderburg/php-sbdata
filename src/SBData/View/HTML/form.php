@@ -1,11 +1,22 @@
 <?php
+/**
+ * @file
+ * @brief View-HTML-Form module
+ * @defgroup View-HTML-Form
+ * @{
+ */
 namespace SBData\View\HTML;
 use SBData\Model\Form;
 use SBData\Model\Field\Field;
 use SBData\Model\Field\HiddenField;
 use SBData\Model\Field\MetaDataField;
 
-function displayForm(Form $form)
+/**
+ * Displays a form with fields in a non-editable way.
+ *
+ * @param $form Form to display
+ */
+function displayForm(Form $form): void
 {
 	?>
 	<table>
@@ -27,7 +38,7 @@ function displayForm(Form $form)
 	<?php
 }
 
-function composeEncTypeAttribute(Form $form)
+function composeEncTypeAttribute(Form $form): string
 {
 	if($form->hasFileField())
 		return ' enctype="multipart/form-data"';
@@ -35,13 +46,21 @@ function composeEncTypeAttribute(Form $form)
 		return "";
 }
 
-function displayMandatorySign(Field $field)
+function displayMandatorySign(Field $field): void
 {
 	if($field->mandatory)
 		print('<span class="mandatory">*</span>');
 }
 
-function displayEditableForm(Form $form, $submitLabel, $generalErrorMessage, $fieldErrorMessage)
+/**
+ * Displays a form with fields in an editable way.
+ *
+ * @param $form Form to display
+ * @param $submitLabel Label to be displayed on the submit button
+ * @param $generalErrorMessage General error message displayed when a field is invalid
+ * @param $fieldErrorMessage Error message displayed for an invalid field
+ */
+function displayEditableForm(Form $form, string $submitLabel, string $generalErrorMessage, string $fieldErrorMessage): void
 {
 	/* If the form is invalid state display the general error message */
 	
@@ -86,3 +105,8 @@ function displayEditableForm(Form $form, $submitLabel, $generalErrorMessage, $fi
 	</form>
 	<?php
 }
+
+/**
+ * @}
+ */
+?>

@@ -1,8 +1,15 @@
 <?php
+/**
+ * @file
+ * @brief View-HTML-Field-EmailField module
+ * @defgroup View-HTML-Field-EmailField
+ * @{
+ */
+
 namespace SBData\View\HTML\Field;
 use SBData\Model\Field\EmailField;
 
-function displayEmailField(EmailField $field)
+function displayEmailField(EmailField $field): void
 {
 	if($field->value !== "")
 	{
@@ -12,8 +19,12 @@ function displayEmailField(EmailField $field)
 	}
 }
 
-function displayEditableEmailField($name, EmailField $field)
+function displayEditableEmailField(string $name, EmailField $field): void
 {
 	displayEditableTextField($name, $field);
 }
+
+/**
+ * @}
+ */
 ?>

@@ -7,20 +7,20 @@ namespace SBData\Model\Field;
 class TextField extends Field
 {
 	/** Preferred size of the text field */
-	public $size;
+	public int $size;
 	
 	/** Maximum size of the text field or null for infinite size */
-	public $maxlength;
+	public ?int $maxlength;
 	
 	/**
 	 * Constructs a new TextField instance
 	 * 
-	 * @param string $title Title of the field
-	 * @param bool $mandatory Indicates whether a given value is mandatory
-	 * @param int $size Preferred size of the text field
-	 * @param int $maxlength Maximum size of the text field or null for infinity size
+	 * @param $title Title of the field
+	 * @param $mandatory Indicates whether a given value is mandatory
+	 * @param $size Preferred size of the text field
+	 * @param $maxlength Maximum size of the text field or null for infinity size
 	 */
-	public function __construct($title, $mandatory = false, $size = 20, $maxlength = null)
+	public function __construct(string $title, bool $mandatory = false, int $size = 20, ?int $maxlength = null)
 	{
 		parent::__construct($title, $mandatory);
 		$this->size = $size;
@@ -30,7 +30,7 @@ class TextField extends Field
 	/**
 	 * @see Field::checkField()
 	 */
-	public function checkField($name)
+	public function checkField(string $name): bool
 	{
 		$this->value = trim($this->value); // Trim whitespace that comes in front and after the input
 		

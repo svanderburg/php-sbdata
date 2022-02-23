@@ -9,11 +9,11 @@ class DateField extends TextField
 	/**
 	 * Constructs a new DateField instance
 	 *
-	 * @param string $title Title of the field
-	 * @param bool $defaultToCurrentDate Indicates whether the default value should be set to today
-	 * @param bool $mandatory Indicates whether a given value is mandatory
+	 * @param $title Title of the field
+	 * @param $defaultToCurrentDate Indicates whether the default value should be set to today
+	 * @param $mandatory Indicates whether a given value is mandatory
 	 */
-	public function __construct($title, $defaultToCurrentDate = false, $mandatory = false)
+	public function __construct(string $title, bool $defaultToCurrentDate = false, bool $mandatory = false)
 	{
 		parent::__construct($title, $mandatory, 10, 10);
 		
@@ -24,7 +24,7 @@ class DateField extends TextField
 	/**
 	 * @see TextField::checkField()
 	 */
-	public function checkField($name)
+	public function checkField(string $name): bool
 	{
 		if(!parent::checkField($name))
 			return false;

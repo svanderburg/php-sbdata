@@ -1,8 +1,14 @@
 <?php
+/**
+ * @file
+ * @brief View-HTML-Field-ArrayComboBoxField module
+ * @defgroup View-HTML-Field-ArrayComboBoxField
+ * @{
+ */
 namespace SBData\View\HTML\Field;
 use SBData\Model\Field\ComboBoxField\ArrayComboBoxField;
 
-function displayArrayComboBoxField(ArrayComboBoxField $field)
+function displayArrayComboBoxField(ArrayComboBoxField $field): void
 {
 	foreach($field->values as $key => $value)
 	{
@@ -14,7 +20,7 @@ function displayArrayComboBoxField(ArrayComboBoxField $field)
 	}
 }
 
-function displayEditableArrayComboBoxField($name, ArrayComboBoxField $field)
+function displayEditableArrayComboBoxField(string $name, ArrayComboBoxField $field): void
 {
 	?>
 	<select name="<?php print($name); ?>">
@@ -29,4 +35,8 @@ function displayEditableArrayComboBoxField($name, ArrayComboBoxField $field)
 	</select>
 	<?php
 }
+
+/**
+ * @}
+ */
 ?>

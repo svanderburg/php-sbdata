@@ -1,5 +1,6 @@
 <?php
 namespace SBData\Model\Field\ComboBoxField;
+use \PDOStatement;
 use SBData\Model\Field\TextField;
 
 /**
@@ -9,16 +10,16 @@ use SBData\Model\Field\TextField;
 class DBComboBoxField extends TextField
 {
 	/** An executed PDOStatement in which the first resulting column is used for the keys and the second for the values */
-	public $stmt;
+	public PDOStatement $stmt;
 	
 	/**
 	 * Constructs a new DBComboBoxField.
-	 * 
-	 * @param string $title Title of the field
-	 * @param PDOStatement $stmt An executed PDOStatement in which the first resulting column is used for the keys and the second for the values
-	 * @param bool $mandatory Indicates whether a given value is mandatory
+	 *
+	 * @param $title Title of the field
+	 * @param $stmt An executed PDOStatement in which the first resulting column is used for the keys and the second for the values
+	 * @param $mandatory Indicates whether a given value is mandatory
 	 */
-	public function __construct($title, $stmt, $mandatory = false)
+	public function __construct(string $title, PDOStatement $stmt, bool $mandatory = false)
 	{
 		parent::__construct($title, $mandatory);
 		$this->stmt = $stmt;
@@ -27,10 +28,10 @@ class DBComboBoxField extends TextField
 	/**
 	 * Iterates over all possible combobox options and returns an
 	 * array containing option values for each iteration.
-	 * 
+	 *
 	 * @return array An associative array in which the key field points to the key and value to the value. It returns null if all options have been visited.
 	 */
-	public function fetchOption()
+	public function fetchOption(): ?array
 	{
 		if($row = $this->stmt->fetch())
 		{
@@ -51,10 +52,10 @@ class DBComboBoxField extends TextField
 	
 	/**
 	 * Fetches the value of the option that currently been selected.
-	 * 
-	 * @return string The actual value selected or null if an error has occured.
+	 *
+	 * @return The actual value selected or null if an error has occured.
 	 */
-	public function fetchValue()
+	public function fetchValue(): ?string
 	{
 		if($row = $this->stmt->fetch())
 			return $row[0];

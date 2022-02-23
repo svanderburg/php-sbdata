@@ -1,14 +1,21 @@
 <?php
+/**
+ * @file
+ * @brief View-HTML-Field-DBComboBoxField module
+ * @defgroup View-HTML-Field-DBComboBoxField
+ * @{
+ */
+
 namespace SBData\View\HTML\Field;
 use SBData\Model\Field\ComboBoxField\DBComboBoxField;
 
-function displayDBComboBoxField(DBComboBoxField $field)
+function displayDBComboBoxField(DBComboBoxField $field): void
 {
 	if($value = $field->fetchValue())
 		print($value);
 }
 
-function displayEditableDBComboBoxField($name, DBComboBoxField $field)
+function displayEditableDBComboBoxField(string $name, DBComboBoxField $field): void
 {	
 	?>
 	<select name="<?php print($name); ?>">
@@ -24,4 +31,8 @@ function displayEditableDBComboBoxField($name, DBComboBoxField $field)
 	</select>
 	<?php
 }
+
+/**
+ * @}
+ */
 ?>

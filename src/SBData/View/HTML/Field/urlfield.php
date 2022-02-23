@@ -1,8 +1,15 @@
 <?php
+/**
+ * @file
+ * @brief View-HTML-Field-URLField module
+ * @defgroup View-HTML-Field-URLField
+ * @{
+ */
+
 namespace SBData\View\HTML\Field;
 use SBData\Model\Field\URLField;
 
-function displayURLField(URLField $field)
+function displayURLField(URLField $field): void
 {
 	if($field->value !== "")
 	{
@@ -12,8 +19,12 @@ function displayURLField(URLField $field)
 	}
 }
 
-function displayEditableURLField($name, URLField $field)
+function displayEditableURLField(string $name, URLField $field): void
 {
 	displayEditableTextField($name, $field);
 }
+
+/**
+ * @}
+ */
 ?>

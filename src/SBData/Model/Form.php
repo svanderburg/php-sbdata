@@ -7,17 +7,17 @@ use SBData\Model\Field\FileField;
  */
 class Form
 {
-	/** An associative array of fields that should be checked and displayed */ 
-	public $fields;
+	/** An associative array of fields that should be checked and displayed */
+	public array $fields;
 
-	/** Action URL where the user gets redirected to (defaults to same page) */
-	public $actionURL;
+	/** Action URL where the user gets redirected to (defaults to same page if null) */
+	public ?string $actionURL;
 
 	/**
 	 * Constructs a new Form instance.
 	 *
-	 * @param array $fields An associative array of fields that should be checked and displayed
-	 * @param string $actionURL Action URL where the user gets redirected to (defaults to same page)
+	 * @param $fields An associative array of fields that should be checked and displayed
+	 * @param $actionURL Action URL where the user gets redirected to (defaults to same page)
 	 */
 	public function __construct(array $fields, $actionURL = null)
 	{
@@ -27,10 +27,10 @@ class Form
 	
 	/**
 	 * Imports an array of values into the form fields.
-	 * 
-	 * @param array $values An associative array in which every key corresponds to a field and every value to a field value. 
+	 *
+	 * @param $values An associative array in which every key corresponds to a field and every value to a field value.
 	 */
-	public function importValues(array $values)
+	public function importValues(array $values): void
 	{
 		foreach($this->fields as $name => $field)
 		{
@@ -42,7 +42,7 @@ class Form
 	/**
 	 * Clears the values in the form fields.
 	 */
-	public function clearValues()
+	public function clearValues(): void
 	{
 		foreach($this->fields as $name => $field)
 			$field->value = NULL;
@@ -51,7 +51,7 @@ class Form
 	/**
 	 * Exports the field values to an associative array having the same keys.
 	 */
-	public function exportValues()
+	public function exportValues(): array
 	{
 		$values = array();
 
@@ -64,7 +64,7 @@ class Form
 	/**
 	 * Checks whether the field values in the form are valid. 
 	 */
-	public function checkFields()
+	public function checkFields(): void
 	{
 		foreach($this->fields as $name => $field)
 			$field->valid = $field->checkField($name);
@@ -74,9 +74,9 @@ class Form
 	 * Checks whether the form (including all its fields) are valid.
 	 * This function should be called after Form::checkFields()
 	 * 
-	 * @return bool true if and only if all form values are valid
+	 * @return true if and only if all form values are valid
 	 */
-	public function checkValid()
+	public function checkValid(): bool
 	{
 		foreach($this->fields as $name => $field)
 		{
@@ -89,10 +89,10 @@ class Form
 	
 	/**
 	 * Returns true if and only if the form has a FileField.
-	 * 
+	 *
 	 * @return true if and only if the form has a FileField
 	 */
-	public function hasFileField()
+	public function hasFileField(): bool
 	{
 		$hasFileField = false;
 	

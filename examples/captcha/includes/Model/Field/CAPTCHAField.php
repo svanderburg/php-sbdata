@@ -12,23 +12,24 @@ require_once(dirname(__FILE__)."/../../../simple-php-captcha.php");
 class CAPTCHAField extends TextField
 {
 	/** Base URL where the CAPTCHA script resides */
-	public $baseURL;
+	public string $baseURL;
 
 	/** Contains an instruction message shown to the user */
-	public $instruction;
+	public string $instruction;
 
 	/** The simple PHP config object */
-	public $config;
+	public array $config;
 
 	/**
 	 * Constructs a new CAPTCHAField instance
 	 *
-	 * @param string $title Title of the field
-	 * @param int $maxlength Maximum size of the text field (defaults to 5)
-	 * @param string $baseURL Base URL where the CAPTCHA script resides
-	 * @param array $config The simple PHP config object
+	 * @param $title Title of the field
+	 * @param $instruction Contains an instruction message shown to the user
+	 * @param $maxlength Maximum size of the text field (defaults to 5)
+	 * @param $baseURL Base URL where the CAPTCHA script resides
+	 * @param $config The simple PHP config object
 	 */
-	public function __construct($title, $instruction, $maxlength = 5, $baseURL = "", $config = array())
+	public function __construct(string $title, string $instruction, int $maxlength = 5, string $baseURL = "", $config = array())
 	{
 		parent::__construct($title, true, $maxlength, $maxlength);
 		$config['max_length'] = $maxlength; // Ensure that the provided max length matches the CAPTCHA's max length
@@ -51,7 +52,7 @@ class CAPTCHAField extends TextField
 	/**
 	 * @see Field::checkField()
 	 */
-	public function checkField($name)
+	public function checkField(string $name): bool
 	{
 		$valid = $this->value === $_SESSION['captcha']['code'];
 		$_SESSION['captcha'] = simple_php_captcha($this->config); // Compose a new CAPTCHA in case the provided code was wrong

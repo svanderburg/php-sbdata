@@ -9,16 +9,16 @@ use SBData\Model\Field\HiddenField;
 abstract class Table
 {
 	/** An associative array of fields that should be checked and displayed */
-	public $columns;
+	public array $columns;
 
 	/** An associative array of labels mapping to function names displaying action links */
-	public $actions;
+	public ?array $actions;
 
 	/**
 	 * Constructs a new Table instance.
 	 *
-	 * @param array $columns An associative array of fields that should be checked and displayed
-	 * @param array $actions An associative array of labels mapping to function names displaying action links
+	 * @param $columns An associative array of fields that should be checked and displayed
+	 * @param $actions An associative array of labels mapping to function names displaying action links
 	 */
 	public function __construct(array $columns, array $actions = null)
 	{
@@ -31,10 +31,10 @@ abstract class Table
 	/**
 	 * Constructs a form out of the table's columns, which can be used to validate
 	 * records that are inserted or modified in the table.
-	 * 
-	 * @return Form A form with the table's columns as fields.
+	 *
+	 * @return A form with the table's columns as fields
 	 */
-	public function constructForm()
+	public function constructForm(): Form
 	{
 		/* Clone the columns fields */
 		$fields = array();
@@ -50,23 +50,23 @@ abstract class Table
 	 * Iterates over the collection of forms in the table and returns each one of them
 	 * until the last one has been reached.
 	 *
-	 * @return Form A form instance representing a table row, or null if all table rows have been visited.
+	 * @return A form instance representing a table row, or null if all table rows have been visited.
 	 */
-	public abstract function fetchForm();
+	public abstract function fetchForm(): Form|null;
 
 	/**
 	 * Returns the number of rows to be displayed.
 	 *
-	 * @return int The number of rows
+	 * @return The number of rows
 	 */
-	public abstract function computeNumberOfRows();
+	public abstract function computeNumberOfRows(): int;
 
 	/**
 	 * Computes the number of displayable columns.
 	 *
-	 * @return int Number of displayable columns
+	 * @return Number of displayable columns
 	 */
-	public function computeNumberOfDisplayableColumns()
+	public function computeNumberOfDisplayableColumns(): int
 	{
 		$count = 0;
 

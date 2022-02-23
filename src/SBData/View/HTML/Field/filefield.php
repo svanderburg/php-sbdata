@@ -1,16 +1,27 @@
 <?php
+/**
+ * @file
+ * @brief View-HTML-Field-FileField module
+ * @defgroup View-HTML-Field-FileField
+ * @{
+ */
+
 namespace SBData\View\HTML\Field;
 use SBData\Model\Field\FileField;
 
-function displayFileField(FileField $field)
+function displayFileField(FileField $field): void
 {
 	displayTextField($field);
 }
 
-function displayEditableFileField($name, FileField $field)
+function displayEditableFileField(string $name, FileField $field): void
 {
 	?>
 	<input name="<?php print($name); ?>" type="file" value="<?php print(htmlentities($field->value)); ?>">
 	<?php
 }
+
+/**
+ * @}
+ */
 ?>

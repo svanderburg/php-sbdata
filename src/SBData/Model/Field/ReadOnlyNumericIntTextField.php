@@ -10,7 +10,7 @@ class ReadOnlyNumericIntTextField extends NumericIntTextField
 	/**
 	 * @see TextField::__construct()
 	 */
-	public function __construct($title, $mandatory, $size = 20, $maxlength = null)
+	public function __construct(string $title, bool $mandatory, int $size = 20, ?int $maxlength = null)
 	{
 		parent::__construct($title, $mandatory, $size, $maxlength);
 	}
@@ -18,7 +18,7 @@ class ReadOnlyNumericIntTextField extends NumericIntTextField
 	/**
 	 * @see TextField::checkField()
 	 */
-	public function checkField($name)
+	public function checkField(string $name): bool
 	{
 		return parent::checkField($name);
 	}

@@ -8,13 +8,13 @@ class PasswordField extends TextField
 {
 	/**
 	 * Constructs a new TextField instance
-	 * 
-	 * @param string $title Title of the field
-	 * @param bool $mandatory Indicates whether a given value is mandatory
-	 * @param int $size Preferred size of the text field
-	 * @param int $maxlength Maximum size of the text field or null for infinity size
+	 *
+	 * @param $title Title of the field
+	 * @param $mandatory Indicates whether a given value is mandatory
+	 * @param $size Preferred size of the text field
+	 * @param $maxlength Maximum size of the text field or null for infinity size
 	 */
-	public function __construct($title, $mandatory = false, $size = 20, $maxlength = null)
+	public function __construct(string $title, bool $mandatory = false, int $size = 20, ?int $maxlength = null)
 	{
 		parent::__construct($title, $mandatory, $size, $maxlength);
 	}
@@ -22,7 +22,7 @@ class PasswordField extends TextField
 	/**
 	 * @see Field::checkField()
 	 */
-	public function checkField($name)
+	public function checkField(string $name): bool
 	{
 		if($this->mandatory && $this->value == "") // Mandatory text fields are not allowed to be empty
 			return false;

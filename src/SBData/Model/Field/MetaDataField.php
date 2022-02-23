@@ -10,9 +10,9 @@ class MetaDataField extends TextField
 	/**
 	 * Constructs a new MetaDataField instance
 	 *
-	 * @param bool $mandatory Indicates whether a given value is mandatory
+	 * @param $mandatory Indicates whether a given value is mandatory
 	 */
-	public function __construct($mandatory = false)
+	public function __construct(bool $mandatory = false)
 	{
 		parent::__construct("", $mandatory);
 	}

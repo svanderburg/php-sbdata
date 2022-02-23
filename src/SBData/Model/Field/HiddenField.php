@@ -7,11 +7,11 @@ namespace SBData\Model\Field;
 class HiddenField extends TextField
 {
 	/**
-  	 * Constructs a new HiddenField instance
+	 * Constructs a new HiddenField instance
 	 *
-	 * @param bool $mandatory Indicates whether a given value is mandatory
+	 * @param $mandatory Indicates whether a given value is mandatory
 	 */
-	public function __construct($mandatory = false)
+	public function __construct(bool $mandatory = false)
 	{
 		parent::__construct("", $mandatory);
 	}

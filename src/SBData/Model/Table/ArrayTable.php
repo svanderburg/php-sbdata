@@ -1,5 +1,6 @@
 <?php
 namespace SBData\Model\Table;
+use SBData\Model\Form;
 
 /**
  * A table that retrieves its data from an array of objects.
@@ -7,13 +8,13 @@ namespace SBData\Model\Table;
 class ArrayTable extends Table
 {
 	/** An array containing table data */
-	public $rows;
+	public array $rows;
 	
 	/**
 	 * Constructs a new ArrayTable instace.
 	 *
-	 * @param array $columns An associative array of fields that should be checked and displayed
-	 * @param array $actions An associative array of labels mapping to function names displaying action links
+	 * @param $columns An associative array of fields that should be checked and displayed
+	 * @param $actions An associative array of labels mapping to function names displaying action links
 	 */
 	public function __construct(array $columns, array $actions = null)
 	{
@@ -22,10 +23,10 @@ class ArrayTable extends Table
 	
 	/**
 	 * Sets the table's data to an array containing associative arrays with the values for each column.
-	 * 
-	 * @param array $rows An array containing table data.
+	 *
+	 * @param $rows An array containing table data.
 	 */
-	public function setRows(array $rows)
+	public function setRows(array $rows): void
 	{
 		$this->rows = $rows;
 		reset($this->rows);
@@ -34,7 +35,7 @@ class ArrayTable extends Table
 	/**
 	 * @see Table::fetchForm()
 	 */
-	public function fetchForm()
+	public function fetchForm(): Form|null
 	{
 		$row = current($this->rows);
 		
@@ -52,7 +53,7 @@ class ArrayTable extends Table
 	/**
 	 * @see Table::computeNumberOfRows()
 	 */
-	public function computeNumberOfRows()
+	public function computeNumberOfRows(): int
 	{
 		return count($this->rows);
 	}

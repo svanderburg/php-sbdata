@@ -1,11 +1,17 @@
 <?php
+/**
+ * @file
+ * @brief View-HTML-Table module
+ * @defgroup View-HTML-Table
+ * @{
+ */
 namespace SBData\View\HTML;
 use SBData\Model\Form;
 use SBData\Model\Field\HiddenField;
 use SBData\Model\Field\MetaDataField;
 use SBData\Model\Table\Table;
 
-function displayActionLink(Form $form, $actionFunction, $label)
+function displayActionLink(Form $form, string $actionFunction, string $label): void
 {
 	$url = $actionFunction($form);
 
@@ -17,7 +23,7 @@ function displayActionLink(Form $form, $actionFunction, $label)
 	}
 }
 
-function displayTableHeader(Table $table)
+function displayTableHeader(Table $table): void
 {
 	?>
 	<tr>
@@ -36,7 +42,7 @@ function displayTableHeader(Table $table)
 	<?php
 }
 
-function displayNoItemsLabel(Table $table, $noItemsLabel, $displayAnchors, $anchorPrefix)
+function displayNoItemsLabel(Table $table, string $noItemsLabel, bool $displayAnchors, string $anchorPrefix): void
 {
 	?>
 	<tr>
@@ -45,7 +51,7 @@ function displayNoItemsLabel(Table $table, $noItemsLabel, $displayAnchors, $anch
 	<?php
 }
 
-function displayFields(Form $form, $displayAnchors, $count, $anchorPrefix)
+function displayFields(Form $form, bool $displayAnchors, int $count, bool $anchorPrefix): void
 {
 	$form->fields["__id"]->value = $count;
 	$first = true;
@@ -63,7 +69,15 @@ function displayFields(Form $form, $displayAnchors, $count, $anchorPrefix)
 	}
 }
 
-function displayTable(Table $table, $displayAnchors = false, $noItemsLabel = "No items", $anchorPrefix = "table-row")
+/**
+ * Displays a table with field in a non-editable way.
+ *
+ * @param $table Table to display
+ * @param $displayAnchors Whether hidden anchors should be displayed that enable searching for specific rows
+ * @param $noItemsLabel Label to be displayed when there are no items in the table
+ * @param $anchorPrefix The prefix that the hidden anchor elements should have
+ */
+function displayTable(Table $table, bool $displayAnchors = false, string $noItemsLabel = "No items", string $anchorPrefix = "table-row"): void
 {
 	?>
 	<table>
@@ -91,7 +105,7 @@ function displayTable(Table $table, $displayAnchors = false, $noItemsLabel = "No
 	<?php
 }
 
-function displayActionLinks(Table $table, Form $form)
+function displayActionLinks(Table $table, Form $form): void
 {
 	if($table->actions !== null)
 	{
@@ -104,7 +118,16 @@ function displayActionLinks(Table $table, Form $form)
 	}
 }
 
-function displaySemiEditableTable(Table $table, $displayAnchors = false, $noItemsLabel = "No items", $anchorPrefix = "table-row")
+/**
+ * Displays a table with field in a semi-editable way. In this table fields can
+ * not be edited, but there are edit and delete buttons.
+ *
+ * @param $table Table to display
+ * @param $displayAnchors Whether hidden anchors should be displayed that enable searching for specific rows
+ * @param $noItemsLabel Label to be displayed when there are no items in the table
+ * @param $anchorPrefix The prefix that the hidden anchor elements should have
+ */
+function displaySemiEditableTable(Table $table, bool $displayAnchors = false, string $noItemsLabel = "No items", string $anchorPrefix = "table-row"): void
 {
 	?>
 	<table>
@@ -135,7 +158,16 @@ function displaySemiEditableTable(Table $table, $displayAnchors = false, $noItem
 	<?php
 }
 
-function displayEditableTable(Table $table, Form $submittedForm = null, $noItemsLabel = "No items", $editLabel = "Edit", $anchorPrefix = "table-row")
+/**
+ * Displays a table with field in an editable way. In this table fields can be directly edited.
+ *
+ * @param $table Table to display
+ * @param $submittedForm Form that contains the last submitted data that has changed, or null if no data was submitted
+ * @param $noItemsLabel Label to be displayed when there are no items in the table
+ * @param $editLabel Label to be displayed on the edit button
+ * @param $anchorPrefix The prefix that the hidden anchor elements should have
+ */
+function displayEditableTable(Table $table, Form $submittedForm = null, string $noItemsLabel = "No items", string $editLabel = "Edit", string $anchorPrefix = "table-row"): void
 {
 	?>
 	<div class="table">
@@ -216,4 +248,8 @@ function displayEditableTable(Table $table, Form $submittedForm = null, $noItems
 	</div>
 	<?php
 }
+
+/**
+ * @}
+ */
 ?>

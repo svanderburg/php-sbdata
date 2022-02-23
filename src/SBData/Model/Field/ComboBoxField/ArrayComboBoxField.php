@@ -9,16 +9,16 @@ use SBData\Model\Field\TextField;
 class ArrayComboBoxField extends TextField
 {
 	/** An associative array which key represents to the option value and the value to the text being displayed */ 
-	public $values;
+	public array $values;
 	
 	/**
 	 * Constructs a new ArrayComboBoxField instance.
 	 * 
-	 * @param string $title Title of the field
-	 * @param array $values An array in which the keys correspond to the input names and values to their descriptions
-	 * @param bool $mandatory Indicates whether a given value is mandatory
+	 * @param $title Title of the field
+	 * @param $values An array in which the keys correspond to the input names and values to their descriptions
+	 * @param $mandatory Indicates whether a given value is mandatory
 	 */
-	public function __construct($title, array $values, $mandatory = false)
+	public function __construct(string $title, array $values, bool $mandatory = false)
 	{
 		parent::__construct($title, $mandatory);
 		$this->values = $values;
@@ -27,7 +27,7 @@ class ArrayComboBoxField extends TextField
 	/**
 	 * @see TextField::checkField()
 	 */
-	public function checkField($name)
+	public function checkField(string $name): bool
 	{
 		if(!$this->mandatory && $this->value == "")
 			return true;
