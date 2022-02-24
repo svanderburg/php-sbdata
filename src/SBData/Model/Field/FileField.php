@@ -7,7 +7,7 @@ namespace SBData\Model\Field;
 class FileField extends TextField
 {
 	/** Required MIME type for the file or NULL if there is no MIME type requirement */
-	public ?string $mimeType;
+	public string|array|null $mimeType;
 	
 	/**
 	 * Constructs a new FileField instance
@@ -16,7 +16,7 @@ class FileField extends TextField
 	 * @param $mimeType Required MIME type for the file
 	 * @param $mandatory Indicates whether a given value is mandatory
 	 */
-	public function __construct(string $title, ?bool $mimeType, bool $mandatory = false)
+	public function __construct(string $title, string|array|null $mimeType, bool $mandatory = false)
 	{
 		parent::__construct($title, $mandatory);
 		$this->mimeType = $mimeType;
