@@ -1,6 +1,6 @@
 <?php
 namespace SBData\Model\Table;
-use \PDOStatement;
+use PDOStatement;
 use SBData\Model\Form;
 
 /**

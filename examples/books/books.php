@@ -13,7 +13,7 @@ use SBData\Model\Field\NumericIntTextField;
 use SBData\Model\Field\TextField;
 use Examples\Books\Entity\Book;
 
-function composeBookLink(KeyLinkField $field, Form $form)
+function composeBookLink(KeyLinkField $field, Form $form): string
 {
 	/* Determine the URL for edit or view mode */
 	if(array_key_exists("viewmode", $_GET) && $_GET["viewmode"] == "1")
@@ -26,7 +26,7 @@ function composeBookLink(KeyLinkField $field, Form $form)
 
 $idField = new KeyLinkField("Id", "composeBookLink", true, 20, 255);
 
-function deleteBookLink(Form $form)
+function deleteBookLink(Form $form): string
 {
 	return "?__operation=delete&amp;__id=".$form->fields["__id"]->value."&amp;BOOK_ID=".$form->fields["BOOK_ID"]->value.AnchorRow::composePreviousRowParameter($form);
 }

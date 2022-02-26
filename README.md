@@ -256,7 +256,7 @@ values for each row.
 Defining a database table model
 -------------------------------
 Besides arrays we can also construct a table (objects that are instances of
-`DBTable` that work on records stored in a relational database:
+`DBTable`) that work on records stored in a relational database:
 
 ```php
 use SBData\Model\Table\DBTable;
@@ -340,7 +340,7 @@ To support deletes we must implement an *action* function that returns a string
 representing the link to a delete URL:
 
 ```php
-function deletePersonLink(Form $form)
+function deletePersonLink(Form $form): string
 {
     return "?__operation=delete&amp;PERSON_ID=".$form->fields["PERSON_ID"]->value;
 }
@@ -435,12 +435,12 @@ display a link that redirects the user to the related record.
 By constructing a `KeyLinkField` we can compose such a link, for example:
 
 ```php
-function composeBookLink(KeyLinkField $field, Form $form)
+function composeBookLink(KeyLinkField $field, Form $form): string
 {
     return "book.php?BOOK_ID=".$field->value;
 }
 
-function composePublisherLink(KeyLinkField $field, Form $form)
+function composePublisherLink(KeyLinkField $field, Form $form): ?string
 {
     if($form->fields["PUBLISHER_ID"]->value === null)
         return null;
@@ -499,7 +499,7 @@ When defining a form action or a `KeyLinkField`, we can use the `__id` field to
 retrieve the row id:
 
 ```php
-function deletePersonLink(Form $form)
+function deletePersonLink(Form $form): string
 {
     $rowId = $form->fields["__id"]->value; // refers to the anchor id of the row for which the action has been triggered
     return "?__operation=delete&amp;PERSON_ID=".$form->fields["PERSON_ID"]->value;
@@ -519,7 +519,7 @@ typically want to scroll to the position of the row that comes before it:
 
 
 ```php
-function deletePersonLink(Form $form)
+function deletePersonLink(Form $form): string
 {
     return "?__operation=delete&amp;PERSON_ID=".$form->fields["PERSON_ID"]->value.AnchorRow::composePreviousRowParameter($form);
 }

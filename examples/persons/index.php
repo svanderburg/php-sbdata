@@ -15,7 +15,7 @@ use SBData\Model\Table\ArrayTable;
 
 $idField = new HiddenField("id", true);
 
-function deletePersonLink(Form $form)
+function deletePersonLink(Form $form): string
 {
 	return "?__operation=delete&amp;id=".$form->fields["id"]->value;
 }
