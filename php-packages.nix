@@ -358,7 +358,7 @@ in
 composerEnv.buildPackage {
   inherit packages devPackages noDev;
   name = "svanderburg-php-sbdata";
-  src = ./.;
+  src = composerEnv.filterSrc ./.;
   executable = false;
   symlinkDependencies = false;
   meta = {
