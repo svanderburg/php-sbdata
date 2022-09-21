@@ -51,7 +51,7 @@ function displayNoItemsLabel(Table $table, string $noItemsLabel, bool $displayAn
 	<?php
 }
 
-function displayFields(Form $form, bool $displayAnchors, int $count, bool $anchorPrefix): void
+function displayFields(Form $form, bool $displayAnchors, int $count, string $anchorPrefix): void
 {
 	$form->fields["__id"]->value = $count;
 	$first = true;
