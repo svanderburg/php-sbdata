@@ -2,10 +2,11 @@
 namespace Examples\Books\Entity;
 use Exception;
 use PDO;
+use PDOStatement;
 
 class Book
 {
-	public static function queryAll(PDO $dbh)
+	public static function queryAll(PDO $dbh): PDOStatement
 	{
 		$stmt = $dbh->prepare("select * from book order by BOOK_ID");
 		if(!$stmt->execute())
@@ -14,7 +15,7 @@ class Book
 		return $stmt;
 	}
 	
-	public static function queryOne(PDO $dbh, $BOOK_ID)
+	public static function queryOne(PDO $dbh, $BOOK_ID): PDOStatement
 	{
 		$stmt = $dbh->prepare("select * from book where BOOK_ID = ?");
 		if(!$stmt->execute(array($BOOK_ID)))
@@ -23,7 +24,7 @@ class Book
 		return $stmt;
 	}
 	
-	public static function queryOnePublisher(PDO $dbh, $BOOK_ID)
+	public static function queryOnePublisher(PDO $dbh, $BOOK_ID): PDOStatement
 	{
 		$stmt = $dbh->prepare("select publisher.name from book inner join publisher on book.PUBLISHER_ID = publisher.PUBLISHER_ID where book.BOOK_ID = ?");
 		if(!$stmt->execute(array($BOOK_ID)))
@@ -32,7 +33,7 @@ class Book
 		return $stmt;
 	}
 	
-	public static function insert(PDO $dbh, array $book)
+	public static function insert(PDO $dbh, array $book): void
 	{
 		$dbh->beginTransaction();
 		
@@ -55,7 +56,7 @@ class Book
 			$dbh->rollBack();
 	}
 	
-	public static function update(PDO $dbh, array $book)
+	public static function update(PDO $dbh, array $book): void
 	{
 		$stmt = $dbh->prepare("update book set ".
 			"title = ?, ".
@@ -67,7 +68,7 @@ class Book
 			throw new Exception($stmt->errorInfo()[2]);
 	}
 	
-	public static function delete(PDO $dbh, $BOOK_ID)
+	public static function delete(PDO $dbh, $BOOK_ID): void
 	{
 		$stmt = $dbh->prepare("delete from book where BOOK_ID = ?");
 		if(!$stmt->execute(array($BOOK_ID)))

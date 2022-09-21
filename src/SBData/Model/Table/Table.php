@@ -8,7 +8,7 @@ use SBData\Model\Field\HiddenField;
  */
 abstract class Table
 {
-	/** An associative array of fields that should be checked and displayed */
+	/** An associative array mapping field names to fields that should be checked and displayed */
 	public array $columns;
 
 	/** An associative array of labels mapping to function names displaying action links */
@@ -17,7 +17,7 @@ abstract class Table
 	/**
 	 * Constructs a new Table instance.
 	 *
-	 * @param $columns An associative array of fields that should be checked and displayed
+	 * @param $columns An associative array mapping field names to fields that should be checked and displayed
 	 * @param $actions An associative array of labels mapping to function names displaying action links
 	 */
 	public function __construct(array $columns, array $actions = null)

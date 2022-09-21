@@ -569,9 +569,9 @@ Currently the following `Field` classes are provided by this library:
 * `PasswordField`. Display a field as a password field and restricts viewing it.
 * `CheckBoxField`. Displays a field as a checkbox and uses a preconfigured
   value to determine whether it has been checked or not.
-* `ArrayComboBoxField`. Displays a field as text or combobox. It retrieves
+* `ArrayComboBoxField`. Displays a field as text or combo box. It retrieves
   key-value pairs from an array.
-* `DBComboBoxField`. Displays a field as text or combobox. It retrieves
+* `DBComboBoxField`. Displays a field as text or combo box. It retrieves
   key-value pairs from a relational database.
 * `FileField`. Displays a file path or file upload input field. It can
    optionally check if the file has the right MIME type.  It also adds the

@@ -7,7 +7,7 @@ use SBData\Model\Field\FileField;
  */
 class Form
 {
-	/** An associative array of fields that should be checked and displayed */
+	/** An associative array mapping field names to fields that should be checked and displayed */
 	public array $fields;
 
 	/** Action URL where the user gets redirected to (defaults to same page if null) */
@@ -16,10 +16,10 @@ class Form
 	/**
 	 * Constructs a new Form instance.
 	 *
-	 * @param $fields An associative array of fields that should be checked and displayed
+	 * @param $fields An associative array mapping field names to fields that should be checked and displayed
 	 * @param $actionURL Action URL where the user gets redirected to (defaults to same page)
 	 */
-	public function __construct(array $fields, $actionURL = null)
+	public function __construct(array $fields, string $actionURL = null)
 	{
 		$this->fields = $fields;
 		$this->actionURL = $actionURL;
