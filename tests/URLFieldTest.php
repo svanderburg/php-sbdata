@@ -6,14 +6,14 @@ use SBData\Model\Field\URLField;
 
 class URLFieldTest extends TestCase
 {
-	public function testValidURL()
+	public function testValidURL(): void
 	{
 		$urlField = new URLField("Test", false);
 		$urlField->value = "http://example.com";
 		$this->assertTrue($urlField->checkField("Test"));
 	}
 
-	public function testInvalidURL()
+	public function testInvalidURL(): void
 	{
 		$urlField = new URLField("Test", false);
 		$urlField->value = "invalid";

@@ -6,14 +6,14 @@ use SBData\Model\Field\NumericIntTextField;
 
 class NumericIntTextFieldTest extends TestCase
 {
-	public function testNumericValue()
+	public function testNumericValue(): void
 	{
 		$numericField = new NumericIntTextField("Test", false);
 		$numericField->value = "123";
 		$this->assertTrue($numericField->checkField("Test"));
 	}
 
-	public function testNonNumericValue()
+	public function testNonNumericValue(): void
 	{
 		$numericField = new NumericIntTextField("Test", true);
 		$numericField->value = "invalid";

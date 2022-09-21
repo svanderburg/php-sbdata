@@ -6,28 +6,28 @@ use SBData\Model\Field\ComboBoxField\ArrayComboBoxField;
 
 class ArrayComboBoxFieldTest extends TestCase
 {
-	public function testSuccessOnEmpty()
+	public function testSuccessOnEmpty(): void
 	{
 		$comboBoxField = new ArrayComboBoxField("Test", array("one" => "One", "two" => "Two", "three" => "Three"), false);
 		$comboBoxField->value = "";
 		$this->assertTrue($comboBoxField->checkField("Test"));
 	}
 
-	public function testFailureOnEmpty()
+	public function testFailureOnEmpty(): void
 	{
 		$comboBoxField = new ArrayComboBoxField("Test", array("one" => "One", "two" => "Two", "three" => "Three"), true);
 		$comboBoxField->value = "";
 		$this->assertFalse($comboBoxField->checkField("Test"));
 	}
 
-	public function testValidOption()
+	public function testValidOption(): void
 	{
 		$comboBoxField = new ArrayComboBoxField("Test", array("one" => "One", "two" => "Two", "three" => "Three"), true);
 		$comboBoxField->value = "two";
 		$this->assertTrue($comboBoxField->checkField("Test"));
 	}
 
-	public function testInvalidOption()
+	public function testInvalidOption(): void
 	{
 		$comboBoxField = new ArrayComboBoxField("Test", array("one" => "One", "two" => "Two", "three" => "Three"), true);
 		$comboBoxField->value = "nonexistent";

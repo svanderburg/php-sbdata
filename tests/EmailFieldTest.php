@@ -6,14 +6,14 @@ use SBData\Model\Field\EmailField;
 
 class EmailFieldTest extends TestCase
 {
-	public function testValidEmail()
+	public function testValidEmail(): void
 	{
 		$emailField = new EmailField("Test", false);
 		$emailField->value = "foo@example.com";
 		$this->assertTrue($emailField->checkField("Test"));
 	}
 
-	public function testInvalidEmail()
+	public function testInvalidEmail(): void
 	{
 		$emailField = new EmailField("Test", false);
 		$emailField->value = "invalid";

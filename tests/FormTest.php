@@ -8,7 +8,7 @@ use SBData\Model\Field\EmailField;
 
 class FormTest extends TestCase
 {
-	public function testValidForm()
+	public function testValidForm(): void
 	{
 		$form = new Form(array(
 			"name" => new TextField("Name", true),
@@ -22,7 +22,7 @@ class FormTest extends TestCase
 		$this->assertTrue($form->checkValid());
 	}
 
-	public function testInvalidForm()
+	public function testInvalidForm(): void
 	{
 		$form = new Form(array(
 			"name" => new TextField("Name", true),
