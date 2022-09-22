@@ -36,13 +36,5 @@ class DBTable extends Table
 			return $form;
 		}
 	}
-
-	/**
-	 * @see Table::computeNumberOfRows()
-	 */
-	public function computeNumberOfRows(): int
-	{
-		return $this->stmt->rowCount();
-	}
 }
 ?>

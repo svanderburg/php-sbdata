@@ -49,13 +49,5 @@ class ArrayTable extends Table
 		else
 			return null;
 	}
-
-	/**
-	 * @see Table::computeNumberOfRows()
-	 */
-	public function computeNumberOfRows(): int
-	{
-		return count($this->rows);
-	}
 }
 ?>

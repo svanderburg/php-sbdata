@@ -85,13 +85,13 @@ function displayTable(Table $table, bool $displayAnchors = false, string $noItem
 			<?php
 			displayTableHeader($table);
 
-			if($table->computeNumberOfRows() === 0)
+			if(($form = $table->fetchForm()) === null)
 				displayNoItemsLabel($table, $noItemsLabel, $displayAnchors, $anchorPrefix);
 			else
 			{
 				$count = 0;
 
-				while(($form = $table->fetchForm()) !== null)
+				do
 				{
 					?>
 					<tr>
@@ -100,6 +100,7 @@ function displayTable(Table $table, bool $displayAnchors = false, string $noItem
 					<?php
 					$count++;
 				}
+				while(($form = $table->fetchForm()) !== null);
 			}
 			?>
 		</table>
@@ -137,13 +138,13 @@ function displaySemiEditableTable(Table $table, bool $displayAnchors = false, st
 			<?php
 			displayTableHeader($table);
 
-			if($table->computeNumberOfRows() === 0)
+			if(($form = $table->fetchForm()) === null)
 				displayNoItemsLabel($table, $noItemsLabel, $displayAnchors, $anchorPrefix);
 			else
 			{
 				$count = 0;
 
-				while(($form = $table->fetchForm()) !== null)
+				do
 				{
 					?>
 					<tr>
@@ -155,6 +156,7 @@ function displaySemiEditableTable(Table $table, bool $displayAnchors = false, st
 					<?php
 					$count++;
 				}
+				while(($form = $table->fetchForm()) !== null);
 			}
 			?>
 		</table>
@@ -194,7 +196,7 @@ function displayEditableTable(Table $table, Form $submittedForm = null, string $
 			<?php
 			/* Display the editable records */
 
-			if($table->computeNumberOfRows() === 0)
+			if(($form = $table->fetchForm()) === null)
 			{
 				?>
 				<div class="tr">
@@ -206,7 +208,7 @@ function displayEditableTable(Table $table, Form $submittedForm = null, string $
 			{
 				$count = 0;
 
-				while($form = $table->fetchForm())
+				do
 				{
 					/* Compose an encType attribute if the form contains a file field */
 					$encTypeAttribute = composeEncTypeAttribute($form);
@@ -248,6 +250,7 @@ function displayEditableTable(Table $table, Form $submittedForm = null, string $
 					<?php
 					$count++;
 				}
+				while(($form = $table->fetchForm()) !== null);
 			}
 			?>
 		</div>

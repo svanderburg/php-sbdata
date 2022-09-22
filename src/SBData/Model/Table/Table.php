@@ -55,13 +55,6 @@ abstract class Table
 	public abstract function fetchForm(): Form|null;
 
 	/**
-	 * Returns the number of rows to be displayed.
-	 *
-	 * @return The number of rows
-	 */
-	public abstract function computeNumberOfRows(): int;
-
-	/**
 	 * Computes the number of displayable columns.
 	 *
 	 * @return Number of displayable columns

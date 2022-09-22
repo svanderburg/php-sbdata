@@ -22,9 +22,6 @@ class ArrayTableTest extends TestCase
 			array("id" => 2, "firstname" => "John", "lastname" => "Doe")
 		));
 
-		// Check if the number of rows is correct
-		$this->assertTrue($table->computeNumberOfRows() === 2);
-
 		// Check if we can iterate over two rows
 		$form = $table->fetchForm();
 		$this->assertInstanceOf(Form::class, $form);
