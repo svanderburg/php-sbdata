@@ -5,7 +5,7 @@ require(dirname(__FILE__)."/../../vendor/autoload.php");
 
 use SBData\Model\Form;
 use SBData\Model\Field\EmailField;
-use SBData\Model\Field\HiddenField;
+use SBData\Model\Field\HiddenNumericIntField;
 use SBData\Model\Field\NumericIntTextField;
 use SBData\Model\Field\TextField;
 use SBData\Model\Field\URLField;
@@ -15,7 +15,7 @@ $error = null;
 
 /* Define a table displaying the test rowset */
 
-$idField = new HiddenField(true);
+$idField = new HiddenNumericIntField(true);
 
 function deletePersonLink(Form $form): string
 {

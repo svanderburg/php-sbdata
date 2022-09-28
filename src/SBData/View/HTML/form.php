@@ -8,7 +8,7 @@
 namespace SBData\View\HTML;
 use SBData\Model\Form;
 use SBData\Model\Field\Field;
-use SBData\Model\Field\HiddenField;
+use SBData\Model\Field\GenericHiddenField;
 use SBData\Model\Field\MetaDataField;
 
 /**
@@ -24,7 +24,7 @@ function displayForm(Form $form): void
 			<?php
 			foreach($form->fields as $name => $field)
 			{
-				if(!$field instanceof HiddenField && !$field instanceof MetaDataField)
+				if(!$field instanceof GenericHiddenField && !$field instanceof MetaDataField)
 				{
 					?>
 					<tr>
@@ -81,8 +81,8 @@ function displayEditableForm(Form $form, string $submitLabel, string $generalErr
 			/* Display each field */
 			foreach($form->fields as $name => $field)
 			{
-				if($field instanceof HiddenField)
-					\SBData\View\HTML\Field\displayHiddenField($name, $field);
+				if($field instanceof GenericHiddenField)
+					\SBData\View\HTML\Field\displayGenericHiddenField($name, $field);
 				else if(!$field instanceof MetaDataField)
 				{
 					?>

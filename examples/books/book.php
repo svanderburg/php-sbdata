@@ -5,7 +5,7 @@ require(dirname(__FILE__)."/../../vendor/autoload.php");
 require_once("includes/db.php");
 
 use SBData\Model\Form;
-use SBData\Model\Field\HiddenField;
+use SBData\Model\Field\HiddenNumericIntField;
 use SBData\Model\Field\TextField;
 use SBData\Model\Field\ComboBoxField\DBComboBoxField;
 use Examples\Books\Entity\Book;
@@ -18,7 +18,7 @@ else
 
 /* Define a form model */
 
-$idField = new HiddenField(false);
+$idField = new HiddenNumericIntField(false);
 
 $form = new Form(array(
 	"BOOK_ID" => $idField,

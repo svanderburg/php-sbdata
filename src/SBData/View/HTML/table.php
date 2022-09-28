@@ -7,7 +7,7 @@
  */
 namespace SBData\View\HTML;
 use SBData\Model\Form;
-use SBData\Model\Field\HiddenField;
+use SBData\Model\Field\GenericHiddenField;
 use SBData\Model\Field\MetaDataField;
 use SBData\Model\Table\Table;
 
@@ -30,7 +30,7 @@ function displayTableHeader(Table $table): void
 		<?php
 		foreach($table->columns as $name => $field)
 		{
-			if(!$field instanceof HiddenField && !$field instanceof MetaDataField)
+			if(!$field instanceof GenericHiddenField && !$field instanceof MetaDataField)
 			{
 				?>
 				<th><?php print($field->title); ?></th>
@@ -58,7 +58,7 @@ function displayFields(Form $form, bool $displayAnchors, int $count, string $anc
 
 	foreach($form->fields as $name => $field)
 	{
-		if(!$field instanceof HiddenField && !$field instanceof MetaDataField)
+		if(!$field instanceof GenericHiddenField && !$field instanceof MetaDataField)
 		{
 			?>
 			<td><?php if($displayAnchors && $first) { ?><a name="<?php print($anchorPrefix."-".$count); ?>"></a><?php }; displayField($field, $form); ?></td>
@@ -184,7 +184,7 @@ function displayEditableTable(Table $table, Form $submittedForm = null, string $
 
 				foreach($table->columns as $name => $field)
 				{
-					if(!$field instanceof HiddenField && !$field instanceof MetaDataField)
+					if(!$field instanceof GenericHiddenField && !$field instanceof MetaDataField)
 					{
 						?>
 						<div class="th"><?php print($field->title); displayMandatorySign($field); ?></div>
@@ -224,8 +224,8 @@ function displayEditableTable(Table $table, Form $submittedForm = null, string $
 						<?php
 						foreach($form->fields as $name => $field)
 						{
-							if($field instanceof HiddenField)
-								\SBData\View\HTML\Field\displayHiddenField($name, $field);
+							if($field instanceof GenericHiddenField)
+								\SBData\View\HTML\Field\displayGenericHiddenField($name, $field);
 							else if(!$field instanceof MetaDataField)
 							{
 								?>

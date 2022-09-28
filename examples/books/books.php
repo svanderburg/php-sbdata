@@ -7,7 +7,6 @@ require_once("includes/db.php");
 use SBData\Model\Form;
 use SBData\Model\Table\DBTable;
 use SBData\Model\Table\Anchor\AnchorRow;
-use SBData\Model\Field\HiddenField;
 use SBData\Model\Field\KeyLinkField;
 use SBData\Model\Field\NumericIntTextField;
 use SBData\Model\Field\TextField;

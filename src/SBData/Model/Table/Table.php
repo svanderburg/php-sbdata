@@ -1,7 +1,8 @@
 <?php
 namespace SBData\Model\Table;
 use SBData\Model\Form;
-use SBData\Model\Field\HiddenField;
+use SBData\Model\Field\GenericHiddenField;
+use SBData\Model\Field\HiddenNumericIntField;
 
 /**
  * A table represents a collection of forms (with fields).
@@ -25,7 +26,7 @@ abstract class Table
 		$this->columns = $columns;
 		$this->actions = $actions;
 
-		$this->columns["__id"] = new HiddenField(false); // Add __id column that is used to track which row in the table is modified
+		$this->columns["__id"] = new HiddenNumericIntField(false); // Add __id column that is used to track which row in the table is modified
 	}
 	
 	/**
@@ -65,7 +66,7 @@ abstract class Table
 
 		foreach($this->columns as $id => $field)
 		{
-			if(!$field instanceof HiddenField && !$field instanceof MetaDataField)
+			if(!$field instanceof GenericHiddenField && !$field instanceof MetaDataField)
 				$count++;
 		}
 

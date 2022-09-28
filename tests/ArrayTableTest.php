@@ -3,7 +3,7 @@ require_once(dirname(__FILE__)."/../vendor/autoload.php");
 
 use PHPUnit\Framework\TestCase;
 use SBData\Model\Form;
-use SBData\Model\Field\HiddenField;
+use SBData\Model\Field\HiddenNumericIntField;
 use SBData\Model\Field\TextField;
 use SBData\Model\Table\ArrayTable;
 
@@ -12,7 +12,7 @@ class ArrayTableTest extends TestCase
 	public function testArrayTable()
 	{
 		$table = new ArrayTable(array(
-			"id" => new HiddenField("id", true),
+			"id" => new HiddenNumericIntField("id", true),
 			"firstname" => new TextField("First name", true),
 			"lastname" => new TextField("Last name", true),
 		));
