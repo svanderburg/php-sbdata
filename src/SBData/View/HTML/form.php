@@ -50,7 +50,7 @@ function composeEncTypeAttribute(Form $form): string
 
 function displayMandatorySign(Field $field): void
 {
-	if($field->mandatory)
+	if($field->value->mandatory)
 		print('<span class="mandatory">*</span>');
 }
 

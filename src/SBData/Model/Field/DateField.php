@@ -1,10 +1,11 @@
 <?php
 namespace SBData\Model\Field;
+use SBData\Model\Value\ISODateValue;
 
 /**
  * Represents the structure of an individual data element containing an e-mail address.
  */
-class DateField extends TextField
+class DateField extends GenericTextField
 {
 	/**
 	 * Constructs a new DateField instance
@@ -15,26 +16,7 @@ class DateField extends TextField
 	 */
 	public function __construct(string $title, bool $defaultToCurrentDate = false, bool $mandatory = false)
 	{
-		parent::__construct($title, $mandatory, 10, 10);
-		
-		if($defaultToCurrentDate)
-			$this->value = date("Y-m-d");
-	}
-	
-	/**
-	 * @see TextField::checkField()
-	 */
-	public function checkField(string $name): bool
-	{
-		if(!parent::checkField($name))
-			return false;
-
-		if(!$this->mandatory && $this->value === "")
-			return true;
-		else if(preg_match("/^[0-9]{4}\-[0-9]{2}\-[0-9]{2}$/", $this->value) === 1)
-			return checkdate(substr($this->value, 5, 2), substr($this->value, 8, 2), substr($this->value, 0, 4));
-		else
-			return false;
+		parent::__construct($title, new ISODateValue($defaultToCurrentDate, $mandatory), 10);
 	}
 }
 ?>

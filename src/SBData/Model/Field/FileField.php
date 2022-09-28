@@ -1,59 +1,24 @@
 <?php
 namespace SBData\Model\Field;
+use SBData\Model\Value\FileValue;
 
 /**
  * Represents the structure of an individual data element containing a file reference.
  */
-class FileField extends TextField
+class FileField extends Field
 {
-	/** Required MIME type for the file or NULL if there is no MIME type requirement */
-	public string|array|null $mimeType;
-	
 	/**
-	 * Constructs a new FileField instance
+	 * Constructs a new FileField instance.
 	 *
 	 * @param $title Title of the field
 	 * @param $mimeType Required MIME type for the file
 	 * @param $mandatory Indicates whether a given value is mandatory
+	 * @param $maxlength Maximum size of the text field or null for infinite size
 	 */
-	public function __construct(string $title, string|array|null $mimeType, bool $mandatory = false)
+	public function __construct(string $title, string|array|null $mimeType, bool $mandatory = false, int $maxlength = null)
 	{
-		parent::__construct($title, $mandatory);
+		parent::__construct($title, new FileValue($mimeType, $mandatory, $maxlength));
 		$this->mimeType = $mimeType;
-	}
-	
-	/**
-	 * @see TextField::checkField()
-	 */
-	public function checkField(string $name): bool
-	{
-		if(!$this->mandatory && (!array_key_exists($name, $_FILES) || !array_key_exists("tmp_name", $_FILES[$name]) || $_FILES[$name]["tmp_name"] === "")) // If a file is not mandatory and no file has been provided then everything is ok
-			return true;
-		else
-		{
-			if(!array_key_exists($name, $_FILES) || $_FILES[$name]["error"] != UPLOAD_ERR_OK) // Check whether the file has been uploaded
-				return false;
-			
-			if($this->mimeType !== null)
-			{
-				$type = $_FILES[$name]["type"]; // Identified mime type of the upload
-
-				if(is_string($this->mimeType) && $type !== $this->mimeType) // Check if mimetype of the file corresponds to what we require
-					return false;
-				else if(is_array($this->mimeType))
-				{
-					foreach($this->mimeType as $mimeType) // If an array of mimetypes is given check whether a supported one exist
-					{
-						if($mimeType === $type)
-							return true;
-					}
-					
-					return false; // No supported mimetypes found
-				}
-			}
-
-			return true;
-		}
 	}
 }
 ?>

@@ -1,36 +1,23 @@
 <?php
 namespace SBData\Model\Field;
+use SBData\Model\Value\EmailValue;
 
 /**
  * Represents the structure of an individual data element containing an e-mail address.
  */
-class EmailField extends TextField
+class EmailField extends GenericTextField
 {
 	/**
-	 * Constructs a new EmailField instance
+	 * Constructs a new EmailField instance.
 	 *
 	 * @param $title Title of the field
 	 * @param $mandatory Indicates whether a given value is mandatory
+	 * @param $size Preferred size of the text field
+	 * @param $maxlength Maximum size of the text field or null for infinite size
 	 */
-	public function __construct(string $title, bool $mandatory = false)
+	public function __construct(string $title, bool $mandatory = false, int $size = 20, int $maxlength = null)
 	{
-		parent::__construct($title, $mandatory);
-	}
-	
-	/**
-	 * @see TextField::checkField()
-	 */
-	public function checkField(string $name): bool
-	{
-		if(!parent::checkField($name))
-			return false;
-		else
-		{
-			if(!$this->mandatory && $this->value === "")
-				return true;
-			else
-				return(filter_var($this->value, FILTER_VALIDATE_EMAIL) !== false);
-		}
+		parent::__construct($title, new EmailValue($mandatory, $maxlength), $size);
 	}
 }
 ?>

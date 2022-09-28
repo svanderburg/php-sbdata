@@ -10,9 +10,9 @@ use SBData\Model\Field\ComboBoxField\ArrayComboBoxField;
 
 function displayArrayComboBoxField(ArrayComboBoxField $field): void
 {
-	foreach($field->values as $key => $value)
+	foreach($field->value->values as $key => $value)
 	{
-		if($key == $field->value)
+		if($key == $field->exportValue())
 		{
 			print($value);
 			break;
@@ -25,10 +25,10 @@ function displayEditableArrayComboBoxField(string $name, ArrayComboBoxField $fie
 	?>
 	<select name="<?php print($name); ?>">
 		<?php
-		foreach($field->values as $key => $value)
+		foreach($field->value->values as $key => $value)
 		{
 			?>
-			<option value="<?php print($key); ?>"<?php if($key == $field->value) print(" selected"); ?>><?php print($value); ?></option>
+			<option value="<?php print($key); ?>"<?php if($key == $field->exportValue()) print(" selected"); ?>><?php print($value); ?></option>
 			<?php
 		} 
 		?>

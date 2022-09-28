@@ -11,17 +11,19 @@ use SBData\Model\Field\URLField;
 
 function displayURLField(URLField $field): void
 {
-	if($field->value !== "")
+	$value = $field->exportValue();
+
+	if($value !== "")
 	{
 		?>
-		<a href="<?php print($field->value); ?>"><?php print(htmlentities($field->value)); ?></a>
+		<a href="<?php print($value); ?>"><?php print(htmlentities($value)); ?></a>
 		<?php
 	}
 }
 
 function displayEditableURLField(string $name, URLField $field): void
 {
-	displayEditableTextField($name, $field);
+	displayEditableGenericTextField($name, $field);
 }
 
 /**

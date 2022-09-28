@@ -9,14 +9,14 @@ class NumericIntTextFieldTest extends TestCase
 	public function testNumericValue(): void
 	{
 		$numericField = new NumericIntTextField("Test", false);
-		$numericField->value = "123";
+		$numericField->importValue("123");
 		$this->assertTrue($numericField->checkField("Test"));
 	}
 
 	public function testNonNumericValue(): void
 	{
 		$numericField = new NumericIntTextField("Test", true);
-		$numericField->value = "invalid";
+		$numericField->importValue("invalid");
 		$this->assertFalse($numericField->checkField("Test"));
 	}
 }

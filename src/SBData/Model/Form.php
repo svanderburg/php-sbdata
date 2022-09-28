@@ -35,7 +35,7 @@ class Form
 		foreach($this->fields as $name => $field)
 		{
 			if(array_key_exists($name, $values))
-				$field->value = $values[$name];
+				$field->importValue($values[$name]);
 		}
 	}
 	
@@ -56,13 +56,13 @@ class Form
 		$values = array();
 
 		foreach($this->fields as $key => $field)
-			$values[$key] = $field->value;
+			$values[$key] = $field->exportValue();
 
 		return $values;
 	}
 	
 	/**
-	 * Checks whether the field values in the form are valid. 
+	 * Checks whether the field values in the form are valid.
 	 */
 	public function checkFields(): void
 	{

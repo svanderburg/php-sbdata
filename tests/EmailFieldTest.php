@@ -9,14 +9,14 @@ class EmailFieldTest extends TestCase
 	public function testValidEmail(): void
 	{
 		$emailField = new EmailField("Test", false);
-		$emailField->value = "foo@example.com";
+		$emailField->importValue("foo@example.com");
 		$this->assertTrue($emailField->checkField("Test"));
 	}
 
 	public function testInvalidEmail(): void
 	{
 		$emailField = new EmailField("Test", false);
-		$emailField->value = "invalid";
+		$emailField->importValue("invalid");
 		$this->assertFalse($emailField->checkField("Test"));
 	}
 }

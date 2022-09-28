@@ -11,17 +11,19 @@ use SBData\Model\Field\EmailField;
 
 function displayEmailField(EmailField $field): void
 {
-	if($field->value !== "")
+	$value = $field->exportValue();
+
+	if($value !== "")
 	{
 		?>
-		<a href="mailto:<?php print($field->value); ?>"><?php print(htmlentities($field->value)); ?></a>
+		<a href="mailto:<?php print($value); ?>"><?php print(htmlentities($value)); ?></a>
 		<?php
 	}
 }
 
 function displayEditableEmailField(string $name, EmailField $field): void
 {
-	displayEditableTextField($name, $field);
+	displayEditableGenericTextField($name, $field);
 }
 
 /**

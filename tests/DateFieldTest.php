@@ -9,14 +9,14 @@ class DateFieldTest extends TestCase
 	public function testValidDate(): void
 	{
 		$dateField = new DateField("Test", false);
-		$dateField->value = "2010-01-01";
+		$dateField->importValue("2010-01-01");
 		$this->assertTrue($dateField->checkField("Test"));
 	}
 
 	public function testInvalidDate(): void
 	{
 		$dateField = new DateField("Test", false);
-		$dateField->value = "invalid";
+		$dateField->importValue("invalid");
 		$this->assertFalse($dateField->checkField("Test"));
 	}
 }

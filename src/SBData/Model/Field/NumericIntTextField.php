@@ -1,30 +1,22 @@
 <?php
 namespace SBData\Model\Field;
+use SBData\Model\Value\IntegerValue;
 
 /**
- * Represents the structure of an individual data element containing only numeric values.
+ * Represents the structure of an individual data element containing  numeric values that should be displayed as a text field.
  */
-class NumericIntTextField extends TextField
+class NumericIntTextField extends GenericTextField
 {
 	/**
-	 * @see TextField::__construct()
+	 * Constructs a new NumericIntTextField instance.
+	 *
+	 * @param $title Title of the field
+	 * @param $mandatory Indicates whether a given value is mandatory
+	 * @param $size Preferred size of the text field
+	 * @param $maxlength Maximum size of the text field or null for infinite size
 	 */
-	public function __construct(string $title, bool $mandatory = false, int $size = 20, ?int $maxlength = null)
+	public function __construct(string $title, bool $mandatory = false, int $size = 20, int $maxlength = null)
 	{
-		parent::__construct($title, $mandatory, $size, $maxlength);
-	}
-	
-	/**
-	 * @see TextField::checkField()
-	 */
-	public function checkField(string $name): bool
-	{
-		if(!parent::checkField($name))
-			return false;
-
-		if(!$this->mandatory && $this->value === "")
-			return true;
-		else
-			return preg_match('/[0-9]+$/', $this->value) === 1;
+		parent::__construct($title, new IntegerValue($mandatory, $maxlength), $size);
 	}
 }

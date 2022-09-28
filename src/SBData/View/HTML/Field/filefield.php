@@ -17,7 +17,7 @@ function displayFileField(FileField $field): void
 function displayEditableFileField(string $name, FileField $field): void
 {
 	?>
-	<input name="<?php print($name); ?>" type="file" value="<?php print(htmlentities($field->value)); ?>">
+	<input name="<?php print($name); ?>" type="file" value="<?php print(htmlentities($field->exportValue())); ?>">
 	<?php
 }
 

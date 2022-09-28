@@ -11,14 +11,15 @@ use SBData\Model\Field\CheckBoxField;
 
 function displayCheckBoxField(CheckBoxField $field): void
 {
-	if($field->value == $field->checkedValue)
+	if($field->exportValue() == $field->value->checkedValue)
 		print("&check;");
 }
 
 function displayEditableCheckBoxField(string $name, CheckBoxField $field): void
 {
+	$value = $field->exportValue();
 	?>
-	<input name="<?php print($name); ?>" type="checkbox" value="<?php print($field->checkedValue); ?>"<?php if(($field->value === null && $field->initiallyChecked) || $field->value == $field->checkedValue) print(" checked"); ?>>
+	<input name="<?php print($name); ?>" type="checkbox" value="<?php print($field->value->checkedValue); ?>"<?php if(($value === null && $field->initiallyChecked) || $value == $field->value->checkedValue) print(" checked"); ?>>
 	<?php
 }
 

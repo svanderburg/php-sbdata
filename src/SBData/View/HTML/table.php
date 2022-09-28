@@ -53,7 +53,7 @@ function displayNoItemsLabel(Table $table, string $noItemsLabel, bool $displayAn
 
 function displayFields(Form $form, bool $displayAnchors, int $count, string $anchorPrefix): void
 {
-	$form->fields["__id"]->value = $count;
+	$form->fields["__id"]->importValue($count);
 	$first = true;
 
 	foreach($form->fields as $name => $field)
@@ -215,10 +215,10 @@ function displayEditableTable(Table $table, Form $submittedForm = null, string $
 
 					$form->checkFields(); // Check field validity
 
-					if($submittedForm !== null && $submittedForm->fields["__id"]->value == $count && !$submittedForm->checkValid())
+					if($submittedForm !== null && !$submittedForm->checkValid() && $submittedForm->fields["__id"]->exportValue() == $count)
 						$form = $submittedForm; // If a submitted form is given use that
 					else
-						$form->fields["__id"]->value = $count; // Otherwise, use the generated one and add the row id value to it
+						$form->fields["__id"]->importValue($count); // Otherwise, use the generated one and add the row id value to it
 					?>
 					<form class="tr" method="post" action="<?php print($_SERVER["PHP_SELF"]."#".$anchorPrefix."-".$count); ?>"<?php print($encTypeAttribute); ?>>
 						<?php

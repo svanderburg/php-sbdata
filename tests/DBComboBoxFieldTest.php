@@ -25,14 +25,14 @@ class DBComboBoxFieldTest extends TestCase
 	public function testSuccessOnEmpty(): void
 	{
 		$comboBoxField = new DBComboBoxField("Test", $this->queryIdValuePairs(), false);
-		$comboBoxField->value = "";
+		$comboBoxField->importValue("");
 		$this->assertTrue($comboBoxField->checkField("Test"));
 	}
 
 	public function testFailureOnEmpty(): void
 	{
 		$comboBoxField = new DBComboBoxField("Test", $this->queryIdValuePairs(), true);
-		$comboBoxField->value = "";
+		$comboBoxField->importValue("");
 		$this->assertFalse($comboBoxField->checkField("Test"));
 	}
 }

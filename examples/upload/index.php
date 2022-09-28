@@ -30,6 +30,8 @@ if(count($_FILES) == 1)
 	</head>
 	
 	<body>
+		<p>This form can be used to upload a text file and display its contents.</p>
+
 		<?php
 		if(count($_FILES) == 1 && $valid)
 		{

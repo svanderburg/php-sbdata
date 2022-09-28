@@ -51,18 +51,90 @@ $ composer install
 Usage
 =====
 The abstactions in this library can be used in a straight forward way. First,
-you must define a _model_ for either a field that encodes a single data element,
-a form that encodes multiple fields, or a table that encodes multiple forms.
+you must define a _model_ for either a value that stores and checks a single
+data element, a field that also presents a single data element, a form that
+encodes multiple fields, or a table that encodes multiple forms.
 
 The model can be used for two purposes -- it can be used to *check* and validate
 whether data is correct and be used to *view* collections of data in various ways,
 such as a collection of input fields.
 
+Storing and checking data elements
+----------------------------------
+The most basic use case of this framework is storing and checking data elements.
+
+For example, the following code fragment defines a generic value whose purpose
+is to validate the basic essentials of a data value (such as whether it is not
+`null` and whether it does not exceed a maximum length):
+
+```php
+use SBData\Model\Value\Value;
+
+$value = new Value(true, 5);
+```
+
+The above example defines a mandatory value with a maximum length of 5.
+
+We can import a value for storage and checking as follows:
+
+```php
+$value->value = "hello";
+```
+
+We can check the imported value by invoking the `checkValue()` method:
+
+```php
+$status = $value->checkValue("test"); // Returns true
+```
+
+The above code method invocation returns `true` because the value is not empty
+and does not exceed the maximum length of: `5`.
+
+The following two examples return `false`:
+
+```php
+$value->value = "";
+$status = $value->checkValue("test"); // Returns: false, because the imported value is empty
+
+$value->value = "Hello world!!!!";
+$status = $value->checkValue("test"); // Returns: false, because the imported value is too long
+```
+
+In addition to the `Value` class that provides basic data validation (empty and
+maximum length checks), there are additional classes that add more interesting
+checks on top of the basic checks.
+
+For example, the following code fragment uses a `SaneStringValue` object that,
+in addition to the checks described earlier, sanitizes text by removing trailing
+white spaces:
+
+```php
+use SBData\Model\Value\SaneStringValue;
+
+$value = new SaneStringValue(true, 20);
+$value->value = "Hello world!   "; // Imports a value with three trailing white spaces
+$status = $value->checkValue(); // In addition to checking, it removes the trailing white spaces
+$result = $value->value; // Assigns "Hello world!" without the trailing white spaces
+```
+
+The following code fragement checks whether a value is valid integer number by
+using a `IntegerValue` object:
+
+```php
+use SBData\Model\Value\IntegerValue;
+
+$value = new IntegerValue(true, 10);
+$value->value = "3134";
+$status = $value->checkValue(); // Returns: true, because the imported value is a valid integer number
+```
+
 Defining a field model
 ----------------------
-Every data element can be encoded as a `Field` instance. For example, the
-following code example defines an e-mail field meaning that a data element should
-be validated and displayed as such:
+In addition to storing and checking data elements, it is often also desired to
+*present* them. `Field` objects augment `Value` objects with view functionality.
+
+For example, the following code example defines an e-mail field meaning that a
+data element should be a valid email address and displayed as an email address:
 
 ```php
 use SBData\Model\Field\EmailField;
@@ -70,15 +142,27 @@ use SBData\Model\Field\EmailField;
 $field = new EmailField("Email"); // Defines an e-mail field with title: 'Email'
 ```
 
-Checking the validity of a value
+Checking the validity of a field
 --------------------------------
-One of the use cases of an `Field` instance is to validate values. We can use the
+One of the use cases of a `Field` instance is to validate values. We can use the
 earlier `EmailField` instance to check whether a provided e-mail adresses is
 valid:
 
 ```php
-$field->value = "hello@world.com";
+$field->importValue("hello@world.com");
 $valid = $field->checkField("email"); // Returns true, since it's valid
+```
+
+Internally, the `EmailField` uses an `EmailValue` object to check whether the
+provided input is a valid email address.
+
+Retrieving a checked value
+--------------------------
+We can also retrieve a previously imported (and checked) value from a field
+as follows:
+
+```php
+$value = $field->exportValue(); // Returns "hello@world.com"
 ```
 
 Displaying a field
@@ -87,11 +171,11 @@ Another use case is to display a field, which can be done in various ways. The
 following code fragment simply displays a field in an appropriate way:
 
 ```php
-\SBData\View\HTML\Field\displayField($field); // Displays an e-mail hyperlink
+\SBData\View\HTML\Field\displayField($field); // Displays an e-mail (mailto:...) hyperlink
 ```
 
-Another option is to generate an editable field so that a user can provide his
-own value for it through a web browser. The following code fragment generates an
+Another option is to generate an editable field so that a user can provide a
+custom value for through a web browser. The following code fragment generates an
 input element from the `EmailField` object:
 
 ```php
@@ -180,14 +264,14 @@ Displaying a form
 -----------------
 After setting the values in a form (and after optionally checking them), we can
 display a form including the data. The following function invocation simply
-displays the form values:
+displays the form and its fields:
 
 ```php
 \SBData\View\HTML\displayForm($form);
 ```
 
 The above function also automatically formats the fields. For example, the
-`homepage` value is displayed as a hyperlink.
+`homepage` field is displayed as a hyperlink.
 
 Displaying an editable form
 ---------------------------
@@ -205,8 +289,8 @@ to the same page. The form contains the corresponding `input` elements generated
 from the fields and displays the field values so that they can be modified.
 
 If any of the form fields are not valid, then an error message is displayed that
-is provided through the third function parameter. For each invalid field, the
-error message provided by the fourth parameter is shown.
+is provided by the third function parameter. For each invalid field, the error
+message provided by the fourth parameter is shown.
 
 Defining an array table model
 -----------------------------
@@ -250,8 +334,8 @@ $table->setRows(array(
 ));
 ```
 
-The `rows` attribute refers to an array consisting of arrays that encodes cell
-values for each row.
+The `rows` attribute refers to an array consisting of arrays that encodes the
+cells' values for each row.
 
 Defining a database table model
 -------------------------------
@@ -280,7 +364,7 @@ $table = new DBTable(array(
 ```
 
 The above example is nearly identical to the `ArrayTable`, except that it adds
-the `PERSON_ID` column that serves as a primary key.
+a `PERSON_ID` column that serves as a primary key.
 
 The schema of the relational database that this example works on, could have the
 following structure:
@@ -342,11 +426,12 @@ representing the link to a delete URL:
 ```php
 function deletePersonLink(Form $form): string
 {
-    return "?__operation=delete&amp;PERSON_ID=".$form->fields["PERSON_ID"]->value;
+    $personId = $form->fields["PERSON_ID"]->importValue();
+    return "?__operation=delete&amp;PERSON_ID=".$personId;
 }
 ```
 
-An action function is a function taking a `Form` as parameter, which can be used
+An action function is a function taking a `Form` as parameter, that can be used
 to retrieve the values of the corresponding table row. In this example, we return
 a link to the same page that sets the `__operation` and `PERSON_ID` `GET`
 parameters.
@@ -423,8 +508,8 @@ $submittedForm = $table->constructForm();
 ```
 
 After constructing the form you can, for example, import the `$_POST` object into
-it and check its validity. The recipe is exactly the same as described earlier in
-the form examples shown earlier.
+it and check its validity. The recipe is exactly the same as described in the
+form examples shown earlier.
 
 Displaying links for foreign keys
 ---------------------------------
@@ -437,15 +522,18 @@ By constructing a `KeyLinkField` we can compose such a link, for example:
 ```php
 function composeBookLink(KeyLinkField $field, Form $form): string
 {
-    return "book.php?BOOK_ID=".$field->value;
+    $bookId = $field->importValue();
+    return "book.php?BOOK_ID=".$bookId;
 }
 
 function composePublisherLink(KeyLinkField $field, Form $form): ?string
 {
-    if($form->fields["PUBLISHER_ID"]->value === null)
+    $publisherId = $form->fields["PUBLISHER_ID"]->importValue();
+
+    if($publisherId === null)
         return null;
     else
-        return "publisher.php?PUBLISHER_ID=".$form->fields["PUBLISHER_ID"]->value;
+        return "publisher.php?PUBLISHER_ID=".$publisherId;
 }
 
 $table = new DBTable(array(
@@ -478,9 +566,9 @@ Using row anchors
 For tables that provide edit functionality, we may want to track which row in
 the table has changed.
 
-Typically, an action link (such as a 'delete' operation) refers to a different
-page that carries out the modification and then redirects the user back to the
-page displaying the table.
+Typically, an action link (such as a 'delete' operation) redirects the user to a
+different page that carries out the modification and then redirects the user
+back to the page displaying the table.
 
 The inconvenience is that the browser loses knowledge about its previous scroll
 position returning the user to the top of the page. This is quite inconvenient
@@ -501,8 +589,9 @@ retrieve the row id:
 ```php
 function deletePersonLink(Form $form): string
 {
-    $rowId = $form->fields["__id"]->value; // refers to the anchor id of the row for which the action has been triggered
-    return "?__operation=delete&amp;PERSON_ID=".$form->fields["PERSON_ID"]->value;
+    $rowId = $form->fields["__id"]->importValue(); // refers to the anchor id of the row for which the action has been triggered
+    $personId = $form->fields["PERSON_ID"]->importValue();
+    return "?__operation=delete&amp;__id=".$rowId."&amp;PERSON_ID=".$personId;
 }
 ```
 
@@ -521,7 +610,8 @@ typically want to scroll to the position of the row that comes before it:
 ```php
 function deletePersonLink(Form $form): string
 {
-    return "?__operation=delete&amp;PERSON_ID=".$form->fields["PERSON_ID"]->value.AnchorRow::composePreviousRowParameter($form);
+    $personId = $form->fields["PERSON_ID"]->importValue();
+    return "?__operation=delete&amp;PERSON_ID=".$personId.AnchorRow::composePreviousRowParameter($form);
 }
 ```
 
@@ -553,19 +643,25 @@ Fields
 ======
 Currently the following `Field` classes are provided by this library:
 
-* `TextField`. Displays a field as text and text input field.
-* `EmailField` Displays a field as e-mail hyperlink and text input field.
-* `HiddenField`. Displays a field as hidden field.
-* `KeyLinkField`. Displays a link to a page responsible for displaying an object.
-* `MetaDataField`. Includes meta data (typically foreign keys) in a form that
-  can be used as meta data for the key link fields.
+* `TextField`. Displays a field as text and text input field. It automatically
+  sanitizes trailing whitespaces.
+* `TextAreaField`. Displays a field as text and text area. It automatically
+  sanitizes trailing whitespaces.
+* `RawTextField`. Displays a field as text and text input field. Input is not
+  sanitized.
+* `RawTextAreaField`. Displays a field as text and text area. Input is not
+  sanitized.
 * `NumericIntTextField`. Displays a field as text and text input field which
-  only accepts numeric integer values. It is also possible to use a read-only
-  variant of this field: `ReadOnlyNumericIntTextField` that is particularly
-  useful for records having a numeric key that is not allowed to change.
-* `TextAreaField`. Displays a field as text and text area.
+  only accepts numeric integer values. Input is also checked for valid integer
+  numbers.
+* It is also possible to use a read-only variant of this field:
+  `ReadOnlyNumericIntTextField` that is particularly useful for records having a
+  numeric key that is not allowed to change, such as primary keys.
+* `DateField`. Displays a field as text and validates it as a ISO date value.
+* `EmailField` Displays a field as e-mail hyperlink and text input field
+  and checks whether a value is a valid email address.
 * `URLField`. Displays a field as a hyperlink and text input field.
-* `DateField`. Displays a field as text and validates it as a date value.
+  It also checks whether user provided input is a valid URL.
 * `PasswordField`. Display a field as a password field and restricts viewing it.
 * `CheckBoxField`. Displays a field as a checkbox and uses a preconfigured
   value to determine whether it has been checked or not.
@@ -574,16 +670,78 @@ Currently the following `Field` classes are provided by this library:
 * `DBComboBoxField`. Displays a field as text or combo box. It retrieves
   key-value pairs from a relational database.
 * `FileField`. Displays a file path or file upload input field. It can
-   optionally check if the file has the right MIME type.  It also adds the
+   optionally check if the file has the right MIME type. It also adds the
    corresponding encoding type to the form that encapsulates it. The actual file
    can be retrieved through the `$_FILES["fieldname"]` variable.
+* `HiddenField`. Displays a field as hidden field.
+* `KeyLinkField`. Displays a link to a page responsible for displaying an object.
+* `MetaDataField`. Includes meta data (typically foreign keys) in a form that
+  can be used as meta data for the key link fields.
+
+Composing fields with custom validations
+========================================
+As explained earlier, fields both facilitate the validation and presentation of
+data elements.
+
+It is also possible to implement fields with custom validations. For example, we
+can create a text field with a custom validation by creating an instance of a
+`GenericTextField`:
+
+```php
+$customTextField = new GenericTextField("Name", new SaneStringValue(true, 20), 10);
+```
+
+The second parameter specifies which value object we want to use to store and
+check the data in the field. In the above example, `SaneStringValue` checks
+whether a text field is not empty, does not exceed the maximum length of: 20 and
+automatically sanitizes trailing white spaces.
+
+The above example basically shows how the `TextField` class is implemented. A
+`RawTextField` is also an instance of a `GenericTextField`, but it uses a
+generic `Value` object for validation that does not any sanitizing of white
+spaces.
+
+If we want to use a different validation strategy, we can replace the second
+parameter with a custom value object.
+
+In addition to text fields, this framework also provides:
+* `GenericTextAreaField` to display text areas with custom validation
+* `GenericHiddenField` to display hidden fields with custom validation
+* `Field` that captures common properties of any type of field
+
+Values
+======
+As explained in the previous section and the beginning, the most basic feature
+of this framework is encapsulate values facilitating the storage and validation
+of data elements.
+
+The following value classes are provided:
+
+* `Value` checks the basic essentials of a data element: whether it is not empty
+  and whether it does not exceed a maximum length.
+* `SaneStringValue`. In addition to the basic checks, it sanitizes strings from
+  trailing white spaces.
+* `BooleanValue`. Does a boolean check. true corresponds to a predefined string
+  and false corresponds to an empty string.
+* `IntegerValue`. Checks whether user provided input is a valid integer number.
+* `ISODateValue`. Checks whether user provided input is a valid date in ISO
+  format.
+* `EmailValue`. Checks whether user provided input is a valid email address.
+* `URLValue`. Checks whether user provided input is a valid URL.
+* `FileValue`. Checks whether a file was uploaded correctly and (optionally) of
+  the correct MIME type.
+* `StringArrayElementValue`. Checks whether a user provided value is in an array
+  of strings.
 
 Constructing custom fields
 ==========================
 The field API is extendable allowing you to define your own fields for custom
 validation and/or presentation. A custom field can be created by defining your
-own field *model* by implementing a class that inherits from `Field` (or more
-conveniently: `TextField`) and your own field *view* functions.
+own field *model* by implementing a class that inherits from `Field` and your
+own field *view* functions.
+
+A custom value for validation can be created by inheriting from the `Value`
+class or any of its sub classes.
 
 The constructor of your custom field needs to set the `$this->package` attribute
 with the namespace that contains the corresponding view function.

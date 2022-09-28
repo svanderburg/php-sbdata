@@ -23,10 +23,10 @@ class AnchorRow
 	{
 		$rowField = new NumericIntTextField("Row number", false);
 		if(array_key_exists($paramName, $_REQUEST))
-			$rowField->value = $_REQUEST[$paramName];
+			$rowField->importValue($_REQUEST[$paramName]);
 
 		if($rowField->checkField($paramName))
-			return "#".$prefix."-".$rowField->value;
+			return "#".$prefix."-".$rowField->exportValue();
 		else
 			return "";
 	}
@@ -41,7 +41,8 @@ class AnchorRow
 	 */
 	public static function composePreviousRowParameter(Form $form, string $paramName = "__id", string $prefix = "&amp;"): string
 	{
-		$row = $form->fields['__id']->value;
+		$row = $form->fields['__id']->exportValue();
+
 		if($row > 0)
 			return $prefix.$paramName."=".($row - 1);
 		else

@@ -15,11 +15,13 @@ use Examples\Books\Entity\Book;
 
 function composeBookLink(KeyLinkField $field, Form $form): string
 {
+	$bookId = $field->exportValue();
+
 	/* Determine the URL for edit or view mode */
 	if(array_key_exists("viewmode", $_GET) && $_GET["viewmode"] == "1")
-		return "book.php?viewmode=1&amp;BOOK_ID=".$field->value;
+		return "book.php?viewmode=1&amp;BOOK_ID=".$bookId;
 	else
-		return "book.php?BOOK_ID=".$field->value;
+		return "book.php?BOOK_ID=".$bookId;
 }
 
 /* Configure a table model */
@@ -28,7 +30,10 @@ $idField = new KeyLinkField("Id", "composeBookLink", true, 20, 255);
 
 function deleteBookLink(Form $form): string
 {
-	return "?__operation=delete&amp;__id=".$form->fields["__id"]->value."&amp;BOOK_ID=".$form->fields["BOOK_ID"]->value.AnchorRow::composePreviousRowParameter($form);
+	$rowId = $form->fields["__id"]->exportValue();
+	$bookId = $form->fields["BOOK_ID"]->exportValue();
+
+	return "?__operation=delete&amp;__id=".$rowId."&amp;BOOK_ID=".$bookId.AnchorRow::composePreviousRowParameter($form);
 }
 
 $table = new DBTable(array(
@@ -61,11 +66,12 @@ else
 	if(count($_GET) > 0 && array_key_exists("__operation", $_GET) && array_key_exists("__operation", $_GET) == "delete") // If delete operation is specified, delete the record
 	{
 		/* Check the field */
-		$idField->value = $_GET["BOOK_ID"];
+		$idField->importValue($_GET["BOOK_ID"]);
 		
 		if($idField->checkField("BOOK_ID"))
 		{
-			Book::delete($dbh, $idField->value);
+			$id = $idField->exportValue();
+			Book::delete($dbh, $id);
 
 			header("Location: books.php".AnchorRow::composeRowFragment());
 			exit;

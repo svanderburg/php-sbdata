@@ -11,12 +11,12 @@ use SBData\Model\Field\NumericIntTextField;
 
 function displayNumericIntTextField(NumericIntTextField $field): void
 {
-	displayTextField($field);
+	displayGenericTextField($field);
 }
 
 function displayEditableNumericIntTextField(string $name, NumericIntTextField $field): void
 {
-	displayEditableTextField($name, $field);
+	displayEditableGenericTextField($name, $field);
 }
 
 /**

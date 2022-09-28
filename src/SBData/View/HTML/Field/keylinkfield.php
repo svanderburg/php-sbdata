@@ -14,13 +14,14 @@ function displayKeyLinkField(KeyLinkField $field, Form $form): void
 {
 	$composeURLFunction = $field->composeURLFunction;
 	$linkURL = $composeURLFunction($field, $form);
+	$value = $field->exportValue();
 
 	if($linkURL === null)
-		print(htmlentities($field->value));
+		print(htmlentities($value));
 	else
 	{
 		?>
-		<a href="<?php print($linkURL); ?>"><?php print(htmlentities($field->value)); ?></a>
+		<a href="<?php print($linkURL); ?>"><?php print(htmlentities($value)); ?></a>
 		<?php
 	}
 }
@@ -28,7 +29,7 @@ function displayKeyLinkField(KeyLinkField $field, Form $form): void
 function displayEditableKeyLinkField(string $name, KeyLinkField $field, Form $form): void
 {
 	?>
-	<input type="hidden" name="<?php print($name); ?>" value="<?php print(htmlentities($field->value)); ?>">
+	<input type="hidden" name="<?php print($name); ?>" value="<?php print(htmlentities($field->exportValue())); ?>">
 	<?php
 	displayKeyLinkField($field, $form);
 }

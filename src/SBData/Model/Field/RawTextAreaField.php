@@ -1,15 +1,15 @@
 <?php
 namespace SBData\Model\Field;
-use SBData\Model\Value\SaneStringValue;
+use SBData\Model\Value\Value;
 
 /**
- * Represents the structure of an individual data element containing sanitized text
+ * Represents the structure of an individual data element containing arbitrary text
  * that should be displayed as a text area.
  */
-class TextAreaField extends GenericTextAreaField
+class RawTextAreaField extends GenericTextAreaField
 {
 	/**
-	 * Constructs a new TextAreaField instance
+	 * Constructs a new RawTextAreaField instance
 	 *
 	 * @param $title Title of the field
 	 * @param $mandatory Indicates whether a given value is mandatory
@@ -19,7 +19,7 @@ class TextAreaField extends GenericTextAreaField
 	 */
 	public function __construct(string $title, bool $mandatory = false, int $cols = 20, int $rows = 20, int $maxlength = null)
 	{
-		parent::__construct($title, new SaneStringValue($mandatory, $maxlength), $cols, $rows);
+		parent::__construct($title, new Value($mandatory, $maxlength), $cols, $rows);
 	}
 }
 ?>

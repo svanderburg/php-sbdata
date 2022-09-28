@@ -9,14 +9,14 @@ class URLFieldTest extends TestCase
 	public function testValidURL(): void
 	{
 		$urlField = new URLField("Test", false);
-		$urlField->value = "http://example.com";
+		$urlField->importValue("http://example.com");
 		$this->assertTrue($urlField->checkField("Test"));
 	}
 
 	public function testInvalidURL(): void
 	{
 		$urlField = new URLField("Test", false);
-		$urlField->value = "invalid";
+		$urlField->importValue("invalid");
 		$this->assertFalse($urlField->checkField("Test"));
 	}
 }

@@ -11,12 +11,12 @@ use SBData\Model\Field\DateField;
 
 function displayDateField(DateField $field): void
 {
-	displayTextField($field);
+	displayGenericTextField($field);
 }
 
 function displayEditableDateField(string $name, DateField $field): void
 {
-	displayEditableTextField($name, $field);
+	displayEditableGenericTextField($name, $field);
 }
 
 /**

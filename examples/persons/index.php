@@ -11,18 +11,21 @@ use SBData\Model\Field\TextField;
 use SBData\Model\Field\URLField;
 use SBData\Model\Table\ArrayTable;
 
+$error = null;
+
 /* Define a table displaying the test rowset */
 
-$idField = new HiddenField("id", true);
+$idField = new HiddenField(true);
 
 function deletePersonLink(Form $form): string
 {
-	return "?__operation=delete&amp;id=".$form->fields["id"]->value;
+	$id = $form->fields["id"]->exportValue();
+	return "?__operation=delete&amp;id=".$id;
 }
 
 $table = new ArrayTable(array(
 	"id" => $idField,
-	"firstname" => new TextField("First name", true), 
+	"firstname" => new TextField("First name", true),
 	"lastname" => new TextField("Last name", true),
 	"address" => new TextField("Street", true),
 	"number" => new NumericIntTextField("House number", true),
@@ -59,28 +62,30 @@ if(count($_POST) > 0) // If an edit has been made, override the test rowset with
 	$submittedForm = $table->constructForm();
 	$submittedForm->importValues($_POST);
 	$submittedForm->checkFields();
-	
+
 	if($submittedForm->checkValid()) // If the imput is valid, then use it to modify
 	{
 		/* Do a linear search for the element that needs to be changed (yes I know it can be done more efficiently, but I'm too lazy to implement a smarter way) */
-	
-		foreach($table->rows as $row)
-		{	
-			if($row["id"] == $submittedForm->fields["id"]->value)
+
+		foreach($table->rows as $index => $row)
+		{
+			$id = $submittedForm->fields["id"]->exportValue();
+
+			if($row["id"] == $id)
 			{
 				/* Set the updated values for the row */
-				$row["firstname"] = $submittedForm->fields["firstname"]->value;
-				$row["lastname"] = $submittedForm->fields["lastname"]->value;
-				$row["address"] = $submittedForm->fields["address"]->value;
-				$row["number"] = $submittedForm->fields["number"]->value;
-				$row["zipcode"] = $submittedForm->fields["zipcode"]->value;
-				$row["phone"] = $submittedForm->fields["phone"]->value;
-				$row["city"] = $submittedForm->fields["city"]->value;
-				$row["email"] = $submittedForm->fields["email"]->value;
-				$row["homepage"] = $submittedForm->fields["homepage"]->value;
+				$row["firstname"] = $submittedForm->fields["firstname"]->exportValue();
+				$row["lastname"] = $submittedForm->fields["lastname"]->exportValue();
+				$row["address"] = $submittedForm->fields["address"]->exportValue();
+				$row["number"] = $submittedForm->fields["number"]->exportValue();
+				$row["zipcode"] = $submittedForm->fields["zipcode"]->exportValue();
+				$row["phone"] = $submittedForm->fields["phone"]->exportValue();
+				$row["city"] = $submittedForm->fields["city"]->exportValue();
+				$row["email"] = $submittedForm->fields["email"]->exportValue();
+				$row["homepage"] = $submittedForm->fields["homepage"]->exportValue();
 			}
-			
-			$table->rows[$row["id"]] = $row; // Update the row in the array
+
+			$table->rows[$index] = $row; // Update the row in the array
 		}
 	}
 }
@@ -91,24 +96,24 @@ else
 	if(count($_GET) > 0 && array_key_exists("__operation", $_GET) && $_GET["__operation"] == "delete") // If a delete has been made, delete the element from the array
 	{
 		/* Check id validity */
-		$idField->value = $_GET["id"];
-		
+		$idField->importValue($_GET["id"]);
+
 		if($idField->checkField("id"))
 		{
 			/* Do a linear search for the element that needs to be deleted (yes yes, see previous note) */
-			$count = 0;
-			
-			foreach($table->rows as $row)
+			foreach($table->rows as $index => $row)
 			{
-				if($row["id"] == $idField->value)
+				$id = $idField->exportValue();
+
+				if($row["id"] == $id)
 				{
-					array_splice($table->rows, $count, 1); // Delete the found row
+					array_splice($table->rows, $index, 1); // Delete the found row
 					break;
 				}
-				
-				$count++;
 			}
 		}
+		else
+			$error = "The provided id was invalid!";
 	}
 }
 
@@ -124,19 +129,28 @@ else
 	
 	<body>
 		<?php
-		if(array_key_exists("viewmode", $_GET) && $_GET["viewmode"] == "1") // If viewmode is selected, display ordinary table
+		if($error === null)
 		{
-			?>
-			<p><a href="<?php print($_SERVER["PHP_SELF"]); ?>">Edit</a></p>
-			<?php
-			\SBData\View\HTML\displaySemiEditableTable($table);
+			if(array_key_exists("viewmode", $_GET) && $_GET["viewmode"] == "1") // If viewmode is selected, display ordinary table
+			{
+				?>
+				<p><a href="<?php print($_SERVER["PHP_SELF"]); ?>">Edit</a></p>
+				<?php
+				\SBData\View\HTML\displaySemiEditableTable($table);
+			}
+			else // Otherwise display editable table
+			{
+				?>
+				<p><a href="<?php print($_SERVER["PHP_SELF"]); ?>?viewmode=1">View</a></p>
+				<?php
+				\SBData\View\HTML\displayEditableTable($table, $submittedForm);
+			}
 		}
-		else // Otherwise display editable table
+		else
 		{
 			?>
-			<p><a href="<?php print($_SERVER["PHP_SELF"]); ?>?viewmode=1">View</a></p>
+			<p><?php print($error); ?></p>
 			<?php
-			\SBData\View\HTML\displayEditableTable($table, $submittedForm);
 		}
 		?>
 	</body>

@@ -3,8 +3,10 @@ require_once(dirname(__FILE__)."/../vendor/autoload.php");
 
 use PHPUnit\Framework\TestCase;
 use SBData\Model\Field\TextField;
+use SBData\Model\Field\RawTextField;
 use SBData\Model\Field\PasswordField;
 use SBData\Model\Field\TextAreaField;
+use SBData\Model\Field\RawTextAreaField;
 
 class TextFieldTest extends TestCase
 {
@@ -12,8 +14,10 @@ class TextFieldTest extends TestCase
 	{
 		return [
 			["SBData\\Model\\Field\\TextField"],
+			["SBData\\Model\\Field\\RawTextField"],
 			["SBData\\Model\\Field\\PasswordField"],
-			["SBData\\Model\\Field\\TextAreaField"]
+			["SBData\\Model\\Field\\TextAreaField"],
+			["SBData\\Model\\Field\\RawTextAreaField"]
 		];
 	}
 
@@ -23,7 +27,7 @@ class TextFieldTest extends TestCase
 	public function testSuccessOnEmpty(string $className): void
 	{
 		$textField = new $className("Test", false);
-		$textField->value = "";
+		$textField->importValue("");
 		$this->assertTrue($textField->checkField("Test"));
 	}
 
@@ -32,8 +36,8 @@ class TextFieldTest extends TestCase
 	 */
 	public function testFailOnEmpty(string $className): void
 	{
-		$textField = new TextField("Test", true);
-		$textField->value = "";
+		$textField = new $className("Test", true);
+		$textField->importValue("");
 		$this->assertFalse($textField->checkField("Test"));
 	}
 
@@ -42,8 +46,11 @@ class TextFieldTest extends TestCase
 	 */
 	public function testMaxLength(string $className): void
 	{
-		$textField = new TextField("Test", true, 5, 5);
-		$textField->value = "abcde";
+		if(str_contains($className, "TextArea"))
+			$textField = new $className("Test", true, 20, 20, 5);
+		else
+			$textField = new $className("Test", true, 5, 5);
+		$textField->importValue("abcde");
 		$this->assertTrue($textField->checkField("Test"));
 	}
 
@@ -52,8 +59,12 @@ class TextFieldTest extends TestCase
 	 */
 	public function testExceedMaxLength(string $className): void
 	{
-		$textField = new TextField("Test", true, 5, 5);
-		$textField->value = "abcdef";
+		if(str_contains($className, "TextArea"))
+			$textField = new $className("Test", true, 20, 20, 5);
+		else
+			$textField = new $className("Test", true, 5, 5);
+
+		$textField->importValue("abcdef");
 		$this->assertFalse($textField->checkField("Test"));
 	}
 
@@ -62,10 +73,14 @@ class TextFieldTest extends TestCase
 	 */
 	public function testTrim(string $className): void
 	{
-		$textField = new TextField("Test", true);
-		$textField->value = "  hello";
+		$textField = new $className("Test", true);
+		$textField->importValue("  hello");
 		$this->assertTrue($textField->checkField("Test"));
-		$this->assertEquals($textField->value, "hello");
+
+		if(str_contains($className, "Raw") || str_contains($className, "PasswordField")) // In raw fields trailing white spaces must be preserved, but in regular fields they should not
+			$this->assertEquals($textField->exportValue(), "  hello");
+		else
+			$this->assertEquals($textField->exportValue(), "hello");
 	}
 }
 ?>

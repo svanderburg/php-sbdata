@@ -1,6 +1,6 @@
 <?php
 namespace Examples\CAPTCHA\Model\Field;
-use SBData\Model\Field\TextField;
+use SBData\Model\Field\RawTextField;
 
 require_once(dirname(__FILE__)."/../../../simple-php-captcha.php");
 
@@ -9,7 +9,7 @@ require_once(dirname(__FILE__)."/../../../simple-php-captcha.php");
  * properly copy. This field wraps the functionality of the Simple PHP CAPTCHA
  * into a field that we integrate into the php-sbdata API.
  */
-class CAPTCHAField extends TextField
+class CAPTCHAField extends RawTextField
 {
 	/** Base URL where the CAPTCHA script resides */
 	public string $baseURL;
@@ -54,7 +54,7 @@ class CAPTCHAField extends TextField
 	 */
 	public function checkField(string $name): bool
 	{
-		$valid = $this->value === $_SESSION['captcha']['code'];
+		$valid = $this->exportValue() === $_SESSION['captcha']['code'];
 		$_SESSION['captcha'] = simple_php_captcha($this->config); // Compose a new CAPTCHA in case the provided code was wrong
 		return $valid;
 	}

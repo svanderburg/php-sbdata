@@ -35,8 +35,9 @@ if(count($_POST) > 0) // Insert or update a book if POST parameters are provided
 	if($form->checkValid())
 	{
 		$book = $form->exportValues();
-		
-		if($form->fields["BOOK_ID"]->value == "") // Empty book id means insert operation
+		$bookId = $form->fields["BOOK_ID"]->exportValue();
+
+		if($bookId == "") // Empty book id means insert operation
 			Book::insert($dbh, $book);
 		else // Otherwise update the book
 			Book::update($dbh, $book);
@@ -47,11 +48,12 @@ if(count($_POST) > 0) // Insert or update a book if POST parameters are provided
 }
 else if(count($_GET) > 0) // If a book id through a GET parameter is provided, display the requested book
 {
-	$idField->value = $_GET["BOOK_ID"];
+	$idField->importValue($_GET["BOOK_ID"]);
 	
 	if($idField->checkField("BOOK_ID"))
 	{
-		$stmt = Book::queryOne($dbh, $idField->value);
+		$bookId = $idField->exportValue();
+		$stmt = Book::queryOne($dbh, $bookId);
 
 		if(($book = $stmt->fetch()) !== false)
 			$form->importValues($book);

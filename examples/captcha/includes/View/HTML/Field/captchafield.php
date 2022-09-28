@@ -9,7 +9,7 @@ function displayCAPTCHAField(CAPTCHAField $field)
 
 function displayEditableCAPTCHAField($name, CAPTCHAField $field)
 {
-	\SBData\View\HTML\Field\displayEditableTextField($name, $field);
+	\SBData\View\HTML\Field\displayEditableRawTextField($name, $field);
 	$parsedURL = parse_url($_SESSION['captcha']['image_src']);
 	?>
 	<img src="<?php print($field->baseURL.basename($parsedURL["path"])."?".$parsedURL["query"]); ?>" alt="Code"><br>
