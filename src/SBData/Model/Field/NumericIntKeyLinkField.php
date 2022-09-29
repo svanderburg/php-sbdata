@@ -1,16 +1,16 @@
 <?php
 namespace SBData\Model\Field;
-use SBData\Model\Value\Value;
+use SBData\Model\Value\IntegerValue;
 
 /**
  *
- * Represents the structure of an individual data element representing a string that can be used to
+ * Represents the structure of an individual data element representing an integer that can be used to
  * compose a link to another page.
  */
-class KeyLinkField extends GenericKeyLinkField
+class NumericIntKeyLinkField extends GenericKeyLinkField
 {
 	/**
-	 * Constructs a new KeyLinkField instance
+	 * Constructs a new NumericIntKeyLinkField instance
 	 *
 	 * @param $title Title of the field
 	 * @param $composeURLFunction Name of the function that composes the URL where the field should be linked to
@@ -19,7 +19,7 @@ class KeyLinkField extends GenericKeyLinkField
 	 */
 	public function __construct(string $title, string $composeURLFunction, bool $mandatory = false, int $maxlength = null)
 	{
-		parent::__construct($title, $composeURLFunction, new Value($mandatory, $maxlength));
+		parent::__construct($title, $composeURLFunction, new IntegerValue($mandatory, $maxlength));
 	}
 }
 ?>

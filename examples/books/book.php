@@ -5,7 +5,7 @@ require(dirname(__FILE__)."/../../vendor/autoload.php");
 require_once("includes/db.php");
 
 use SBData\Model\Form;
-use SBData\Model\Field\HiddenNumericIntField;
+use SBData\Model\Field\ReadOnlyNumericIntTextField;
 use SBData\Model\Field\TextField;
 use SBData\Model\Field\ComboBoxField\DBComboBoxField;
 use Examples\Books\Entity\Book;
@@ -18,7 +18,7 @@ else
 
 /* Define a form model */
 
-$idField = new HiddenNumericIntField(false);
+$idField = new ReadOnlyNumericIntTextField("Id", false, 20, 255);
 
 $form = new Form(array(
 	"BOOK_ID" => $idField,
@@ -41,7 +41,7 @@ if(count($_POST) > 0) // Insert or update a book if POST parameters are provided
 			Book::insert($dbh, $book);
 		else // Otherwise update the book
 			Book::update($dbh, $book);
-		
+
 		header("Location: books.php");
 		exit;
 	}
@@ -68,7 +68,7 @@ else if(count($_GET) > 0) // If a book id through a GET parameter is provided, d
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 		<link rel="stylesheet" type="text/css" href="style.css">
 	</head>
-	
+
 	<body>
 		<?php
 		if(array_key_exists("viewmode", $_GET) && $_GET["viewmode"] == "1")

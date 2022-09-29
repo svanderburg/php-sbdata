@@ -7,17 +7,17 @@ require_once("includes/db.php");
 use SBData\Model\Form;
 use SBData\Model\Table\DBTable;
 use SBData\Model\Field\MetaDataField;
-use SBData\Model\Field\KeyLinkField;
+use SBData\Model\Field\NumericIntKeyLinkField;
 use SBData\Model\Field\TextField;
 use Examples\Books\Entity\Book;
 
-function composeBookLink(KeyLinkField $field, Form $form): string
+function composeBookLink(NumericIntKeyLinkField $field, Form $form): string
 {
 	$bookId = $field->exportValue();
 	return "book.php?viewmode=1&amp;BOOK_ID=".$bookId;
 }
 
-function composePublisherLink(KeyLinkField $field, Form $form): string
+function composePublisherLink(NumericIntKeyLinkField $field, Form $form): string
 {
 	$publisherId = $form->fields["PUBLISHER_ID"]->exportValue();
 	return "publisher.php?PUBLISHER_ID=".$publisherId;
@@ -26,11 +26,11 @@ function composePublisherLink(KeyLinkField $field, Form $form): string
 /* Configure a table model */
 
 $table = new DBTable(array(
-	"BOOK_ID" => new KeyLinkField("Id", "composeBookLink", true, 20, 255),
+	"BOOK_ID" => new NumericIntKeyLinkField("Id", "composeBookLink", true, 255),
 	"Title" => new TextField("Title", true, 30, 255),
 	"Subtitle" => new TextField("Subtitle", false, 30, 255),
 	"PUBLISHER_ID" => new MetaDataField(true, 255),
-	"PublisherName" => new KeyLinkField("Publisher", "composePublisherLink", true, 20, 255)
+	"PublisherName" => new NumericIntKeyLinkField("Publisher", "composePublisherLink", true, 255)
 ));
 
 /* Display the page and table */

@@ -9,6 +9,7 @@ use SBData\Model\Field\PasswordField;
 use SBData\Model\Field\TextAreaField;
 use SBData\Model\Field\RawTextAreaField;
 use SBData\Model\Field\HiddenField;
+use SBData\Model\Field\KeyLinkField;
 
 class TextFieldTest extends TestCase
 {
@@ -20,7 +21,8 @@ class TextFieldTest extends TestCase
 			["SBData\\Model\\Field\\PasswordField"],
 			["SBData\\Model\\Field\\TextAreaField"],
 			["SBData\\Model\\Field\\RawTextAreaField"],
-			["SBData\\Model\\Field\\HiddenField"]
+			["SBData\\Model\\Field\\HiddenField"],
+			["SBData\\Model\\Field\\KeyLinkField"]
 		];
 	}
 
@@ -28,6 +30,8 @@ class TextFieldTest extends TestCase
 	{
 		if(str_contains($className, "HiddenField"))
 			return new $className($mandatory);
+		else if(str_contains($className, "KeyLinkField"))
+			return new $className("Test", "displayLink", $mandatory);
 		else
 			return new $className("Test", $mandatory);
 	}
@@ -58,6 +62,8 @@ class TextFieldTest extends TestCase
 			return new $className("Test", true, 20, 20, 5);
 		else if(str_contains($className, "HiddenField"))
 			return new $className(true, 5);
+		else if(str_contains($className, "KeyLinkField"))
+			return new $className("Test", "displayLink", true, 5);
 		else
 			return new $className("Test", true, 5, 5);
 	}
@@ -91,7 +97,7 @@ class TextFieldTest extends TestCase
 		$textField->importValue("  hello");
 		$this->assertTrue($textField->checkField("Test"));
 
-		if(str_contains($className, "Raw") || str_contains($className, "PasswordField") || str_contains($className, "HiddenField")) // In raw fields trailing white spaces must be preserved, but in regular fields they should not
+		if(str_contains($className, "Raw") || str_contains($className, "PasswordField") || str_contains($className, "HiddenField") || str_contains($className, "KeyLinkField")) // In raw fields trailing white spaces must be preserved, but in regular fields they should not
 			$this->assertEquals($textField->exportValue(), "  hello");
 		else
 			$this->assertEquals($textField->exportValue(), "hello");

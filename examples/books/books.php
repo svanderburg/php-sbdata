@@ -7,12 +7,12 @@ require_once("includes/db.php");
 use SBData\Model\Form;
 use SBData\Model\Table\DBTable;
 use SBData\Model\Table\Anchor\AnchorRow;
-use SBData\Model\Field\KeyLinkField;
+use SBData\Model\Field\NumericIntKeyLinkField;
 use SBData\Model\Field\NumericIntTextField;
 use SBData\Model\Field\TextField;
 use Examples\Books\Entity\Book;
 
-function composeBookLink(KeyLinkField $field, Form $form): string
+function composeBookLink(NumericIntKeyLinkField $field, Form $form): string
 {
 	$bookId = $field->exportValue();
 
@@ -25,7 +25,7 @@ function composeBookLink(KeyLinkField $field, Form $form): string
 
 /* Configure a table model */
 
-$idField = new KeyLinkField("Id", "composeBookLink", true, 20, 255);
+$idField = new NumericIntKeyLinkField("Id", "composeBookLink", true, 20, 255);
 
 function deleteBookLink(Form $form): string
 {

@@ -537,11 +537,11 @@ function composePublisherLink(KeyLinkField $field, Form $form): ?string
 }
 
 $table = new DBTable(array(
-    "BOOK_ID" => new KeyLinkField("Id", "composeBookLink", true, 20, 255),
+    "BOOK_ID" => new KeyLinkField("Id", "composeBookLink", true, 255),
     "Title" => new TextField("Title", true, 30, 255),
     "Subtitle" => new TextField("Subtitle", false, 30, 255),
     "PUBLISHER_ID" => new MetaDataField(true, 10),
-    "PublisherName" => new KeyLinkField("Id", "composePublisherLink", true, 20, 255)
+    "PublisherName" => new KeyLinkField("Id", "composePublisherLink", true, 255)
 ));
 ```
 
@@ -674,7 +674,9 @@ Currently the following `Field` classes are provided by this library:
    corresponding encoding type to the form that encapsulates it. The actual file
    can be retrieved through the `$_FILES["fieldname"]` variable.
 * `HiddenField`. Displays a field as hidden field.
-* `KeyLinkField`. Displays a link to a page responsible for displaying an object.
+* `KeyLinkField`. Displays a link to a page constructed from a valid string value.
+* `NumericIntKeyLinkField`. Displays a link to a page constructed from a valid
+  integer value.
 * `MetaDataField`. Includes meta data (typically foreign keys) in a form that
   can be used as meta data for the key link fields.
 
@@ -707,6 +709,8 @@ parameter with a custom value object.
 In addition to text fields, this framework also provides:
 * `GenericTextAreaField` to display text areas with custom validation
 * `GenericHiddenField` to display hidden fields with custom validation
+* `GenericKeyLinkField` to display links to other pages constructed from data
+  elements with a custom validation
 * `VisibleField` that captures common properties of any type of visible field
 * `Field` that captures common properties of any type of field
 

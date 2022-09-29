@@ -34,3 +34,8 @@ body
 	border-style: solid;
 	border-color: #ff0000;
 }
+
+input:read-only
+{
+	background-color: #aaaaaa;
+}
