@@ -1,14 +1,14 @@
 <?php
 namespace SBData\Model\Field\ComboBoxField;
 use \PDOStatement;
-use SBData\Model\Field\Field;
+use SBData\Model\Field\VisibleField;
 use SBData\Model\Value\Value;
 
 /**
  * Represents the structure of an individual data element that should be displayed as a combo box
  * which data is retrieved from an RDBMS table.
  */
-class DBComboBoxField extends Field
+class DBComboBoxField extends VisibleField
 {
 	/** An executed PDOStatement in which the first resulting column is used for the keys and the second for the values */
 	public PDOStatement $stmt;

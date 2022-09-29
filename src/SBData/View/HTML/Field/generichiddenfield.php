@@ -9,7 +9,12 @@
 namespace SBData\View\HTML\Field;
 use SBData\Model\Field\GenericHiddenField;
 
-function displayGenericHiddenField(string $name, GenericHiddenField $field): void
+function displayGenericHiddenField(GenericHiddenField $field): void
+{
+	// Do nothing
+}
+
+function displayEditableGenericHiddenField(string $name, GenericHiddenField $field): void
 {
 	?>
 	<div style="display: none;"><input name="<?php print($name); ?>" type="hidden" value="<?php print(htmlentities($field->exportValue())); ?>"></div>

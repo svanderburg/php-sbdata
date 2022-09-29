@@ -528,7 +528,7 @@ function composeBookLink(KeyLinkField $field, Form $form): string
 
 function composePublisherLink(KeyLinkField $field, Form $form): ?string
 {
-    $publisherId = $form->fields["PUBLISHER_ID"]->importValue();
+    $publisherId = $form->fields["PUBLISHER_ID"]->exportValue();
 
     if($publisherId === null)
         return null;
@@ -540,7 +540,7 @@ $table = new DBTable(array(
     "BOOK_ID" => new KeyLinkField("Id", "composeBookLink", true, 20, 255),
     "Title" => new TextField("Title", true, 30, 255),
     "Subtitle" => new TextField("Subtitle", false, 30, 255),
-    "PUBLISHER_ID" => new MetaDataField(true, 10, 10),
+    "PUBLISHER_ID" => new MetaDataField(true, 10),
     "PublisherName" => new KeyLinkField("Id", "composePublisherLink", true, 20, 255)
 ));
 ```
@@ -707,6 +707,7 @@ parameter with a custom value object.
 In addition to text fields, this framework also provides:
 * `GenericTextAreaField` to display text areas with custom validation
 * `GenericHiddenField` to display hidden fields with custom validation
+* `VisibleField` that captures common properties of any type of visible field
 * `Field` that captures common properties of any type of field
 
 Values

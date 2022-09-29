@@ -8,14 +8,14 @@ use SBData\Model\Value\Value;
  */
 class Field
 {
-	/** Title of the field */
-	public string $title;
-
 	/** Indicates whether the given value is valid */
 	public bool $valid;
 
 	/** An object that stores and checks the value of the field */
 	public Value $value;
+
+	/** Indicates whether the field is visible to the user */
+	public bool $visible;
 
 	/** Namespace root where this field belongs to */
 	public string $package = "SBData";
@@ -23,13 +23,13 @@ class Field
 	/**
 	 * Constructs a new Field instance.
 	 *
-	 * @param $title Title of the field
 	 * @param $value An object that stores and checks the value of the field
+	 * @param $visible Indicates whether the field is visible to the user
 	 */
-	public function __construct(string $title, Value $value)
+	public function __construct(Value $value, bool $visible = false)
 	{
-		$this->title = $title;
 		$this->value = $value;
+		$this->visible = $visible;
 		$this->valid = true;
 	}
 

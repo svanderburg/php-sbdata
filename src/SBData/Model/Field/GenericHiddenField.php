@@ -15,7 +15,7 @@ class GenericHiddenField extends Field
 	 */
 	public function __construct(Value $value)
 	{
-		parent::__construct("", $value);
+		parent::__construct($value, false);
 	}
 }
 ?>

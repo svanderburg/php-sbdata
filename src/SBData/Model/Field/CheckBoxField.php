@@ -5,7 +5,7 @@ use SBData\Model\Value\BooleanValue;
 /**
  * Represents the structure of an individual data element containg a checked or unchecked state.
  */
-class CheckBoxField extends Field
+class CheckBoxField extends VisibleField
 {
 	/** Indicates whether the field should be initially checked or not */
 	public bool $initiallyChecked;

@@ -66,7 +66,7 @@ abstract class Table
 
 		foreach($this->columns as $id => $field)
 		{
-			if(!$field instanceof GenericHiddenField && !$field instanceof MetaDataField)
+			if($field->visible)
 				$count++;
 		}
 

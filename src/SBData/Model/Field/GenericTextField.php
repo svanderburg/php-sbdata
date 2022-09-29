@@ -6,7 +6,7 @@ use SBData\Model\Value\Value;
  * Represents the structure of a data element that should be presented as a text
  * field.
  */
-class GenericTextField extends Field
+class GenericTextField extends VisibleField
 {
 	/** Preferred size of the text field */
 	public int $size;

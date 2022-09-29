@@ -16,7 +16,7 @@ class MetaDataField extends Field
 	 */
 	public function __construct(bool $mandatory = false, int $maxlength = null)
 	{
-		parent::__construct("", new Value($mandatory, $maxlength));
+		parent::__construct(new Value($mandatory, $maxlength));
 	}
 }
 ?>

@@ -6,7 +6,7 @@ use SBData\Model\Value\Value;
  * Represents the structure of an individual data element containing text
  * that should be displayed as a text area.
  */
-class GenericTextAreaField extends Field
+class GenericTextAreaField extends VisibleField
 {
 	/** Amount of characters per row */
 	public int $cols;

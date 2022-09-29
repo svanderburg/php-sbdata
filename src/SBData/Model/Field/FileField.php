@@ -5,7 +5,7 @@ use SBData\Model\Value\FileValue;
 /**
  * Represents the structure of an individual data element containing a file reference.
  */
-class FileField extends Field
+class FileField extends VisibleField
 {
 	/**
 	 * Constructs a new FileField instance.

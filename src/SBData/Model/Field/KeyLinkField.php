@@ -5,7 +5,7 @@ use SBData\Model\Value\Value;
 /**
  * Represents the structure of an individual data element containing a link to another page.
  */
-class KeyLinkField extends Field
+class KeyLinkField extends VisibleField
 {
 	/** Name of the function that composes the URL where the field should be linked to */
 	public string $composeURLFunction;

@@ -29,10 +29,9 @@ $idField = new KeyLinkField("Id", "composeBookLink", true, 20, 255);
 
 function deleteBookLink(Form $form): string
 {
-	$rowId = $form->fields["__id"]->exportValue();
 	$bookId = $form->fields["BOOK_ID"]->exportValue();
 
-	return "?__operation=delete&amp;__id=".$rowId."&amp;BOOK_ID=".$bookId.AnchorRow::composePreviousRowParameter($form);
+	return "?__operation=delete&amp;BOOK_ID=".$bookId.AnchorRow::composePreviousRowParameter($form);
 }
 
 $table = new DBTable(array(

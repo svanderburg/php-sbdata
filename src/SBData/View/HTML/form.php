@@ -8,8 +8,6 @@
 namespace SBData\View\HTML;
 use SBData\Model\Form;
 use SBData\Model\Field\Field;
-use SBData\Model\Field\GenericHiddenField;
-use SBData\Model\Field\MetaDataField;
 
 /**
  * Displays a form with fields in a non-editable way.
@@ -24,7 +22,7 @@ function displayForm(Form $form): void
 			<?php
 			foreach($form->fields as $name => $field)
 			{
-				if(!$field instanceof GenericHiddenField && !$field instanceof MetaDataField)
+				if($field->visible)
 				{
 					?>
 					<tr>
@@ -81,9 +79,7 @@ function displayEditableForm(Form $form, string $submitLabel, string $generalErr
 			/* Display each field */
 			foreach($form->fields as $name => $field)
 			{
-				if($field instanceof GenericHiddenField)
-					\SBData\View\HTML\Field\displayGenericHiddenField($name, $field);
-				else if(!$field instanceof MetaDataField)
+				if($field->visible)
 				{
 					?>
 					<div>
@@ -102,6 +98,8 @@ function displayEditableForm(Form $form, string $submitLabel, string $generalErr
 					</div>
 					<?php
 				}
+				else
+					displayEditableField($name, $field, $form);
 			}
 			?>
 			<p><button><?php print($submitLabel); ?></button></p>

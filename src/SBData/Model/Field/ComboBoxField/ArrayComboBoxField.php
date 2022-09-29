@@ -1,13 +1,13 @@
 <?php
 namespace SBData\Model\Field\ComboBoxField;
-use SBData\Model\Field\Field;
+use SBData\Model\Field\VisibleField;
 use SBData\Model\Value\StringArrayElementValue;
 
 /**
  * Represents the structure of an individual data element that should be displayed as a combo box
  * which data is retrieved from an array of objects.
  */
-class ArrayComboBoxField extends Field
+class ArrayComboBoxField extends VisibleField
 {
 	/**
 	 * Constructs a new ArrayComboBoxField instance.

@@ -9,9 +9,14 @@
 namespace SBData\View\HTML\Field;
 use SBData\Model\Field\HiddenNumericIntField;
 
-function displayHiddenNumericIntField(string $name, HiddenNumericIntField $field): void
+function displayHiddenNumericIntField(HiddenField $field): void
 {
-	displayGenericHiddenField($name, $field);
+	displayGenericHiddenField($field);
+}
+
+function displayEditableHiddenNumericIntField(string $name, HiddenNumericIntField $field): void
+{
+	displayEditableGenericHiddenField($name, $field);
 }
 
 /**
