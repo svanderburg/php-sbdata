@@ -45,7 +45,7 @@ class Form
 	public function clearValues(): void
 	{
 		foreach($this->fields as $name => $field)
-			$field->value = NULL;
+			$field->clearValue();
 	}
 	
 	/**

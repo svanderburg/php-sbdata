@@ -62,6 +62,14 @@ class Field
 	}
 
 	/**
+	 * Clears the stored value.
+	 */
+	public function clearValue(): void
+	{
+		$this->value->value = null;
+	}
+
+	/**
 	 * Checks whether the field value is valid.
 	 *
 	 * @param $name Name of the field in the form or table
