@@ -61,11 +61,11 @@ else
 {
 	$submittedForm = null;
 	
-	if(count($_GET) > 0 && array_key_exists("__operation", $_GET) && array_key_exists("__operation", $_GET) == "delete") // If delete operation is specified, delete the record
+	if(count($_GET) > 0 && array_key_exists("__operation", $_GET) && $_GET["__operation"] == "delete") // If delete operation is specified, delete the record
 	{
 		/* Check the field */
 		$idField->importValue($_GET["BOOK_ID"]);
-		
+
 		if($idField->checkField("BOOK_ID"))
 		{
 			$id = $idField->exportValue();

@@ -26,6 +26,7 @@
           "src/SBData/View/HTML/Field/generictextfield.php",
           "src/SBData/View/HTML/Field/generictextareafield.php",
           "src/SBData/View/HTML/Field/keylinkfield.php",
+          "src/SBData/View/HTML/Field/metadatafield.php",
           "src/SBData/View/HTML/Field/rawtextareafield.php",
           "src/SBData/View/HTML/Field/rawtextfield.php",
           "src/SBData/View/HTML/Field/readonlynumericinttextfield.php",

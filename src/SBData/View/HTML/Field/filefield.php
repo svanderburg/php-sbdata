@@ -11,7 +11,7 @@ use SBData\Model\Field\FileField;
 
 function displayFileField(FileField $field): void
 {
-	displayTextField($field);
+	print(htmlentities($field->exportValue()));
 }
 
 function displayEditableFileField(string $name, FileField $field): void
