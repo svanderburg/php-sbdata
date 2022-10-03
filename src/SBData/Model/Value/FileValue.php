@@ -27,10 +27,10 @@ class FileValue extends Value
 	 */
 	public function checkValue(string $name): bool
 	{
-		if(!$this->mandatory && (!array_key_exists($name, $_FILES) || !array_key_exists("tmp_name", $_FILES[$name]) || $_FILES[$name]["tmp_name"] === "")) // If a file is not mandatory and no file has been provided then everything is ok
+		if(!$this->mandatory && (!array_key_exists($name, $_FILES) || !array_key_exists("error", $_FILES[$name]) || $_FILES[$name]["error"] === UPLOAD_ERR_NO_FILE)) // If a file is not mandatory and no file has been provided then everything is ok
 			return true;
 
-		if(!array_key_exists($name, $_FILES) || $_FILES[$name]["error"] != UPLOAD_ERR_OK) // Check whether the file has been uploaded
+		if(array_key_exists($name, $_FILES) && $_FILES[$name]["error"] != UPLOAD_ERR_OK) // Check whether the file has been correctly uploaded
 			return false;
 
 		if($this->mimeType !== null)

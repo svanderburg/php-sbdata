@@ -5,17 +5,20 @@ require(dirname(__FILE__)."/../../vendor/autoload.php");
 
 use SBData\Model\Form;
 use SBData\Model\Field\FileField;
+use SBData\Model\Field\HiddenNumericIntField;
 
 /* Define a form */
 $form = new Form(array(
-	"file" => new FileField("File", "text/plain", true) 
+	"MAX_FILE_SIZE" => new HiddenNumericIntField(true),
+	"file" => new FileField("File", "text/plain", true)
 ));
+
+$form->fields["MAX_FILE_SIZE"]->importValue(4096); // Deliberately configure the max file size to be 4096 bytes
 
 if(count($_FILES) == 1)
 {
 	$form->importValues($_POST);
 	$form->checkFields();
-	
 	$valid = $form->checkValid();
 }
 
@@ -30,7 +33,8 @@ if(count($_FILES) == 1)
 	</head>
 	
 	<body>
-		<p>This form can be used to upload a text file and display its contents.</p>
+		<p>This form can be used to upload a plain text file and display its contents.</p>
+		<p>The file size should be below 4096 bytes.</p>
 
 		<?php
 		if(count($_FILES) == 1 && $valid)
