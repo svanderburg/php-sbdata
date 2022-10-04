@@ -30,8 +30,7 @@ $idField = new NumericIntKeyLinkField("Id", "composeBookLink", true, 20, 255);
 function deleteBookLink(Form $form): string
 {
 	$bookId = $form->fields["BOOK_ID"]->exportValue();
-
-	return "?__operation=delete&amp;BOOK_ID=".$bookId.AnchorRow::composePreviousRowParameter($form);
+	return "?__operation=delete&amp;BOOK_ID=".$bookId.AnchorRow::composeRowParameter($form);
 }
 
 $table = new DBTable(array(
@@ -71,7 +70,7 @@ else
 			$id = $idField->exportValue();
 			Book::delete($dbh, $id);
 
-			header("Location: books.php".AnchorRow::composeRowFragment());
+			header("Location: books.php".AnchorRow::composePreviousRowFragment());
 			exit;
 		}
 	}

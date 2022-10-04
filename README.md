@@ -577,7 +577,7 @@ when a page contains a table that exceeds the page height.
 The editable table provides anchor links by default that can be used to track
 the origins of a change. These can also be enabled for semi-editable and
 "ordinary" tables by setting the `$displayAnchors` parameter to `true` (by
-default it is `false`):
+default, it is `false`):
 
 ```php
 \SBData\View\HTML\displaySemiEditableTable($table, true); // Anchor links enabled
@@ -602,16 +602,17 @@ links and redirections easier:
 use SBData\Model\Table\Anchor\AnchorRow;
 ```
 
-We can use the `AnchorRow::composePreviousRowParameter()` function to compose a
-`GET` parameter that refers to the previous row id -- when we delete a row, we
-typically want to scroll to the position of the row that comes before it:
+We can use the `AnchorRow::composeRowParameter()` function to automatically
+compose a `GET` parameter that refers to the previous row id -- when we delete a
+row, we typically want to scroll to the position of the row that comes before
+it:
 
 
 ```php
 function deletePersonLink(Form $form): string
 {
     $personId = $form->fields["PERSON_ID"]->importValue();
-    return "?__operation=delete&amp;PERSON_ID=".$personId.AnchorRow::composePreviousRowParameter($form);
+    return "?__operation=delete&amp;PERSON_ID=".$personId.AnchorRow::composeRowParameter($form);
 }
 ```
 
@@ -638,6 +639,11 @@ By default, the convenience functions use `__id` as a GET parameter and
 tables on one page, you may want to change this prefix. This can be done by
 providing a `$prefix` parameter to the above functions. See the API
 documentation for more information.
+
+In addition to redirecting the user to the previously modified row, it is also
+possible to redirect the user to the previous row by using:
+`AnchorRow::composePreviousRowFragment()` or the next row by using:
+`AnchorRow::composeNextRowFragment()`.
 
 Fields
 ======
