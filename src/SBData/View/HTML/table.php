@@ -162,6 +162,69 @@ function displaySemiEditableTable(Table $table, bool $displayAnchors = false, st
 	<?php
 }
 
+function displayEditableTableHeader(Table $table): void
+{
+	?>
+	<div class="tr">
+		<?php
+		foreach($table->columns as $name => $field)
+		{
+			if($field->visible)
+			{
+				?>
+				<div class="th"><?php print($field->title); displayMandatorySign($field); ?></div>
+				<?php
+			}
+		}
+		?>
+	</div>
+	<?php
+}
+
+function displayNoItemsLabelForEditableTable(string $noItemsLabel, string $anchorPrefix): void
+{
+	?>
+	<div class="tr">
+		<div class="td"><a name="<?php print($anchorPrefix); ?>-0"></a><?php print($noItemsLabel); ?></div>
+	</div>
+	<?php
+}
+
+function displayEditableFields(Form $form): void
+{
+	foreach($form->fields as $name => $field)
+	{
+		if($field->visible)
+		{
+			?>
+			<div class="td<?php if(!$field->valid) print(" invalid"); ?>"><?php displayEditableField($name, $field, $form); ?></div>
+			<?php
+		}
+		else
+			displayEditableField($name, $field, $form);
+	}
+}
+
+function displayActionLinksForEditableTable(Table $table, Form $form): void
+{
+	if($table->actions !== null)
+	{
+		foreach($table->actions as $label => $actionFunction)
+		{
+			?>
+			<div class="td"><?php displayActionLink($form, $actionFunction, $label); ?></div>
+			<?php
+		}
+	}
+}
+
+function displayEditButtonForEditableTable(string $editLabel, string $anchorPrefix, int $count): void
+{
+	?>
+	<div class="td"><a name="<?php print($anchorPrefix."-".$count); ?>"><button><?php print($editLabel); ?></button></a></div>
+	<?php
+}
+
 /**
  * Displays a table with field in an editable way. In this table fields can be directly edited.
  *
@@ -176,32 +239,13 @@ function displayEditableTable(Table $table, Form $submittedForm = null, string $
 	?>
 	<div class="tablewrapper">
 		<div class="table">
-			<div class="tr">
-				<?php
-				/* Display table header */
-
-				foreach($table->columns as $name => $field)
-				{
-					if($field->visible)
-					{
-						?>
-						<div class="th"><?php print($field->title); displayMandatorySign($field); ?></div>
-						<?php
-					}
-				}
-				?>
-			</div>
 			<?php
+			displayEditableTableHeader($table);
+
 			/* Display the editable records */
 
 			if(($form = $table->fetchForm()) === null)
-			{
-				?>
-				<div class="tr">
-					<div class="td"><a name="<?php print($anchorPrefix); ?>-0"></a><?php print($noItemsLabel); ?></div>
-				</div>
-				<?php
-			}
+				displayNoItemsLabelForEditableTable($noItemsLabel, $anchorPrefix);
 			else
 			{
 				$count = 0;
@@ -220,29 +264,9 @@ function displayEditableTable(Table $table, Form $submittedForm = null, string $
 					?>
 					<form class="tr" method="post" action="<?php print($_SERVER["PHP_SELF"]."#".$anchorPrefix."-".$count); ?>"<?php print($encTypeAttribute); ?>>
 						<?php
-						foreach($form->fields as $name => $field)
-						{
-							if($field->visible)
-							{
-								?>
-								<div class="td<?php if(!$field->valid) print(" invalid"); ?>"><?php displayEditableField($name, $field, $form); ?></div>
-								<?php
-							}
-							else
-								displayEditableField($name, $field, $form);
-						}
-						?>
-						<div class="td"><a name="<?php print($anchorPrefix."-".$count); ?>"><button><?php print($editLabel); ?></button></a></div>
-						<?php
-						if($table->actions !== null)
-						{
-							foreach($table->actions as $label => $actionFunction)
-							{
-								?>
-								<div class="td"><?php displayActionLink($form, $actionFunction, $label); ?></div>
-								<?php
-							}
-						}
+						displayEditableFields($form);
+						displayEditButtonForEditableTable($editLabel, $anchorPrefix, $count);
+						displayActionLinksForEditableTable($table, $form);
 						?>
 					</form>
 					<?php
