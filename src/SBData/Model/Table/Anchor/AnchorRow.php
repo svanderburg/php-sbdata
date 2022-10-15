@@ -97,7 +97,9 @@ class AnchorRow
 	public static function composeRowParameter(Form $form, string $paramName = "__id", string $prefix = "&amp;"): string
 	{
 		$row = $form->fields[$paramName]->exportValue();
-		return $prefix.$paramName."=".$row;
+		return $prefix.http_build_query(array(
+			$paramName => $row
+		), "", "&amp;", PHP_QUERY_RFC3986);
 	}
 }
 ?>

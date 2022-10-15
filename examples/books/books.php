@@ -18,9 +18,14 @@ function composeBookLink(NumericIntKeyLinkField $field, Form $form): string
 
 	/* Determine the URL for edit or view mode */
 	if(array_key_exists("viewmode", $_GET) && $_GET["viewmode"] == "1")
-		return "book.php?viewmode=1&amp;BOOK_ID=".$bookId;
+		return "book.php?".http_build_query(array(
+			"viewmode" => 1,
+			"BOOK_ID" => $bookId
+		), "", "&amp;", PHP_QUERY_RFC3986);
 	else
-		return "book.php?BOOK_ID=".$bookId;
+		return "book.php?".http_build_query(array(
+			"BOOK_ID" => $bookId
+		), "", "&amp;", PHP_QUERY_RFC3986);
 }
 
 /* Configure a table model */
@@ -30,7 +35,10 @@ $idField = new NumericIntKeyLinkField("Id", "composeBookLink", true, 20, 255);
 function deleteBookLink(Form $form): string
 {
 	$bookId = $form->fields["BOOK_ID"]->exportValue();
-	return "?__operation=delete&amp;BOOK_ID=".$bookId.AnchorRow::composeRowParameter($form);
+	return "?".http_build_query(array(
+		"__operation" => "delete",
+		"BOOK_ID" => $bookId
+	), "", "&amp;", PHP_QUERY_RFC3986).AnchorRow::composeRowParameter($form);
 }
 
 $table = new DBTable(array(

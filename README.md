@@ -427,7 +427,10 @@ representing the link to a delete URL:
 function deletePersonLink(Form $form): string
 {
     $personId = $form->fields["PERSON_ID"]->importValue();
-    return "?__operation=delete&amp;PERSON_ID=".$personId;
+    return "?".http_build_query(array(
+        "__operation" => "delete",
+        "PERSON_ID" => $personId
+    ), "", "&amp;", PHP_QUERY_RFC3986);
 }
 ```
 
@@ -523,7 +526,9 @@ By constructing a `KeyLinkField` we can compose such a link, for example:
 function composeBookLink(KeyLinkField $field, Form $form): string
 {
     $bookId = $field->importValue();
-    return "book.php?BOOK_ID=".$bookId;
+    return "book.php?".http_build_query(array(
+        "BOOK_ID" => $bookId
+    ), "", "&amp;", PHP_QUERY_RFC3986);
 }
 
 function composePublisherLink(KeyLinkField $field, Form $form): ?string
@@ -533,7 +538,9 @@ function composePublisherLink(KeyLinkField $field, Form $form): ?string
     if($publisherId === null)
         return null;
     else
-        return "publisher.php?PUBLISHER_ID=".$publisherId;
+        return "publisher.php?".http_build_query(array(
+            "PUBLISHER_ID" => $publisherId
+        ), "", "&amp;", PHP_QUERY_RFC3986);
 }
 
 $table = new DBTable(array(
@@ -591,7 +598,11 @@ function deletePersonLink(Form $form): string
 {
     $rowId = $form->fields["__id"]->importValue(); // refers to the anchor id of the row for which the action has been triggered
     $personId = $form->fields["PERSON_ID"]->importValue();
-    return "?__operation=delete&amp;__id=".$rowId."&amp;PERSON_ID=".$personId;
+    return "?".http_build_query(array(
+        "__operation" => "delete",
+        "__id" =>" $rowId,
+        "PERSON_ID" => $personId
+    ), "", "&amp;", PHP_QUERY_RFC3986);
 }
 ```
 
@@ -612,7 +623,10 @@ it:
 function deletePersonLink(Form $form): string
 {
     $personId = $form->fields["PERSON_ID"]->importValue();
-    return "?__operation=delete&amp;PERSON_ID=".$personId.AnchorRow::composeRowParameter($form);
+    return "?".http_build_query(array(
+        "__operation" => "delete",
+        "PERSON_ID" => $personId
+    ), "", "&amp;", PHP_QUERY_RFC3986).AnchorRow::composeRowParameter($form);
 }
 ```
 

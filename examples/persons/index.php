@@ -20,7 +20,10 @@ $idField = new HiddenNumericIntField(true);
 function deletePersonLink(Form $form): string
 {
 	$id = $form->fields["id"]->exportValue();
-	return "?__operation=delete&amp;id=".$id;
+	return "?".http_build_query(array(
+		"__operation" => "delete",
+		"id" => $id
+	), "", "&amp;", PHP_QUERY_RFC3986);
 }
 
 $table = new ArrayTable(array(

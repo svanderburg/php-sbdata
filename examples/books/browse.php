@@ -14,13 +14,18 @@ use Examples\Books\Entity\Book;
 function composeBookLink(NumericIntKeyLinkField $field, Form $form): string
 {
 	$bookId = $field->exportValue();
-	return "book.php?viewmode=1&amp;BOOK_ID=".$bookId;
+	return "book.php?".http_build_query(array(
+		"viewmode" => 1,
+		"BOOK_ID" => $bookId
+	), "", "&amp;", PHP_QUERY_RFC3986);
 }
 
 function composePublisherLink(NumericIntKeyLinkField $field, Form $form): string
 {
 	$publisherId = $form->fields["PUBLISHER_ID"]->exportValue();
-	return "publisher.php?PUBLISHER_ID=".$publisherId;
+	return "publisher.php?".http_build_query(array(
+		"PUBLISHER_ID" => $publisherId
+	), "", "&amp;", PHP_QUERY_RFC3986);
 }
 
 /* Configure a table model */
