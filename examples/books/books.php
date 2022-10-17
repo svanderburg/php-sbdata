@@ -115,7 +115,7 @@ else
 					<a href="<?php print($_SERVER["PHP_SELF"]); ?>">Edit</a>
 				</p>
 				<?php
-				\SBData\View\HTML\displaySemiEditableTable($table, true);
+				\SBData\View\HTML\displaySemiEditableTable($table);
 			}
 			else
 			{

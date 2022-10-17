@@ -15,18 +15,28 @@ abstract class Table
 	/** An associative array of labels mapping to function names displaying action links */
 	public ?array $actions;
 
+	/** Indicates whether to add an extra column that can be used to track which row in the table is modified */
+	public bool $identifyRows;
+
+	/** Counts the amount of retrieved rows */
+	public int $rowCount;
+
 	/**
 	 * Constructs a new Table instance.
 	 *
 	 * @param $columns An associative array mapping field names to fields that should be checked and displayed
 	 * @param $actions An associative array of labels mapping to function names displaying action links
+	 * @param $identifyRows Indicates whether to add an extra column that can be used to track which row in the table is modified
 	 */
-	public function __construct(array $columns, array $actions = null)
+	public function __construct(array $columns, array $actions = null, bool $identifyRows = true)
 	{
 		$this->columns = $columns;
 		$this->actions = $actions;
+		$this->identifyRows = $identifyRows;
+		$this->rowCount = 0;
 
-		$this->columns["__id"] = new HiddenNumericIntField(false); // Add __id column that is used to track which row in the table is modified
+		if($identifyRows)
+			$this->columns["__id"] = new HiddenNumericIntField(false);
 	}
 	
 	/**
@@ -48,12 +58,35 @@ abstract class Table
 	}
 	
 	/**
-	 * Iterates over the collection of forms in the table and returns each one of them
-	 * until the last one has been reached.
+	 * Iterates over the data in the table and returns a form instance for
+	 * each row until the last one has been reached.
 	 *
 	 * @return A form instance representing a table row, or null if all table rows have been visited.
 	 */
 	public abstract function fetchForm(): Form|null;
+
+	/**
+	 * Iterates over the data in the table, modifies it if needed, and
+	 * returns a form instance for each row until the last one has been
+	 * reached.
+	 *
+	 * @return A form instance representing a table row, or null if all table rows have been visited.
+	 */
+	public function nextForm(): Form|null
+	{
+		$form = $this->fetchForm();
+
+		if($form === null)
+			return null;
+		else
+		{
+			if($this->identifyRows)
+				$form->fields["__id"]->importValue($this->rowCount);
+
+			$this->rowCount++;
+			return $form;
+		}
+	}
 
 	/**
 	 * Computes the number of displayable columns.

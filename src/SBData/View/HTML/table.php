@@ -9,18 +9,6 @@ namespace SBData\View\HTML;
 use SBData\Model\Form;
 use SBData\Model\Table\Table;
 
-function displayActionLink(Form $form, string $actionFunction, string $label): void
-{
-	$url = $actionFunction($form);
-
-	if($url !== null)
-	{
-		?>
-		<a href="<?php print($url); ?>"><?php print($label); ?></a>
-		<?php
-	}
-}
-
 function displayTableHeader(Table $table): void
 {
 	?>
@@ -40,18 +28,17 @@ function displayTableHeader(Table $table): void
 	<?php
 }
 
-function displayNoItemsLabel(Table $table, string $noItemsLabel, bool $displayAnchors, string $anchorPrefix): void
+function displayNoItemsLabel(Table $table, string $noItemsLabel, string $anchorPrefix): void
 {
 	?>
 	<tr>
-		<td colspan="<?php print($table->computeNumberOfDisplayableColumns()); ?>"><?php if($displayAnchors) { ?><a name="<?php print($anchorPrefix); ?>-0"></a><?php }; print($noItemsLabel); ?></td>
+		<td colspan="<?php print($table->computeNumberOfDisplayableColumns()); ?>"><?php if($table->identifyRows) { ?><a name="<?php print($anchorPrefix); ?>-0"></a><?php }; print($noItemsLabel); ?></td>
 	</tr>
 	<?php
 }
 
-function displayFields(Form $form, bool $displayAnchors, int $count, string $anchorPrefix): void
+function displayFields(Table $table, Form $form, string $anchorPrefix): void
 {
-	$form->fields["__id"]->importValue($count);
 	$first = true;
 
 	foreach($form->fields as $name => $field)
@@ -59,7 +46,7 @@ function displayFields(Form $form, bool $displayAnchors, int $count, string $anc
 		if($field->visible)
 		{
 			?>
-			<td><?php if($displayAnchors && $first) { ?><a name="<?php print($anchorPrefix."-".$count); ?>"></a><?php }; displayField($field, $form); ?></td>
+			<td><?php if($table->identifyRows && $first) { ?><a name="<?php print($anchorPrefix."-".$form->fields["__id"]->exportValue()); ?>"></a><?php }; displayField($field, $form); ?></td>
 			<?php
 		}
 
@@ -71,11 +58,10 @@ function displayFields(Form $form, bool $displayAnchors, int $count, string $anc
  * Displays a table with field in a non-editable way.
  *
  * @param $table Table to display
- * @param $displayAnchors Whether hidden anchors should be displayed that enable searching for specific rows
  * @param $noItemsLabel Label to be displayed when there are no items in the table
  * @param $anchorPrefix The prefix that the hidden anchor elements should have
  */
-function displayTable(Table $table, bool $displayAnchors = false, string $noItemsLabel = "No items", string $anchorPrefix = "table-row"): void
+function displayTable(Table $table, string $noItemsLabel = "No items", string $anchorPrefix = "table-row"): void
 {
 	?>
 	<div class="tablewrapper">
@@ -83,27 +69,36 @@ function displayTable(Table $table, bool $displayAnchors = false, string $noItem
 			<?php
 			displayTableHeader($table);
 
-			if(($form = $table->fetchForm()) === null)
-				displayNoItemsLabel($table, $noItemsLabel, $displayAnchors, $anchorPrefix);
+			if(($form = $table->nextForm()) === null)
+				displayNoItemsLabel($table, $noItemsLabel, $anchorPrefix);
 			else
 			{
-				$count = 0;
-
 				do
 				{
 					?>
 					<tr>
-						<?php displayFields($form, $displayAnchors, $count, $anchorPrefix); ?>
+						<?php displayFields($table, $form, $anchorPrefix); ?>
 					</tr>
 					<?php
-					$count++;
 				}
-				while(($form = $table->fetchForm()) !== null);
+				while(($form = $table->nextForm()) !== null);
 			}
 			?>
 		</table>
 	</div>
 	<?php
+}
+
+function displayActionLink(Form $form, string $actionFunction, string $label): void
+{
+	$url = $actionFunction($form);
+
+	if($url !== null)
+	{
+		?>
+		<a href="<?php print($url); ?>"><?php print($label); ?></a>
+		<?php
+	}
 }
 
 function displayActionLinks(Table $table, Form $form): void
@@ -124,11 +119,10 @@ function displayActionLinks(Table $table, Form $form): void
  * not be edited, but there are edit and delete buttons.
  *
  * @param $table Table to display
- * @param $displayAnchors Whether hidden anchors should be displayed that enable searching for specific rows
  * @param $noItemsLabel Label to be displayed when there are no items in the table
  * @param $anchorPrefix The prefix that the hidden anchor elements should have
  */
-function displaySemiEditableTable(Table $table, bool $displayAnchors = false, string $noItemsLabel = "No items", string $anchorPrefix = "table-row"): void
+function displaySemiEditableTable(Table $table, string $noItemsLabel = "No items", string $anchorPrefix = "table-row"): void
 {
 	?>
 	<div class="tablewrapper">
@@ -136,25 +130,22 @@ function displaySemiEditableTable(Table $table, bool $displayAnchors = false, st
 			<?php
 			displayTableHeader($table);
 
-			if(($form = $table->fetchForm()) === null)
-				displayNoItemsLabel($table, $noItemsLabel, $displayAnchors, $anchorPrefix);
+			if(($form = $table->nextForm()) === null)
+				displayNoItemsLabel($table, $noItemsLabel, $anchorPrefix);
 			else
 			{
-				$count = 0;
-
 				do
 				{
 					?>
 					<tr>
 						<?php
-						displayFields($form, $displayAnchors, $count, $anchorPrefix);
+						displayFields($table, $form, $anchorPrefix);
 						displayActionLinks($table, $form);
 						?>
 					</tr>
 					<?php
-					$count++;
 				}
-				while(($form = $table->fetchForm()) !== null);
+				while(($form = $table->nextForm()) !== null);
 			}
 			?>
 		</table>
@@ -218,10 +209,10 @@ function displayActionLinksForEditableTable(Table $table, Form $form): void
 	}
 }
 
-function displayEditButtonForEditableTable(string $editLabel, string $anchorPrefix, int $count): void
+function displayEditButtonForEditableTable(Table $table, Form $form, string $editLabel, string $anchorPrefix): void
 {
 	?>
-	<div class="td"><a name="<?php print($anchorPrefix."-".$count); ?>"><button><?php print($editLabel); ?></button></a></div>
+	<div class="td"><?php if($table->identifyRows) { ?><a name="<?php print($anchorPrefix."-".$form->fields["__id"]->exportValue()); ?>"><?php } ?><button><?php print($editLabel); ?></button><?php if($table->identifyRows) { ?></a><?php } ?></div>
 	<?php
 }
 
@@ -244,12 +235,10 @@ function displayEditableTable(Table $table, Form $submittedForm = null, string $
 
 			/* Display the editable records */
 
-			if(($form = $table->fetchForm()) === null)
+			if(($form = $table->nextForm()) === null)
 				displayNoItemsLabelForEditableTable($noItemsLabel, $anchorPrefix);
 			else
 			{
-				$count = 0;
-
 				do
 				{
 					/* Compose an encType attribute if the form contains a file field */
@@ -257,22 +246,21 @@ function displayEditableTable(Table $table, Form $submittedForm = null, string $
 
 					$form->checkFields(); // Check field validity
 
-					if($submittedForm !== null && !$submittedForm->checkValid() && $submittedForm->fields["__id"]->exportValue() == $count)
-						$form = $submittedForm; // If a submitted form is given use that
-					else
-						$form->fields["__id"]->importValue($count); // Otherwise, use the generated one and add the row id value to it
+					$rowId = $form->fields["__id"]->exportValue();
+
+					if($submittedForm !== null && !$submittedForm->checkValid() && $submittedForm->fields["__id"]->exportValue() == $rowId)
+						$form = $submittedForm; // If a submitted form is given use that}
 					?>
-					<form class="tr" method="post" action="<?php print($_SERVER["PHP_SELF"]."#".$anchorPrefix."-".$count); ?>"<?php print($encTypeAttribute); ?>>
+					<form class="tr" method="post" action="<?php print($_SERVER["PHP_SELF"]."#".$anchorPrefix."-".$rowId); ?>"<?php print($encTypeAttribute); ?>>
 						<?php
 						displayEditableFields($form);
-						displayEditButtonForEditableTable($editLabel, $anchorPrefix, $count);
+						displayEditButtonForEditableTable($table, $form, $editLabel, $anchorPrefix);
 						displayActionLinksForEditableTable($table, $form);
 						?>
 					</form>
 					<?php
-					$count++;
 				}
-				while(($form = $table->fetchForm()) !== null);
+				while(($form = $table->nextForm()) !== null);
 			}
 			?>
 		</div>

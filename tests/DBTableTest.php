@@ -30,13 +30,13 @@ class DBTableTest extends TestCase
 		$table->stmt = self::$dbh->query("select * from persons");
 
 		// Check if we can iterate over two rows
-		$form = $table->fetchForm();
+		$form = $table->nextForm();
 		$this->assertInstanceOf(Form::class, $form);
 
-		$form = $table->fetchForm();
+		$form = $table->nextForm();
 		$this->assertInstanceOf(Form::class, $form);
 
-		$form = $table->fetchForm();
+		$form = $table->nextForm();
 		$this->assertNull($form);
 	}
 }
