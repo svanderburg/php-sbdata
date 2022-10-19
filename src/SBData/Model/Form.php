@@ -55,6 +55,8 @@ class Form
 	
 	/**
 	 * Exports the field values to an associative array having the same keys.
+	 *
+	 * @return An associative array with values
 	 */
 	public function exportValues(): array
 	{
@@ -72,20 +74,20 @@ class Form
 	public function checkFields(): void
 	{
 		foreach($this->fields as $name => $field)
-			$field->valid = $field->checkField($name);
+			$field->value->valid = $field->checkField($name);
 	}
 	
 	/**
 	 * Checks whether the form (including all its fields) are valid.
 	 * This function should be called after Form::checkFields()
-	 * 
+	 *
 	 * @return true if and only if all form values are valid
 	 */
 	public function checkValid(): bool
 	{
 		foreach($this->fields as $name => $field)
 		{
-			if(!$field->valid)
+			if(!$field->isValid())
 				return false;
 		}
 		

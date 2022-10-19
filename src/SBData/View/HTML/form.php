@@ -88,7 +88,7 @@ function displayEditableForm(Form $form, string $submitLabel, string $generalErr
 						displayEditableField($name, $field, $form);
 
 						/* If field is invalid, display a description */
-						if(!$field->valid)
+						if(!$field->isValid())
 						{
 							?>
 							<br><span class="mandatory"><?php print($fieldErrorMessage); ?></span>

@@ -188,7 +188,7 @@ function displayEditableFields(Form $form): void
 		if($field->visible)
 		{
 			?>
-			<div class="td<?php if(!$field->valid) print(" invalid"); ?>"><?php displayEditableField($name, $field, $form); ?></div>
+			<div class="td<?php if(!$field->isValid()) print(" invalid"); ?>"><?php displayEditableField($name, $field, $form); ?></div>
 			<?php
 		}
 		else

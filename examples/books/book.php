@@ -21,11 +21,12 @@ function importAndCheckParameters(): ParameterMap
 		"BOOK_ID" => new IntegerValue(false, 255)
 	));
 	$getMap->importValues($_GET);
+	$getMap->checkValues();
 
-	if($getMap->checkValues())
+	if($getMap->checkValid())
 		return $getMap;
 	else
-		throw new Exception("The keys are invalid!");
+		throw new Exception($getMap->composeErrorMessage("The following parameters are invalid:"));
 }
 
 function constructForm(ParameterMap $getMap, PDO $dbh): Form

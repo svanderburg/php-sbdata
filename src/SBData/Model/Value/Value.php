@@ -11,6 +11,9 @@ class Value
 	/** Stores the value of the field */
 	public $value;
 
+	/** Indicates whether the given value is valid */
+	public bool $valid;
+
 	/** Indicates whether a given value is mandatory */
 	public bool $mandatory;
 
@@ -27,6 +30,7 @@ class Value
 	{
 		$this->mandatory = $mandatory;
 		$this->maxlength = $maxlength;
+		$this->valid = true;
 	}
 
 	/**

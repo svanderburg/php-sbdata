@@ -21,10 +21,12 @@ function importAndCheckParameters(): ParameterMap
 	));
 
 	$getMap->importValues($_GET);
-	if($getMap->checkValues())
+	$getMap->checkValues();
+
+	if($getMap->checkValid())
 		return $getMap;
 	else
-		throw new Exception("The keys are invalid!");
+		throw new Exception($getMap->composeErrorMessage("The following parameters are invalid:"));
 }
 
 function constructTable(): ArrayTable

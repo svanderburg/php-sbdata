@@ -8,9 +8,6 @@ use SBData\Model\Value\Value;
  */
 class Field
 {
-	/** Indicates whether the given value is valid */
-	public bool $valid;
-
 	/** An object that stores and checks the value of the field */
 	public Value $value;
 
@@ -30,7 +27,6 @@ class Field
 	{
 		$this->value = $value;
 		$this->visible = $visible;
-		$this->valid = true;
 	}
 
 	/**
@@ -79,4 +75,15 @@ class Field
 	{
 		return $this->value->checkValue($name);
 	}
+
+	/**
+	 * Indicates whether the field's value is valid.
+	 *
+	 * @return true if it is valid, else false
+	 */
+	public function isValid(): bool
+	{
+		return $this->value->valid;
+	}
+
 }

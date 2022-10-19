@@ -151,7 +151,8 @@ $parameterMap->importValues(array(
     "id" => 1,
     "description" => "Hello world"
 ));
-$parameterMap->checkValues(); // Return true because all mandatory values were provided and are valid
+$parameterMap->checkValues(); // Checks the validatity of every value in the parameter map
+$valid = $parameterMap->checkValid(); // Returns true because all mandatory values were provided and are valid
 ```
 
 The fact that the `$parameterMap->importValues()` method accepts `array`s is
@@ -460,7 +461,7 @@ representing the link to a delete URL:
 ```php
 function deletePersonLink(Form $form): string
 {
-    $personId = $form->fields["PERSON_ID"]->importValue();
+    $personId = $form->fields["PERSON_ID"]->exportValue();
     return "?".http_build_query(array(
         "__operation" => "delete",
         "PERSON_ID" => $personId
@@ -559,7 +560,7 @@ By constructing a `KeyLinkField` we can compose such a link, for example:
 ```php
 function composeBookLink(KeyLinkField $field, Form $form): string
 {
-    $bookId = $field->importValue();
+    $bookId = $field->exportValue();
     return "book.php?".http_build_query(array(
         "BOOK_ID" => $bookId
     ), "", "&amp;", PHP_QUERY_RFC3986);
@@ -631,8 +632,8 @@ retrieve the row id:
 ```php
 function deletePersonLink(Form $form): string
 {
-    $rowId = $form->fields["__id"]->importValue(); // refers to the anchor id of the row for which the action has been triggered
-    $personId = $form->fields["PERSON_ID"]->importValue();
+    $rowId = $form->fields["__id"]->exportValue(); // refers to the anchor id of the row for which the action has been triggered
+    $personId = $form->fields["PERSON_ID"]->exportValue();
 
     return "?".http_build_query(array(
         "__operation" => "delete",
@@ -658,7 +659,7 @@ it:
 ```php
 function deletePersonLink(Form $form): string
 {
-    $personId = $form->fields["PERSON_ID"]->importValue();
+    $personId = $form->fields["PERSON_ID"]->exportValue();
     return "?".http_build_query(array(
         "__operation" => "delete",
         "PERSON_ID" => $personId

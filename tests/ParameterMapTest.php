@@ -18,7 +18,8 @@ class ParameterMapTest extends TestCase
 			"name" => "John Doe",
 			"email" => "john@example.com"
 		));
-		$this->assertTrue($map->checkValues());
+		$map->checkValues();
+		$this->assertTrue($map->checkValid());
 	}
 
 	public function testInvalidParameterMap(): void
@@ -31,7 +32,8 @@ class ParameterMapTest extends TestCase
 			"name" => "John Doe",
 			"email" => "invalid" // This is an invalid email address
 		));
-		$this->assertFalse($map->checkValues());
+		$map->checkValues();
+		$this->assertFalse($map->checkValid());
 	}
 }
 ?>
