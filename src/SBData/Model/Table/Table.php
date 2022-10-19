@@ -1,5 +1,6 @@
 <?php
 namespace SBData\Model\Table;
+use SBData\Model\ParameterMap;
 use SBData\Model\Form;
 use SBData\Model\Field\GenericHiddenField;
 use SBData\Model\Field\HiddenNumericIntField;
@@ -15,6 +16,9 @@ abstract class Table
 	/** An associative array of labels mapping to function names displaying action links */
 	public ?array $actions;
 
+	/** A map of parameters that can be consumed by any form consumer */
+	public ?ParameterMap $parameterMap;
+
 	/** Indicates whether to add an extra column that can be used to track which row in the table is modified */
 	public bool $identifyRows;
 
@@ -26,12 +30,14 @@ abstract class Table
 	 *
 	 * @param $columns An associative array mapping field names to fields that should be checked and displayed
 	 * @param $actions An associative array of labels mapping to function names displaying action links
+	 * @param $parameterMap A map of parameters that can be consumed by any form consumer
 	 * @param $identifyRows Indicates whether to add an extra column that can be used to track which row in the table is modified
 	 */
-	public function __construct(array $columns, array $actions = null, bool $identifyRows = true)
+	public function __construct(array $columns, array $actions = null, ParameterMap $parameterMap = null, bool $identifyRows = true)
 	{
 		$this->columns = $columns;
 		$this->actions = $actions;
+		$this->parameterMap = $parameterMap;
 		$this->identifyRows = $identifyRows;
 		$this->rowCount = 0;
 
@@ -54,7 +60,7 @@ abstract class Table
 			$fields[$id] = clone $field;
 
 		/* Construct a form with the fields */
-		return new Form($fields);
+		return new Form($fields, $this->parameterMap);
 	}
 	
 	/**

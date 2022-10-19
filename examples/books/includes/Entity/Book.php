@@ -48,27 +48,32 @@ class Book
 		return $stmt;
 	}
 
-	public static function insert(PDO $dbh, array $book): void
+	public static function insert(PDO $dbh, array $book): int
 	{
 		$dbh->beginTransaction();
-		
+
 		$stmt = $dbh->prepare("select max(BOOK_ID) from book");
-		
+
 		if($stmt->execute() && $row = $stmt->fetch())
 		{
 			$BOOK_ID = $row[0] + 1;
-			
+
 			$stmt = $dbh->prepare("insert into book values (?, ?, ?, ?)");
 			if(!$stmt->execute(array($BOOK_ID, $book['Title'], $book['Subtitle'], $book['PUBLISHER_ID'])))
 			{
 				$dbh->rollBack();
 				throw new Exception($stmt->errorInfo()[2]);
 			}
-			
+
 			$dbh->commit();
+
+			return $BOOK_ID;
 		}
 		else
+		{
 			$dbh->rollBack();
+			throw new Exception("Cannot determine the next BOOK_ID");
+		}
 	}
 
 	public static function update(PDO $dbh, array $book): void

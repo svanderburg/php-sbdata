@@ -10,7 +10,7 @@ use Examples\CAPTCHA\Model\Field\CAPTCHAField;
 /* Define a form */
 $form = new Form(array(
 	"email" => new EmailField("Email", true),
-	"code" => new CAPTCHAField("Code", "Please provde the code shown in the picture", 5)
+	"code" => new CAPTCHAField("Code", "Please provide the code shown in the picture", 5)
 ));
 
 if(count($_POST) > 0)

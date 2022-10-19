@@ -34,7 +34,7 @@ if(count($_POST) > 0)
 {
 	$form->importValues($_POST);
 	$form->checkFields();
-	
+
 	$valid = $form->checkValid();
 }
 

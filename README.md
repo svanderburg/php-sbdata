@@ -128,6 +128,40 @@ $value->value = "3134";
 $status = $value->checkValue(); // Returns: true, because the imported value is a valid integer number
 ```
 
+Checking data objects
+---------------------
+In addition to single values, it is also possible to check a PHP `array` that
+consists of multiple values:
+
+```php
+$parameterMap = new ParameterMap(array(
+    "id" => new IntegerValue(true),
+    "description" => new SaneStringValue(true)
+));
+```
+
+The above example defines a parameter map that checks whether an object consists
+of an `id` that should refer to an integer value and `description` that is a
+string.
+
+The following instructions import an array and checks its validity:
+
+```php
+$parameterMap->importValues(array(
+    "id" => 1,
+    "description" => "Hello world"
+));
+$parameterMap->checkValues(); // Return true because all mandatory values were provided and are valid
+```
+
+The fact that the `$parameterMap->importValues()` method accepts `array`s is
+very convenient. For example, we can also use the same method to automatically
+import and validate request parameters, such as all `GET` parameters:
+
+```php
+$parameterMap->importValues($_GET);
+```
+
 Defining a field model
 ----------------------
 In addition to storing and checking data elements, it is often also desired to
@@ -573,7 +607,7 @@ Using row anchors
 For tables that provide edit functionality, we may want to track which row in
 the table has changed.
 
-Typically, an action link (such as a 'delete' operation) redirects the user to a
+Typically, an action link (such as a `delete` operation) redirects the user to a
 different page that carries out the modification and then redirects the user
 back to the page displaying the table.
 
@@ -583,11 +617,12 @@ when a page contains a table that exceeds the page height.
 
 The editable table provides anchor links by default that can be used to track
 the origins of a change. These can also be enabled for semi-editable and
-"ordinary" tables by setting the `$displayAnchors` parameter to `true` (by
-default, it is `false`):
+editable tables by setting the `$identifyRows` parameter to `true` (by
+default, it is already enabled, but it can be disabled by setting it to:
+`false`):
 
 ```php
-\SBData\View\HTML\displaySemiEditableTable($table, true); // Anchor links enabled
+$table = new DBTable($columns, $actions, null, true); // The last parameter enables row identification
 ```
 
 When defining a form action or a `KeyLinkField`, we can use the `__id` field to
@@ -598,6 +633,7 @@ function deletePersonLink(Form $form): string
 {
     $rowId = $form->fields["__id"]->importValue(); // refers to the anchor id of the row for which the action has been triggered
     $personId = $form->fields["PERSON_ID"]->importValue();
+
     return "?".http_build_query(array(
         "__operation" => "delete",
         "__id" =>" $rowId,
@@ -720,7 +756,7 @@ automatically sanitizes trailing white spaces.
 
 The above example basically shows how the `TextField` class is implemented. A
 `RawTextField` is also an instance of a `GenericTextField`, but it uses a
-generic `Value` object for validation that does not any sanitizing of white
+generic `Value` object for validation that does not do any sanitizing of white
 spaces.
 
 If we want to use a different validation strategy, we can replace the second
@@ -746,8 +782,8 @@ The following value classes are provided:
   and whether it does not exceed a maximum length.
 * `SaneStringValue`. In addition to the basic checks, it sanitizes strings from
   trailing white spaces.
-* `BooleanValue`. Does a boolean check. true corresponds to a predefined string
-  and false corresponds to an empty string.
+* `BooleanValue`. Does a boolean check. `true` corresponds to a predefined string
+  and `false` corresponds to an empty string.
 * `IntegerValue`. Checks whether user provided input is a valid integer number.
 * `ISODateValue`. Checks whether user provided input is a valid date in ISO
   format.

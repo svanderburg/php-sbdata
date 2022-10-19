@@ -4,6 +4,8 @@ error_reporting(E_STRICT | E_ALL);
 require(dirname(__FILE__)."/../../vendor/autoload.php");
 require_once("includes/db.php");
 
+use SBData\Model\ParameterMap;
+use SBData\Model\Value\IntegerValue;
 use SBData\Model\Form;
 use SBData\Model\Table\DBTable;
 use SBData\Model\Table\Anchor\AnchorRow;
@@ -12,76 +14,106 @@ use SBData\Model\Field\NumericIntTextField;
 use SBData\Model\Field\TextField;
 use Examples\Books\Entity\Book;
 
-function composeBookLink(NumericIntKeyLinkField $field, Form $form): string
+function importAndCheckParameters(): ParameterMap
 {
-	$bookId = $field->exportValue();
+	$getMap = new ParameterMap(array(
+		"viewmode" => new IntegerValue(false),
+		"BOOK_ID" => new IntegerValue(false, 255)
+	));
 
-	/* Determine the URL for edit or view mode */
-	if(array_key_exists("viewmode", $_GET) && $_GET["viewmode"] == "1")
-		return "book.php?".http_build_query(array(
-			"viewmode" => 1,
-			"BOOK_ID" => $bookId
-		), "", "&amp;", PHP_QUERY_RFC3986);
+	$getMap->importValues($_GET);
+	if($getMap->checkValues())
+		return $getMap;
 	else
-		return "book.php?".http_build_query(array(
-			"BOOK_ID" => $bookId
-		), "", "&amp;", PHP_QUERY_RFC3986);
+		throw new Exception("The keys are invalid!");
 }
 
-/* Configure a table model */
-
-$idField = new NumericIntKeyLinkField("Id", "composeBookLink", true, 20, 255);
-
-function deleteBookLink(Form $form): string
+function constructTable(ParameterMap $getMap): DBTable
 {
-	$bookId = $form->fields["BOOK_ID"]->exportValue();
-	return "?".http_build_query(array(
-		"__operation" => "delete",
-		"BOOK_ID" => $bookId
-	), "", "&amp;", PHP_QUERY_RFC3986).AnchorRow::composeRowParameter($form);
-}
-
-$table = new DBTable(array(
-	"BOOK_ID" => $idField,
-	"Title" => new TextField("Title", true, 30, 255),
-	"Subtitle" => new TextField("Subtitle", false, 30, 255),
-	"PUBLISHER_ID" => new NumericIntTextField("Publisher", true, 10),
-), array(
-	"Delete" => "deleteBookLink"
-));
-
-if(count($_POST) > 0) // If POST parameters are given, try to update a record
-{
-	/* Validate record */
-	$submittedForm = $table->constructForm();
-	$submittedForm->importValues($_POST);
-	$submittedForm->checkFields();
-	
-	/* Update the record if it is valid */
-	if($submittedForm->checkValid())
+	function composeBookLink(NumericIntKeyLinkField $field, Form $form): string
 	{
-		$book = $submittedForm->exportValues();
-		Book::update($dbh, $book);
+		$bookId = $field->exportValue();
+		$viewMode = $form->parameterMap->values["viewmode"]->value;
+
+		/* Determine the URL for edit or view mode */
+		if($viewMode == 1)
+			return "book.php?".http_build_query(array(
+				"viewmode" => 1,
+				"BOOK_ID" => $bookId
+			), "", "&amp;", PHP_QUERY_RFC3986);
+		else
+			return "book.php?".http_build_query(array(
+				"BOOK_ID" => $bookId
+			), "", "&amp;", PHP_QUERY_RFC3986);
 	}
-}
-else
-{
-	$submittedForm = null;
-	
-	if(count($_GET) > 0 && array_key_exists("__operation", $_GET) && $_GET["__operation"] == "delete") // If delete operation is specified, delete the record
-	{
-		/* Check the field */
-		$idField->importValue($_GET["BOOK_ID"]);
 
-		if($idField->checkField("BOOK_ID"))
+	function deleteBookLink(Form $form): string
+	{
+		$bookId = $form->fields["BOOK_ID"]->exportValue();
+		return "?".http_build_query(array(
+			"__operation" => "delete",
+			"BOOK_ID" => $bookId
+		), "", "&amp;", PHP_QUERY_RFC3986).AnchorRow::composeRowParameter($form);
+	}
+
+	return new DBTable(array(
+		"BOOK_ID" => new NumericIntKeyLinkField("Id", "composeBookLink", true, 20, 255),
+		"Title" => new TextField("Title", true, 30, 255),
+		"Subtitle" => new TextField("Subtitle", false, 30, 255),
+		"PUBLISHER_ID" => new NumericIntTextField("Publisher", true, 10),
+	), array(
+		"Delete" => "deleteBookLink"
+	), $getMap);
+}
+
+function executeOperation(DBTable $table, ParameterMap $getMap, PDO $dbh): ?Form
+{
+	if(count($_POST) > 0)
+	{
+		/* Validate record */
+		$submittedForm = $table->constructForm();
+		$submittedForm->importValues($_POST);
+		$submittedForm->checkFields();
+
+		/* Update the record if it is valid */
+		if($submittedForm->checkValid())
 		{
-			$id = $idField->exportValue();
-			Book::delete($dbh, $id);
+			$book = $submittedForm->exportValues();
+			Book::update($dbh, $book);
+		}
+
+		return $submittedForm;
+	}
+	else if(array_key_exists("__operation", $_GET))
+	{
+		if($_GET["__operation"] == "delete")
+		{
+			if($getMap->values["BOOK_ID"]->value == "")
+				throw new Exception("No BOOK_ID provided!");
+			else
+				Book::delete($dbh, $getMap->values["BOOK_ID"]->value);
 
 			header("Location: books.php".AnchorRow::composePreviousRowFragment());
 			exit;
 		}
+		else
+			throw new Exception("Unknown operation: ".$_GET["__operation"]);
 	}
+
+	return null;
+}
+
+$error = null;
+
+try
+{
+	$getMap = importAndCheckParameters();
+	$table = constructTable($getMap);
+	$submittedForm = executeOperation($table, $getMap, $dbh);
+}
+catch(Exception $ex)
+{
+	$error = $ex->getMessage();
 }
 
 /* Display the page and table */
@@ -96,18 +128,24 @@ else
 	
 	<body>
 		<?php
-		if(($stmt = Book::queryAll($dbh)) !== false)
+		if($error !== null)
+		{
+			?>
+			<p><?php print($error); ?></p>
+			<?php
+		}
+		else if(($stmt = Book::queryAll($dbh)) !== false)
 		{
 			$table->stmt = $stmt;
-			
-			if(array_key_exists("viewmode", $_GET) && $_GET["viewmode"] == "1") // If viewmode is selected, display ordinary table
+
+			if($getMap->values["viewmode"]->value == 1) // If viewmode is selected, display ordinary table
 			{
 				?>
 				<p><a href="<?php print($_SERVER["PHP_SELF"]); ?>?viewmode=2">Semi edit</a></p>
 				<?php
 				\SBData\View\HTML\displayTable($table);
 			}
-			else if(array_key_exists("viewmode", $_GET) && $_GET["viewmode"] == "2") // If semi-edit mode is selected, display ordinary table with delete links
+			else if($getMap->values["viewmode"]->value == 2) // If semi-edit mode is selected, display ordinary table with delete links
 			{
 				?>
 				<p>

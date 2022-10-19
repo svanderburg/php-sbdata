@@ -3,6 +3,8 @@ error_reporting(E_STRICT | E_ALL);
 
 require(dirname(__FILE__)."/../../vendor/autoload.php");
 
+use SBData\Model\ParameterMap;
+use SBData\Model\Value\IntegerValue;
 use SBData\Model\Form;
 use SBData\Model\Field\EmailField;
 use SBData\Model\Field\HiddenNumericIntField;
@@ -11,103 +13,118 @@ use SBData\Model\Field\TextField;
 use SBData\Model\Field\URLField;
 use SBData\Model\Table\ArrayTable;
 
-$error = null;
-
-/* Define a table displaying the test rowset */
-
-$idField = new HiddenNumericIntField(true);
-
-function deletePersonLink(Form $form): string
+function importAndCheckParameters(): ParameterMap
 {
-	$id = $form->fields["id"]->exportValue();
-	return "?".http_build_query(array(
-		"__operation" => "delete",
-		"id" => $id
-	), "", "&amp;", PHP_QUERY_RFC3986);
+	$getMap = new ParameterMap(array(
+		"viewmode" => new IntegerValue(false),
+		"id" => new IntegerValue(false)
+	));
+
+	$getMap->importValues($_GET);
+	if($getMap->checkValues())
+		return $getMap;
+	else
+		throw new Exception("The keys are invalid!");
 }
 
-$table = new ArrayTable(array(
-	"id" => $idField,
-	"firstname" => new TextField("First name", true),
-	"lastname" => new TextField("Last name", true),
-	"address" => new TextField("Street", true),
-	"number" => new NumericIntTextField("House number", true),
-	"zipcode" => new TextField("Zipcode", true, 6, 6),
-	"phone" => new TextField("Phone", false, 10, 10),
-	"city" => new TextField("City", true),
-	"email" => new EmailField("Email"),
-	"homepage" => new URLField("Homepage")
-), array(
-	"Delete" => "deletePersonLink"
-));
-
-/* Define a test rowset */
-$table->setRows(array(
-	array("id" => 1, "firstname" => "Sander", "lastname" => "van der Burg", "address" => "Some steet", "number" => "1", "zipcode" => "1234AB", "city" => "City", "phone" => "0101234567", "email" => "sander@sander.sander", "homepage" => "http://sander"),
-	array("id" => 2, "firstname" => "Sander", "lastname" => "van der Burg", "address" => "Some steet", "number" => "2", "zipcode" => "1234AB", "city" => "City", "phone" => "0101234567", "email" => "sander@sander.sander", "homepage" => "http://sander"),
-	array("id" => 3, "firstname" => "Sander", "lastname" => "van der Burg", "address" => "Some steet", "number" => "3", "zipcode" => "1234AB", "city" => "City", "phone" => "0101234567", "email" => "sander@sander.sander", "homepage" => "http://sander"),
-	array("id" => 4, "firstname" => "Sander", "lastname" => "van der Burg", "address" => "Some steet", "number" => "4", "zipcode" => "1234AB", "city" => "City", "phone" => "0101234567", "email" => "sander@sander.sander", "homepage" => "http://sander"),
-	array("id" => 5, "firstname" => "Sander", "lastname" => "van der Burg", "address" => "Some steet", "number" => "5", "zipcode" => "1234AB", "city" => "City", "phone" => "0101234567", "email" => "sander@sander.sander", "homepage" => "http://sander"),
-	array("id" => 6, "firstname" => "Sander", "lastname" => "van der Burg", "address" => "Some steet", "number" => "6", "zipcode" => "1234AB", "city" => "City", "phone" => "0101234567", "email" => "sander@sander.sander", "homepage" => "http://sander"),
-	array("id" => 7, "firstname" => "Sander", "lastname" => "van der Burg", "address" => "Some steet", "number" => "7", "zipcode" => "1234AB", "city" => "City", "phone" => "0101234567", "email" => "sander@sander.sander", "homepage" => "http://sander"),
-	array("id" => 8, "firstname" => "Sander", "lastname" => "van der Burg", "address" => "Some steet", "number" => "8", "zipcode" => "1234AB", "city" => "City", "phone" => "0101234567", "email" => "sander@sander.sander", "homepage" => "http://sander"),
-	array("id" => 9, "firstname" => "Sander", "lastname" => "van der Burg", "address" => "Some steet", "number" => "9", "zipcode" => "1234AB", "city" => "City", "phone" => "0101234567", "email" => "sander@sander.sander", "homepage" => "http://sander"),
-	array("id" => 10, "firstname" => "Sander", "lastname" => "van der Burg", "address" => "Some steet", "number" => "10", "zipcode" => "1234AB", "city" => "City", "phone" => "0101234567", "email" => "sander@sander.sander", "homepage" => "http://sander"),
-	array("id" => 11, "firstname" => "Sander", "lastname" => "van der Burg", "address" => "Some steet", "number" => "11", "zipcode" => "1234AB", "city" => "City", "phone" => "0101234567", "email" => "sander@sander.sander", "homepage" => "http://sander"),
-	array("id" => 12, "firstname" => "Sander", "lastname" => "van der Burg", "address" => "Some steet", "number" => "12", "zipcode" => "1234AB", "city" => "City", "phone" => "0101234567", "email" => "sander@sander.sander", "homepage" => "http://sander"),
-	array("id" => 13, "firstname" => "Sander", "lastname" => "van der Burg", "address" => "Some steet", "number" => "13", "zipcode" => "1234AB", "city" => "City", "phone" => "0101234567", "email" => "sander@sander.sander", "homepage" => "http://sander"),
-	array("id" => 14, "firstname" => "Sander", "lastname" => "van der Burg", "address" => "Some steet", "number" => "14", "zipcode" => "1234AB", "city" => "City", "phone" => "0101234567", "email" => "sander@sander.sander", "homepage" => "http://sander")
-));
-
-if(count($_POST) > 0) // If an edit has been made, override the test rowset with the change
+function constructTable(): ArrayTable
 {
-	/* Validate the user input */
-	$submittedForm = $table->constructForm();
-	$submittedForm->importValues($_POST);
-	$submittedForm->checkFields();
-
-	if($submittedForm->checkValid()) // If the imput is valid, then use it to modify
+	function deletePersonLink(Form $form): string
 	{
-		/* Do a linear search for the element that needs to be changed (yes I know it can be done more efficiently, but I'm too lazy to implement a smarter way) */
+		$id = $form->fields["id"]->exportValue();
 
-		foreach($table->rows as $index => $row)
-		{
-			$id = $submittedForm->fields["id"]->exportValue();
-
-			if($row["id"] == $id)
-			{
-				/* Set the updated values for the row */
-				$row["firstname"] = $submittedForm->fields["firstname"]->exportValue();
-				$row["lastname"] = $submittedForm->fields["lastname"]->exportValue();
-				$row["address"] = $submittedForm->fields["address"]->exportValue();
-				$row["number"] = $submittedForm->fields["number"]->exportValue();
-				$row["zipcode"] = $submittedForm->fields["zipcode"]->exportValue();
-				$row["phone"] = $submittedForm->fields["phone"]->exportValue();
-				$row["city"] = $submittedForm->fields["city"]->exportValue();
-				$row["email"] = $submittedForm->fields["email"]->exportValue();
-				$row["homepage"] = $submittedForm->fields["homepage"]->exportValue();
-			}
-
-			$table->rows[$index] = $row; // Update the row in the array
-		}
+		return "?".http_build_query(array(
+			"__operation" => "delete",
+			"id" => $id
+		), "", "&amp;", PHP_QUERY_RFC3986);
 	}
+
+	$table = new ArrayTable(array(
+		"id" => new HiddenNumericIntField(true),
+		"firstname" => new TextField("First name", true),
+		"lastname" => new TextField("Last name", true),
+		"address" => new TextField("Street", true),
+		"number" => new NumericIntTextField("House number", true),
+		"zipcode" => new TextField("Zipcode", true, 6, 6),
+		"phone" => new TextField("Phone", false, 10, 10),
+		"city" => new TextField("City", true),
+		"email" => new EmailField("Email"),
+		"homepage" => new URLField("Homepage")
+	), array(
+		"Delete" => "deletePersonLink"
+	));
+
+	/* Define a test rowset */
+	$table->setRows(array(
+		array("id" => 1, "firstname" => "Sander", "lastname" => "van der Burg", "address" => "Some steet", "number" => "1", "zipcode" => "1234AB", "city" => "City", "phone" => "0101234567", "email" => "sander@sander.sander", "homepage" => "http://sander"),
+		array("id" => 2, "firstname" => "Sander", "lastname" => "van der Burg", "address" => "Some steet", "number" => "2", "zipcode" => "1234AB", "city" => "City", "phone" => "0101234567", "email" => "sander@sander.sander", "homepage" => "http://sander"),
+		array("id" => 3, "firstname" => "Sander", "lastname" => "van der Burg", "address" => "Some steet", "number" => "3", "zipcode" => "1234AB", "city" => "City", "phone" => "0101234567", "email" => "sander@sander.sander", "homepage" => "http://sander"),
+		array("id" => 4, "firstname" => "Sander", "lastname" => "van der Burg", "address" => "Some steet", "number" => "4", "zipcode" => "1234AB", "city" => "City", "phone" => "0101234567", "email" => "sander@sander.sander", "homepage" => "http://sander"),
+		array("id" => 5, "firstname" => "Sander", "lastname" => "van der Burg", "address" => "Some steet", "number" => "5", "zipcode" => "1234AB", "city" => "City", "phone" => "0101234567", "email" => "sander@sander.sander", "homepage" => "http://sander"),
+		array("id" => 6, "firstname" => "Sander", "lastname" => "van der Burg", "address" => "Some steet", "number" => "6", "zipcode" => "1234AB", "city" => "City", "phone" => "0101234567", "email" => "sander@sander.sander", "homepage" => "http://sander"),
+		array("id" => 7, "firstname" => "Sander", "lastname" => "van der Burg", "address" => "Some steet", "number" => "7", "zipcode" => "1234AB", "city" => "City", "phone" => "0101234567", "email" => "sander@sander.sander", "homepage" => "http://sander"),
+		array("id" => 8, "firstname" => "Sander", "lastname" => "van der Burg", "address" => "Some steet", "number" => "8", "zipcode" => "1234AB", "city" => "City", "phone" => "0101234567", "email" => "sander@sander.sander", "homepage" => "http://sander"),
+		array("id" => 9, "firstname" => "Sander", "lastname" => "van der Burg", "address" => "Some steet", "number" => "9", "zipcode" => "1234AB", "city" => "City", "phone" => "0101234567", "email" => "sander@sander.sander", "homepage" => "http://sander"),
+		array("id" => 10, "firstname" => "Sander", "lastname" => "van der Burg", "address" => "Some steet", "number" => "10", "zipcode" => "1234AB", "city" => "City", "phone" => "0101234567", "email" => "sander@sander.sander", "homepage" => "http://sander"),
+		array("id" => 11, "firstname" => "Sander", "lastname" => "van der Burg", "address" => "Some steet", "number" => "11", "zipcode" => "1234AB", "city" => "City", "phone" => "0101234567", "email" => "sander@sander.sander", "homepage" => "http://sander"),
+		array("id" => 12, "firstname" => "Sander", "lastname" => "van der Burg", "address" => "Some steet", "number" => "12", "zipcode" => "1234AB", "city" => "City", "phone" => "0101234567", "email" => "sander@sander.sander", "homepage" => "http://sander"),
+		array("id" => 13, "firstname" => "Sander", "lastname" => "van der Burg", "address" => "Some steet", "number" => "13", "zipcode" => "1234AB", "city" => "City", "phone" => "0101234567", "email" => "sander@sander.sander", "homepage" => "http://sander"),
+		array("id" => 14, "firstname" => "Sander", "lastname" => "van der Burg", "address" => "Some steet", "number" => "14", "zipcode" => "1234AB", "city" => "City", "phone" => "0101234567", "email" => "sander@sander.sander", "homepage" => "http://sander")
+	));
+
+	/* Return the table */
+	return $table;
 }
-else
+
+function executeOperation(ArrayTable $table, ParameterMap $getMap): ?Form
 {
-	$submittedForm = null;
-
-	if(count($_GET) > 0 && array_key_exists("__operation", $_GET) && $_GET["__operation"] == "delete") // If a delete has been made, delete the element from the array
+	if(count($_POST) > 0) // If an edit has been made, override the test rowset with the change
 	{
-		/* Check id validity */
-		$idField->importValue($_GET["id"]);
+		/* Validate the user input */
+		$submittedForm = $table->constructForm();
+		$submittedForm->importValues($_POST);
+		$submittedForm->checkFields();
 
-		if($idField->checkField("id"))
+		if($submittedForm->checkValid()) // If the imput is valid, then use it to modify
 		{
+			/* Do a linear search for the element that needs to be changed (yes I know it can be done more efficiently, but I'm too lazy to implement a smarter way) */
+
+			foreach($table->rows as $index => $row)
+			{
+				$id = $submittedForm->fields["id"]->exportValue();
+
+				if($row["id"] == $id)
+				{
+					/* Set the updated values for the row */
+					$row["firstname"] = $submittedForm->fields["firstname"]->exportValue();
+					$row["lastname"] = $submittedForm->fields["lastname"]->exportValue();
+					$row["address"] = $submittedForm->fields["address"]->exportValue();
+					$row["number"] = $submittedForm->fields["number"]->exportValue();
+					$row["zipcode"] = $submittedForm->fields["zipcode"]->exportValue();
+					$row["phone"] = $submittedForm->fields["phone"]->exportValue();
+					$row["city"] = $submittedForm->fields["city"]->exportValue();
+					$row["email"] = $submittedForm->fields["email"]->exportValue();
+					$row["homepage"] = $submittedForm->fields["homepage"]->exportValue();
+				}
+
+				$table->rows[$index] = $row; // Update the row in the array
+			}
+		}
+
+		return $submittedForm;
+	}
+	else if(array_key_exists("__operation", $_GET))
+	{
+		if($_GET["__operation"] == "delete")
+		{
+			$id = $getMap->values["id"]->value;
+
+			if($id == "")
+				throw new Exception("No id provided!");
+
 			/* Do a linear search for the element that needs to be deleted (yes yes, see previous note) */
 			foreach($table->rows as $index => $row)
 			{
-				$id = $idField->exportValue();
-
 				if($row["id"] == $id)
 				{
 					array_splice($table->rows, $index, 1); // Delete the found row
@@ -116,8 +133,23 @@ else
 			}
 		}
 		else
-			$error = "The provided id was invalid!";
+			throw new Exception("Unknown operation: ".$_GET["__operation"]);
 	}
+
+	return null;
+}
+
+$error = null;
+
+try
+{
+	$getMap = importAndCheckParameters();
+	$table = constructTable($getMap);
+	$submittedForm = executeOperation($table, $getMap);
+}
+catch(Exception $ex)
+{
+	$error = $ex->getMessage();
 }
 
 /* Display the page and table */
@@ -134,7 +166,7 @@ else
 		<?php
 		if($error === null)
 		{
-			if(array_key_exists("viewmode", $_GET) && $_GET["viewmode"] == "1") // If viewmode is selected, display ordinary table
+			if($getMap->values["viewmode"]->value == 1) // If viewmode is selected, display ordinary table
 			{
 				?>
 				<p><a href="<?php print($_SERVER["PHP_SELF"]); ?>">Edit</a></p>
