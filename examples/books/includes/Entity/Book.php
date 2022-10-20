@@ -36,18 +36,6 @@ class Book
 		return $stmt;
 	}
 
-	public static function queryOnePublisher(PDO $dbh, $BOOK_ID): PDOStatement
-	{
-		$stmt = $dbh->prepare("select publisher.name ".
-			"from book ".
-			"inner join publisher on book.PUBLISHER_ID = publisher.PUBLISHER_ID ".
-			"where book.BOOK_ID = ?");
-		if(!$stmt->execute(array($BOOK_ID)))
-			throw new Exception($stmt->errorInfo()[2]);
-
-		return $stmt;
-	}
-
 	public static function insert(PDO $dbh, array $book): int
 	{
 		$dbh->beginTransaction();

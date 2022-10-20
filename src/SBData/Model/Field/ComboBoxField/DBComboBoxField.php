@@ -1,6 +1,7 @@
 <?php
 namespace SBData\Model\Field\ComboBoxField;
-use \PDOStatement;
+use PDO;
+use PDOStatement;
 use SBData\Model\Field\VisibleField;
 use SBData\Model\Value\Value;
 
@@ -10,31 +11,41 @@ use SBData\Model\Value\Value;
  */
 class DBComboBoxField extends VisibleField
 {
-	/** An executed PDOStatement in which the first resulting column is used for the keys and the second for the values */
-	public PDOStatement $stmt;
+	/** A database connection handler */
+	public PDO $dbh;
+
+	/** A name of a function that fetches all possible options for the combobox */
+	public string $queryOptionsFunction;
+
+	/** A name of a function that fetches the selected value for the combobox */
+	public string $queryValueFunction;
 
 	/**
 	 * Constructs a new DBComboBoxField.
 	 *
 	 * @param $title Title of the field
-	 * @param $stmt An executed PDOStatement in which the first resulting column is used for the keys and the second for the values
+	 * @param $dbh A database connection handler
+	 * @param $queryOptionsFunction A name of a function that fetches all possible options for the combobox
+	 * @param $queryValueFunction A name of a function that fetches the selected value for the combobox
 	 * @param $mandatory Indicates whether a given value is mandatory
 	 */
-	public function __construct(string $title, PDOStatement $stmt, bool $mandatory = false)
+	public function __construct(string $title, PDO $dbh, string $queryOptionsFunction, string $queryValueFunction, bool $mandatory = false)
 	{
 		parent::__construct($title, new Value($mandatory));
-		$this->stmt = $stmt;
+		$this->dbh = $dbh;
+		$this->queryOptionsFunction = $queryOptionsFunction;
+		$this->queryValueFunction = $queryValueFunction;
 	}
-	
+
 	/**
 	 * Iterates over all possible combobox options and returns an
 	 * array containing option values for each iteration.
 	 *
 	 * @return array An associative array in which the key field points to the key and value to the value. It returns false if all options have been visited.
 	 */
-	public function fetchOption(): ?array
+	public function fetchOption(PDOStatement $stmt): ?array
 	{
-		if(($row = $this->stmt->fetch()) === false)
+		if(($row = $stmt->fetch()) === false)
 			return null;
 		else
 		{
@@ -50,18 +61,18 @@ class DBComboBoxField extends VisibleField
 				);
 		}
 	}
-	
+
 	/**
 	 * Fetches the value of the option that currently been selected.
 	 *
 	 * @return The actual value selected or false if an error has occured.
 	 */
-	public function fetchValue(): ?string
+	public function fetchValue(PDOStatement $stmt): ?string
 	{
-		if(($row = $this->stmt->fetch()) === false)
+		if(($row = $stmt->fetch()) === false)
 			return null;
 		else
-			return $row[0];
+			return end($row);
 	}
 }
 ?>

@@ -31,17 +31,12 @@ function importAndCheckParameters(): ParameterMap
 
 function constructForm(ParameterMap $getMap, PDO $dbh): Form
 {
-	if($getMap->values["viewmode"]->value == 1)
-		$stmt = Book::queryOnePublisher($dbh, $getMap->values["BOOK_ID"]->value); // In view mode we need to query the corresponding publisher name
-	else
-		$stmt = Publisher::queryAll($dbh); // In edit mode we need to know all selectable publishers
-
 	return new Form(array(
 		"__operation" => new HiddenField(false),
 		"BOOK_ID" => new ReadOnlyNumericIntTextField("Id", false, 20, 255),
 		"Title" => new TextField("Title", true),
 		"Subtitle" => new TextField("Subtitle", false, 30, 255),
-		"PUBLISHER_ID" => new DBComboBoxField("Publisher", $stmt, true),
+		"PUBLISHER_ID" => new DBComboBoxField("Publisher", $dbh, "Examples\\Books\\Entity\\Publisher::queryAll", "Examples\\Books\\Entity\\Publisher::queryOne", true),
 	));
 }
 

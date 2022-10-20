@@ -17,21 +17,21 @@ class DBComboBoxFieldTest extends TestCase
 		self::$dbh->query("insert into numbers values ('three', 'Three')");
 	}
 
-	private static function queryIdValuePairs(): PDOStatement
+	private static function queryIdValuePairs(PDO $dbh): PDOStatement
 	{
-		return self::$dbh->query("select id, value from numbers order by id");
+		return $dbh->query("select id, value from numbers order by id");
 	}
 
 	public function testSuccessOnEmpty(): void
 	{
-		$comboBoxField = new DBComboBoxField("Test", $this->queryIdValuePairs(), false);
+		$comboBoxField = new DBComboBoxField("Test", self::$dbh, "queryIdValuePairs", "", false);
 		$comboBoxField->importValue("");
 		$this->assertTrue($comboBoxField->checkField("Test"));
 	}
 
 	public function testFailureOnEmpty(): void
 	{
-		$comboBoxField = new DBComboBoxField("Test", $this->queryIdValuePairs(), true);
+		$comboBoxField = new DBComboBoxField("Test", self::$dbh, "queryIdValuePairs", "", true);
 		$comboBoxField->importValue("");
 		$this->assertFalse($comboBoxField->checkField("Test"));
 	}
