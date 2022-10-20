@@ -11,15 +11,16 @@ class CheckBoxField extends VisibleField
 	public bool $initiallyChecked;
 
 	/**
-	 * Constructs a new CheckBoxField instance
+	 * Constructs a new CheckBoxField instance.
 	 *
 	 * @param $title Title of the field
 	 * @param $initiallyChecked Indicates whether the field should be initially checked or not
 	 * @param $checkedValue Value that will be set if the checkbox has been checked
+	 * @param $defaultValue The value it defaults to
 	 */
-	public function __construct(string $title, bool $initiallyChecked = false, string $checkedValue = "1")
+	public function __construct(string $title, bool $initiallyChecked = false, string $checkedValue = "1", $defaultValue = null)
 	{
-		parent::__construct($title, new BooleanValue($checkedValue));
+		parent::__construct($title, new BooleanValue($checkedValue, null, $defaultValue));
 		$this->initiallyChecked = $initiallyChecked;
 	}
 }

@@ -35,5 +35,27 @@ class ParameterMapTest extends TestCase
 		$map->checkValues();
 		$this->assertFalse($map->checkValid());
 	}
+
+	public function testValues(): void
+	{
+		$map = new ParameterMap(array(
+			"name" => new SaneStringValue(true),
+			"email" => new EmailValue(true),
+			"comment" => new SaneStringValue(true, null, "Test case")
+		));
+		$map->importValues(array(
+			"name" => "John Doe",
+			"email" => "john@example.com"
+		));
+
+		$this->assertTrue($map->values["name"]->value === "John Doe");
+		$this->assertTrue($map->values["email"]->value === "john@example.com");
+		$this->assertTrue($map->values["comment"]->value === "Test case");
+
+		$map->clearValues();
+		$this->assertTrue($map->values["name"]->value === null);
+		$this->assertTrue($map->values["email"]->value === null);
+		$this->assertTrue($map->values["comment"]->value === "Test case");
+	}
 }
 ?>

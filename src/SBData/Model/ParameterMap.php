@@ -75,6 +75,15 @@ class ParameterMap
 	}
 
 	/**
+	 * Clears all values.
+	 */
+	public function clearValues(): void
+	{
+		foreach($this->values as $name => $value)
+			$value->clearValue();
+	}
+
+	/**
 	 * Composes an error message that explains which values are invalid.
 	 *
 	 * @param $prefix Error message prefix

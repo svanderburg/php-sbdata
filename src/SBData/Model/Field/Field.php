@@ -62,7 +62,7 @@ class Field
 	 */
 	public function clearValue(): void
 	{
-		$this->value->value = null;
+		$this->value->clearValue();
 	}
 
 	/**

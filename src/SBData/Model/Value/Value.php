@@ -20,17 +20,31 @@ class Value
 	/** Maximum size of the text field or null for infinite size */
 	public ?int $maxlength;
 
+	/** Stores the default value of the field */
+	public $defaultValue;
+
 	/**
 	 * Constructs a new Value instance.
 	 *
 	 * @param $mandatory Indicates whether a given value is mandatory
 	 * @param $maxlength Maximum size of the text field or null for infinite size
+	 * @param $defaultValue The value it defaults to
 	 */
-	public function __construct(bool $mandatory = false, int $maxlength = null)
+	public function __construct(bool $mandatory = false, int $maxlength = null, $defaultValue = null)
 	{
 		$this->mandatory = $mandatory;
 		$this->maxlength = $maxlength;
+		$this->defaultValue = $defaultValue;
+		$this->value = $defaultValue;
 		$this->valid = true;
+	}
+
+	/**
+	 * Clears the stored value.
+	 */
+	public function clearValue(): void
+	{
+		$this->value = $this->defaultValue;
 	}
 
 	/**

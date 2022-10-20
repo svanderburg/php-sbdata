@@ -13,10 +13,11 @@ class MetaDataField extends Field
 	 *
 	 * @param $mandatory Indicates whether a given value is mandatory
 	 * @param $maxlength Maximum size of the text field or null for infinite size
+	 * @param $defaultValue The value it defaults to
 	 */
-	public function __construct(bool $mandatory = false, int $maxlength = null)
+	public function __construct(bool $mandatory = false, int $maxlength = null, $defaultValue = null)
 	{
-		parent::__construct(new Value($mandatory, $maxlength));
+		parent::__construct(new Value($mandatory, $maxlength, $defaultValue));
 	}
 }
 ?>

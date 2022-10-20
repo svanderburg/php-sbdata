@@ -13,10 +13,11 @@ class DateField extends GenericTextField
 	 * @param $title Title of the field
 	 * @param $defaultToCurrentDate Indicates whether the default value should be set to today
 	 * @param $mandatory Indicates whether a given value is mandatory
+	 * @param $defaultValue The value it defaults to
 	 */
-	public function __construct(string $title, bool $defaultToCurrentDate = false, bool $mandatory = false)
+	public function __construct(string $title, bool $defaultToCurrentDate = false, bool $mandatory = false, $defaultValue = null)
 	{
-		parent::__construct($title, new ISODateValue($defaultToCurrentDate, $mandatory), 10);
+		parent::__construct($title, new ISODateValue($defaultToCurrentDate, $mandatory, $defaultValue), 10);
 	}
 }
 ?>

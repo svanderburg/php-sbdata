@@ -15,10 +15,11 @@ class BooleanValue extends SaneStringValue
 	 *
 	 * @param $checkedValue The string value that corresponds to: true
 	 * @param $maxlength Maximum size of the text field or null for infinite size
+	 * @param $defaultValue The value it defaults to
 	 */
-	public function __construct(string $checkedValue = "1", int $maxlength = null)
+	public function __construct(string $checkedValue = "1", int $maxlength = null, $defaultValue = null)
 	{
-		parent::__construct(false, $maxlength);
+		parent::__construct(false, $maxlength, $defaultValue);
 		$this->checkedValue = $checkedValue;
 	}
 

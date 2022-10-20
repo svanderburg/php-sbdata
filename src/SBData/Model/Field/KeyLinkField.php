@@ -16,10 +16,11 @@ class KeyLinkField extends GenericKeyLinkField
 	 * @param $composeURLFunction Name of the function that composes the URL where the field should be linked to
 	 * @param $mandatory Indicates whether a given value is mandatory
 	 * @param $maxlength Maximum size of the text field or null for infinite size
+	 * @param $defaultValue The value it defaults to
 	 */
-	public function __construct(string $title, string $composeURLFunction, bool $mandatory = false, int $maxlength = null)
+	public function __construct(string $title, string $composeURLFunction, bool $mandatory = false, int $maxlength = null, $defaultValue = null)
 	{
-		parent::__construct($title, $composeURLFunction, new Value($mandatory, $maxlength));
+		parent::__construct($title, $composeURLFunction, new Value($mandatory, $maxlength, $defaultValue));
 	}
 }
 ?>

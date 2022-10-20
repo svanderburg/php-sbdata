@@ -40,7 +40,8 @@ class FormTest extends TestCase
 	{
 		$form = new Form(array(
 			"name" => new TextField("Name", true),
-			"email" => new EmailField("Email", true)
+			"email" => new EmailField("Email", true),
+			"comment" => new TextField("Comment", true, 20, null, "Test case")
 		));
 		$form->importValues(array(
 			"name" => "John Doe",
@@ -49,10 +50,12 @@ class FormTest extends TestCase
 
 		$this->assertTrue($form->fields["name"]->exportValue() === "John Doe");
 		$this->assertTrue($form->fields["email"]->exportValue() === "john@example.com");
+		$this->assertTrue($form->fields["comment"]->exportValue() === "Test case");
 
 		$form->clearValues();
 		$this->assertTrue($form->fields["name"]->exportValue() === null);
 		$this->assertTrue($form->fields["email"]->exportValue() === null);
+		$this->assertTrue($form->fields["comment"]->exportValue() === "Test case");
 	}
 }
 ?>
