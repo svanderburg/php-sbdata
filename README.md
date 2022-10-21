@@ -134,6 +134,8 @@ In addition to single values, it is also possible to check a PHP `array` that
 consists of multiple values:
 
 ```php
+use SBData\Model\ParameterMap;
+
 $parameterMap = new ParameterMap(array(
     "id" => new IntegerValue(true),
     "description" => new SaneStringValue(true)
@@ -428,7 +430,7 @@ executing it, and attaching it to the table, you can display the results from th
 database:
 
 ```php
-/* Do some database intialisation first somewhere */
+/* Do some database initialisation first somewhere */
 
 /* Compose a statment that queries the persons */
 $stmt = $dbh->prepare("select * from persons order by PERSON_ID");
@@ -696,6 +698,120 @@ possible to redirect the user to the previous row by using:
 `AnchorRow::composePreviousRowFragment()` or the next row by using:
 `AnchorRow::composeNextRowFragment()`.
 
+Pagination
+----------
+Another important concern is dealing with large data sets. When a table contains
+many records (e.g. thousands or more), it is typically too expensive to query
+and display all of them for each request.
+
+It is also possible to create *paged* database tables in which the result of
+a query is divided into pages of a fixed size and only one page is displayed
+at a time.
+
+To make pagination possible, we must choose a request parameter that indicates
+the page we want to display. By default, this parameter is: `page`, but it can
+be changed to any other parameter name.
+
+We can use a `ParameterMap` to validate the `page` parameter as follows:
+
+```php
+$requestMap = new ParameterMap(array(
+    "page" => new IntegerValue(false, null, 0)
+));
+
+$requestMap->importValues($_REQUEST);
+
+$requestMap->checkValues();
+$valid = $requestMap->checkValid();
+```
+
+We can create a paged database table as follows:
+
+```php
+use SBData\Model\Table\PagedDBTable;
+
+$pageSize = 20;
+
+$table = new PagedDBTable(array(
+    "BOOK_ID" => new KeyLinkField("Id", "composeBookLink", true, 255),
+    "Title" => new TextField("Title", true, 30, 255),
+    "Subtitle" => new TextField("Subtitle", false, 30, 255),
+    "PUBLISHER_ID" => new MetaDataField(true, 10),
+    "PublisherName" => new KeyLinkField("Id", "composePublisherLink", true, 255)
+), $dbh, $pageSize, "queryNumOfPages", $requestMap);
+```
+
+The above code fragment creates a table displaying books (similar to the previous
+example) using the following options for pagination:
+
+* It defines a page size of: `20`, which means it will only display `20` records
+  at the time.
+* It invokes a function with the name: `queryNumOfPages` to determine how many
+  pages are available.
+* It propagates the page parameters map: `$requestMap` as a parameter to the
+  constructor so that the table knows which page has been selected by the user.
+
+We can implement the `queryNumOfPages` function as follows:
+
+```php
+function queryNumOfPages(PDO $dbh, int $pageSize): int
+{
+    return ceil(TodoItem::queryNumOfItems($dbh) / $pageSize);
+}
+```
+
+The above function invokes a function named: `queryNumOfItems` that determines
+the amount of records in the database and divides it by the page size. Rounding
+the result up gives us the required amount pages.
+
+In addition to defining the table, we must also query the records that the table
+needs to display.
+
+The following code fragment queries a specific page to display:
+
+```php
+/* Do some database initialisation first somewhere */
+
+/* Compute the offset from the page */
+$page = $requestMap->values["page"]->value;
+$offset = (int)($page * $pageSize);
+
+/* Compose a statment that queries the persons */
+$stmt = $dbh->prepare("select * from books order by BOOK_ID limit ?, ?");
+$stmt->bindParam(1, $offset, PDO::PARAM_INT);
+$stmt->bindParam(2, $pageSize, PDO::PARAM_INT);
+
+$stmt->execute();
+
+/* Attach the statement to the table */
+$table->stmt = $stmt;
+```
+
+In the above code fragement, we use the `page` parameter from the `$requestMap`
+to compute the `$offset` in the database. Then we use the offset and page size
+to query a specific data page from the database, and we attach it to the table.
+
+We can display the paged database table in read-only mode as follows:
+
+```php
+\SBData\View\HTML\displayPagedDBTable($table);
+```
+
+In addition to rendering a table with a sub set of records, the above function
+also renders the controls to navigate a user through the available pages.
+
+We can display the table in semi-editable mode with:
+
+```php
+\SBData\View\HTML\displaySemiEditablePagedDBTable($table);
+```
+
+and in editable mode with:
+
+```php
+\SBData\View\HTML\displayEditablePagedDBTable($table);
+```
+
 Fields
 ======
 Currently the following `Field` classes are provided by this library:
@@ -830,6 +946,8 @@ This package includes three example web applications that can be found in the
   deployed to an RDBMS.
 * The `captcha` is an example demonstrating how to create custom fields. In this
   example, we expose the functionality of the simple CAPTCHA API as a field.
+* The `todolist` application is a TODO list example that shows how to use a
+  `PagedDBTable`.
 
 API documentation
 =================

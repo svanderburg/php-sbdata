@@ -14,7 +14,7 @@ class ParameterMap
 	 *
 	 * @param $values An associative array mapping names to values that should be checked
 	 */
-	public function __construct(array $values)
+	public function __construct(array $values = array())
 	{
 		$this->values = $values;
 	}

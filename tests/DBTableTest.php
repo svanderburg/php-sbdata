@@ -19,7 +19,7 @@ class DBTableTest extends TestCase
 		self::$dbh->query("insert into persons values (2, 'John', 'Doe')");
 	}
 
-	public function testDBTable()
+	public function testDBTable(): void
 	{
 		$table = new DBTable(array(
 			"id" => new HiddenNumericIntField("id", true),

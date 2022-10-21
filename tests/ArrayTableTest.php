@@ -9,7 +9,7 @@ use SBData\Model\Table\ArrayTable;
 
 class ArrayTableTest extends TestCase
 {
-	public function testArrayTable()
+	public function testArrayTable(): void
 	{
 		$table = new ArrayTable(array(
 			"id" => new HiddenNumericIntField("id", true),

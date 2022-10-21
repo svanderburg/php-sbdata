@@ -55,7 +55,7 @@ function displayFields(Table $table, Form $form, string $anchorPrefix): void
 }
 
 /**
- * Displays a table with field in a non-editable way.
+ * Displays a table with fields in a non-editable way.
  *
  * @param $table Table to display
  * @param $noItemsLabel Label to be displayed when there are no items in the table
@@ -115,7 +115,7 @@ function displayActionLinks(Table $table, Form $form): void
 }
 
 /**
- * Displays a table with field in a semi-editable way. In this table fields can
+ * Displays a table with fields in a semi-editable way. In this table, fields can
  * not be edited, but there are edit and delete buttons.
  *
  * @param $table Table to display
@@ -217,7 +217,7 @@ function displayEditButtonForEditableTable(Table $table, Form $form, string $edi
 }
 
 /**
- * Displays a table with field in an editable way. In this table fields can be directly edited.
+ * Displays a table with fields in an editable way. In this table, fields can be directly edited.
  *
  * @param $table Table to display
  * @param $submittedForm Form that contains the last submitted data that has changed, or null if no data was submitted
