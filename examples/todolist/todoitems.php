@@ -6,6 +6,7 @@ require_once("includes/db.php");
 
 use SBData\Model\ParameterMap;
 use SBData\Model\Value\IntegerValue;
+use SBData\Model\Value\PageValue;
 use SBData\Model\Form;
 use SBData\Model\Table\PagedDBTable;
 use SBData\Model\Field\ReadOnlyNumericIntTextField;
@@ -20,7 +21,7 @@ function importAndCheckParameters(): ParameterMap
 	$requestMap = new ParameterMap(array(
 		"viewmode" => new IntegerValue(false),
 		"ITEM_ID" => new IntegerValue(false, 255),
-		"page" => new IntegerValue(false, null, 0)
+		"page" => new PageValue()
 	));
 
 	$requestMap->importValues($_REQUEST);

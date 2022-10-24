@@ -716,7 +716,7 @@ We can use a `ParameterMap` to validate the `page` parameter as follows:
 
 ```php
 $requestMap = new ParameterMap(array(
-    "page" => new IntegerValue(false, null, 0)
+    "page" => new PageValue()
 ));
 
 $requestMap->importValues($_REQUEST);
@@ -902,6 +902,10 @@ The following value classes are provided:
 * `BooleanValue`. Does a boolean check. `true` corresponds to a predefined string
   and `false` corresponds to an empty string.
 * `IntegerValue`. Checks whether user provided input is a valid integer number.
+* `NaturalNumberValue`. Checks whether user provided input is a valid natural
+  number (an integer that is 0 or greater).
+* `PageValue` checks whether user provided input is a valid page number (0 or
+  greater and defaulting to 0).
 * `ISODateValue`. Checks whether user provided input is a valid date in ISO
   format.
 * `EmailValue`. Checks whether user provided input is a valid email address.

@@ -15,10 +15,12 @@ class HiddenNumericIntField extends GenericHiddenField
 	 * @param $mandatory Indicates whether a given value is mandatory
 	 * @param $maxlength Maximum size of the text field or null for infinite size
 	 * @param $defaultValue The value it defaults to
+	 * @param $minValue Specifies the minimum value that is allowed or null if there is no lower boundary (defaults to null)
+	 * @param $maxValue Specifies the maximum value that is allowed or null if there is no upper boundary (defaults to null)
 	 */
-	public function __construct(bool $mandatory = false, int $maxlength = null, $defaultValue = null)
+	public function __construct(bool $mandatory = false, int $maxlength = null, $defaultValue = null, int $minValue = null, int $maxValue = null)
 	{
-		parent::__construct(new IntegerValue($mandatory, $maxlength, $defaultValue));
+		parent::__construct(new IntegerValue($mandatory, $maxlength, $defaultValue, $minValue, $maxValue));
 	}
 }
 ?>
