@@ -4,6 +4,7 @@ error_reporting(E_STRICT | E_ALL);
 require(dirname(__FILE__)."/../../vendor/autoload.php");
 
 use SBData\Model\Form;
+use SBData\Model\Field\AcceptableFileNameField;
 use SBData\Model\Field\CheckBoxField;
 use SBData\Model\Field\DateField;
 use SBData\Model\Field\EmailField;
@@ -27,6 +28,7 @@ $form = new Form(array(
 	"homepage" => new URLField("Homepage"),
 	"birthdate" => new DateField("Birth date", true, true),
 	"drivinglicense" => new CheckBoxField("Driving license", false, "1"),
+	"filename" => new AcceptableFileNameField("File name", false, 20, 255),
 	"comments" => new TextAreaField("Comments", false, 30, 15)
 ));
 

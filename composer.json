@@ -18,6 +18,7 @@
           "src/SBData/View/HTML/pageddbtable.php",
           "src/SBData/View/HTML/form.php",
           "src/SBData/View/HTML/field.php",
+          "src/SBData/View/HTML/Field/acceptablefilenamefield.php",
           "src/SBData/View/HTML/Field/arraycomboboxfield.php",
           "src/SBData/View/HTML/Field/textareafield.php",
           "src/SBData/View/HTML/Field/checkboxfield.php",
