@@ -520,8 +520,8 @@ We can also compose an editable grid to make every cell in the table editable:
 \SBData\View\HTML\displayEditableTable($table, $submittedForm);
 ```
 
-The above function composes `div` elements with classes corresponding to table
-rows, headers and cells. With some CSS code
+The above function composes `div` and `span` elements with classes corresponding
+to table rows, headers and cells. With some CSS code
 (e.g. `.td { display: table-cell; }`) you can make the resulting code look like a
 table.
 

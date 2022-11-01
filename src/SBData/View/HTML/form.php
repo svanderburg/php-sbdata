@@ -99,7 +99,7 @@ function displayEditableForm(Form $form, string $submitLabel, string $generalErr
 					<?php
 				}
 				else
-					displayEditableField($name, $field, $form);
+					displayEditableFieldRow($name, false, $field, $form);
 			}
 			?>
 			<p><button><?php print($submitLabel); ?></button></p>

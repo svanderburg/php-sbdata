@@ -9,15 +9,14 @@
 namespace SBData\View\HTML\Field;
 use SBData\Model\Field\GenericHiddenField;
 
-function displayGenericHiddenField(GenericHiddenField $field): void
+function displayEditableGenericHiddenFieldRow(string $name, bool $inline, GenericHiddenField $field): void
 {
-	// Do nothing
-}
-
-function displayEditableGenericHiddenField(string $name, GenericHiddenField $field): void
-{
+	if($inline)
+		$tag = "span";
+	else
+		$tag = "div";
 	?>
-	<div style="display: none;"><input name="<?php print($name); ?>" type="hidden" value="<?php print(htmlentities($field->exportValue())); ?>"></div>
+	<<?php print($tag); ?> style="display: none;"><input name="<?php print($name); ?>" type="hidden" value="<?php print(htmlentities($field->exportValue())); ?>"></<?php print($tag); ?>>
 	<?php
 }
 

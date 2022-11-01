@@ -9,12 +9,7 @@
 namespace SBData\View\HTML\Field;
 use SBData\Model\Field\MetaDataField;
 
-function displayMetaDataField(MetaDataField $field): void
-{
-	// Do nothing
-}
-
-function displayEditableMetaDataField(string $name, MetaDataField $field): void
+function displayEditableMetaDataFieldRow(string $name, bool $inline, MetaDataField $field): void
 {
 	// Do nothing
 }

@@ -13,6 +13,11 @@ body
 	display: table;
 }
 
+.tbody
+{
+	display: table-row-group;
+}
+
 .tr
 {
 	display: table-row;

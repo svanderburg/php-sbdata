@@ -40,6 +40,22 @@ function displayEditableField(string $name, Field $field, Form $form = null): vo
 }
 
 /**
+ * Displays an entire row for a field in an editable way. This is used for displaying non-visible fields.
+ *
+ * @param $name Name of the field
+ * @param $inline Indicates whether to generate an inline element for the row
+ * @param $field Field to display
+ * @param $form Form where the field belongs to (optional)
+ */
+function displayEditableFieldRow(string $name, bool $inline, Field $field, Form $form = null): void
+{
+	/* Dynamically invoke the corresponding the display function belonging to the given class */
+	$reflect = new ReflectionClass($field);
+	$functionName = '\\'.$field->package."\View\HTML\Field\displayEditable".$reflect->getShortName()."Row";
+	$functionName($name, $inline, $field, $form);
+}
+
+/**
  * @}
  */
 ?>

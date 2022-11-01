@@ -163,7 +163,7 @@ function displayEditableTableHeader(Table $table): void
 			if($field->visible)
 			{
 				?>
-				<div class="th"><?php print($field->title); displayMandatorySign($field); ?></div>
+				<span class="th"><?php print($field->title); displayMandatorySign($field); ?></span>
 				<?php
 			}
 		}
@@ -176,7 +176,7 @@ function displayNoItemsLabelForEditableTable(string $noItemsLabel, string $ancho
 {
 	?>
 	<div class="tr">
-		<div class="td"><a name="<?php print($anchorPrefix); ?>-0"></a><?php print($noItemsLabel); ?></div>
+		<span class="td"><a name="<?php print($anchorPrefix); ?>-0"></a><?php print($noItemsLabel); ?></span>
 	</div>
 	<?php
 }
@@ -188,11 +188,11 @@ function displayEditableFields(Form $form): void
 		if($field->visible)
 		{
 			?>
-			<div class="td<?php if(!$field->isValid()) print(" invalid"); ?>"><?php displayEditableField($name, $field, $form); ?></div>
+			<span class="td<?php if(!$field->isValid()) print(" invalid"); ?>"><?php displayEditableField($name, $field, $form); ?></span>
 			<?php
 		}
 		else
-			displayEditableField($name, $field, $form);
+			displayEditableFieldRow($name, true, $field, $form);
 	}
 }
 
@@ -203,7 +203,7 @@ function displayActionLinksForEditableTable(Table $table, Form $form): void
 		foreach($table->actions as $label => $actionFunction)
 		{
 			?>
-			<div class="td"><?php displayActionLink($form, $actionFunction, $label); ?></div>
+			<span class="td"><?php displayActionLink($form, $actionFunction, $label); ?></span>
 			<?php
 		}
 	}
@@ -212,7 +212,7 @@ function displayActionLinksForEditableTable(Table $table, Form $form): void
 function displayEditButtonForEditableTable(Table $table, Form $form, string $editLabel, string $anchorPrefix): void
 {
 	?>
-	<div class="td"><?php if($table->identifyRows) { ?><a name="<?php print($anchorPrefix."-".$form->fields["__id"]->exportValue()); ?>"><?php } ?><button><?php print($editLabel); ?></button><?php if($table->identifyRows) { ?></a><?php } ?></div>
+	<span class="td"><?php if($table->identifyRows) { ?><a name="<?php print($anchorPrefix."-".$form->fields["__id"]->exportValue()); ?>"><?php } ?><button><?php print($editLabel); ?></button><?php if($table->identifyRows) { ?></a><?php } ?></span>
 	<?php
 }
 
@@ -251,12 +251,14 @@ function displayEditableTable(Table $table, Form $submittedForm = null, string $
 					if($submittedForm !== null && !$submittedForm->checkValid() && $submittedForm->fields["__id"]->exportValue() == $rowId)
 						$form = $submittedForm; // If a submitted form is given use that}
 					?>
-					<form class="tr" method="post" action="<?php print($_SERVER["PHP_SELF"]."#".$anchorPrefix."-".$rowId); ?>"<?php print($encTypeAttribute); ?>>
-						<?php
-						displayEditableFields($form);
-						displayEditButtonForEditableTable($table, $form, $editLabel, $anchorPrefix);
-						displayActionLinksForEditableTable($table, $form);
-						?>
+					<form class="tbody" method="post" action="<?php print($_SERVER["PHP_SELF"]."#".$anchorPrefix."-".$rowId); ?>"<?php print($encTypeAttribute); ?>>
+						<div class="tr">
+							<?php
+							displayEditableFields($form);
+							displayEditButtonForEditableTable($table, $form, $editLabel, $anchorPrefix);
+							displayActionLinksForEditableTable($table, $form);
+							?>
+						</div>
 					</form>
 					<?php
 				}
