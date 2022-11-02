@@ -16,7 +16,7 @@ function displayURLField(URLField $field): void
 	if($value !== "")
 	{
 		?>
-		<a href="<?php print($value); ?>"><?php print(htmlentities($value)); ?></a>
+		<a href="<?= $value ?>"><?= htmlentities($value) ?></a>
 		<?php
 	}
 }

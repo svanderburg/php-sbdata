@@ -171,14 +171,14 @@ catch(Exception $ex)
 			if($getMap->values["viewmode"]->value == 1) // If viewmode is selected, display ordinary table
 			{
 				?>
-				<p><a href="<?php print($_SERVER["PHP_SELF"]); ?>">Edit</a></p>
+				<p><a href="<?= $_SERVER["PHP_SELF"] ?>">Edit</a></p>
 				<?php
 				\SBData\View\HTML\displaySemiEditableTable($table);
 			}
 			else // Otherwise display editable table
 			{
 				?>
-				<p><a href="<?php print($_SERVER["PHP_SELF"]); ?>?viewmode=1">View</a></p>
+				<p><a href="<?= $_SERVER["PHP_SELF"] ?>?viewmode=1">View</a></p>
 				<?php
 				\SBData\View\HTML\displayEditableTable($table, $submittedForm);
 			}
@@ -186,7 +186,7 @@ catch(Exception $ex)
 		else
 		{
 			?>
-			<p><?php print($error); ?></p>
+			<p><?= $error ?></p>
 			<?php
 		}
 		?>

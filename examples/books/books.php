@@ -133,7 +133,7 @@ catch(Exception $ex)
 		if($error !== null)
 		{
 			?>
-			<p><?php print($error); ?></p>
+			<p><?= $error ?></p>
 			<?php
 		}
 		else if(($stmt = Book::queryAll($dbh)) !== false)
@@ -143,7 +143,7 @@ catch(Exception $ex)
 			if($getMap->values["viewmode"]->value == 1) // If viewmode is selected, display ordinary table
 			{
 				?>
-				<p><a href="<?php print($_SERVER["PHP_SELF"]); ?>?viewmode=2">Semi edit</a></p>
+				<p><a href="<?= $_SERVER["PHP_SELF"] ?>?viewmode=2">Semi edit</a></p>
 				<?php
 				\SBData\View\HTML\displayTable($table);
 			}
@@ -152,7 +152,7 @@ catch(Exception $ex)
 				?>
 				<p>
 					<a href="book.php">Add book</a> |
-					<a href="<?php print($_SERVER["PHP_SELF"]); ?>">Edit</a>
+					<a href="<?= $_SERVER["PHP_SELF"] ?>">Edit</a>
 				</p>
 				<?php
 				\SBData\View\HTML\displaySemiEditableTable($table);
@@ -162,7 +162,7 @@ catch(Exception $ex)
 				?>
 				<p>
 					<a href="book.php">Add book</a> |
-					<a href="<?php print($_SERVER["PHP_SELF"]); ?>?viewmode=1">View</a>
+					<a href="<?= $_SERVER["PHP_SELF"] ?>?viewmode=1">View</a>
 				</p>
 				<?php
 				\SBData\View\HTML\displayEditableTable($table, $submittedForm);

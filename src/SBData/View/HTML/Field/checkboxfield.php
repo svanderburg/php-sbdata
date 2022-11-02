@@ -19,7 +19,7 @@ function displayEditableCheckBoxField(string $name, CheckBoxField $field): void
 {
 	$value = $field->exportValue();
 	?>
-	<input name="<?php print($name); ?>" type="checkbox" value="<?php print($field->value->checkedValue); ?>"<?php if(($value === null && $field->initiallyChecked) || $value == $field->value->checkedValue) print(" checked"); ?>>
+	<input name="<?= $name ?>" type="checkbox" value="<?= $field->value->checkedValue ?>"<?php if(($value === null && $field->initiallyChecked) || $value == $field->value->checkedValue) print(" checked"); ?>>
 	<?php
 }
 

@@ -22,13 +22,13 @@ function displayEditableDBComboBoxField(string $name, DBComboBoxField $field): v
 	$stmt = ($field->queryOptionsFunction)($field->dbh);
 
 	?>
-	<select name="<?php print($name); ?>">
+	<select name="<?= $name ?>">
 		<option value="">---</option>
 		<?php
 		while(($row = $field->fetchOption($stmt)) !== null)
 		{
 			?>
-			<option value="<?php print($row["key"]); ?>"<?php if($row["key"] == $field->exportValue()) print(" selected"); ?>><?php print($row["value"]); ?></option>
+			<option value="<?= $row["key"] ?>"<?php if($row["key"] == $field->exportValue()) print(" selected"); ?>><?= $row["value"] ?></option>
 			<?php
 		}
 		?>

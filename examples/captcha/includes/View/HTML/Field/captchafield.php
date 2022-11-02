@@ -12,8 +12,8 @@ function displayEditableCAPTCHAField($name, CAPTCHAField $field)
 	\SBData\View\HTML\Field\displayEditableRawTextField($name, $field);
 	$parsedURL = parse_url($_SESSION['captcha']['image_src']);
 	?>
-	<img src="<?php print($field->baseURL.basename($parsedURL["path"])."?".$parsedURL["query"]); ?>" alt="Code"><br>
+	<img src="<?= $field->baseURL.basename($parsedURL["path"])."?".$parsedURL["query"] ?>" alt="Code"><br>
+	<?= $field->instruction ?>
 	<?php
-	print($field->instruction);
 }
 ?>

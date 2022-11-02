@@ -110,7 +110,7 @@ catch(Exception $ex)
 	<body>
 		<p>
 			<a href="todoitems.php">&laquo; TODO items</a> |
-			<a href="<?php print($_SERVER["PHP_SELF"]); ?>">Add TODO item</a>
+			<a href="<?= $_SERVER["PHP_SELF"] ?>">Add TODO item</a>
 		</p>
 		<?php
 		if($error === null)
@@ -123,7 +123,7 @@ catch(Exception $ex)
 		else
 		{
 			?>
-			<p><?php print($error); ?></p>
+			<p><?= $error ?></p>
 			<?php
 		}
 		?>

@@ -16,7 +16,7 @@ function displayEmailField(EmailField $field): void
 	if($value !== "")
 	{
 		?>
-		<a href="mailto:<?php print($value); ?>"><?php print(htmlentities($value)); ?></a>
+		<a href="mailto:<?= $value ?>"><?= htmlentities($value) ?></a>
 		<?php
 	}
 }

@@ -17,7 +17,7 @@ function displayPasswordField(PasswordField $field): void
 function displayEditablePasswordField(string $name, PasswordField $field): void
 {
 	?>
-	<input name="<?php print($name); ?>" type="password" size="<?php print($field->size); ?>"<?php if($field->value->maxlength !== null) print(' maxlength="'.$field->value->maxlength.'"'); ?>>
+	<input name="<?= $name ?>" type="password" size="<?= $field->size ?>"<?php if($field->value->maxlength !== null) print(' maxlength="'.$field->value->maxlength.'"'); ?>>
 	<?php
 }
 

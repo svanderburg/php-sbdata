@@ -21,7 +21,7 @@ function displayGenericKeyLinkField(GenericKeyLinkField $field, Form $form): voi
 	else
 	{
 		?>
-		<a href="<?php print($linkURL); ?>"><?php print(htmlentities($value)); ?></a>
+		<a href="<?= $linkURL ?>"><?= htmlentities($value) ?></a>
 		<?php
 	}
 }
@@ -29,7 +29,7 @@ function displayGenericKeyLinkField(GenericKeyLinkField $field, Form $form): voi
 function displayEditableGenericKeyLinkField(string $name, GenericKeyLinkField $field, Form $form): void
 {
 	?>
-	<input type="hidden" name="<?php print($name); ?>" value="<?php print(htmlentities($field->exportValue())); ?>">
+	<input type="hidden" name="<?= $name ?>" value="<?= htmlentities($field->exportValue()) ?>">
 	<?php
 	displayGenericKeyLinkField($field, $form);
 }

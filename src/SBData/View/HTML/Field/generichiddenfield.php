@@ -16,7 +16,7 @@ function displayEditableGenericHiddenFieldRow(string $name, bool $inline, Generi
 	else
 		$tag = "div";
 	?>
-	<<?php print($tag); ?> style="display: none;"><input name="<?php print($name); ?>" type="hidden" value="<?php print(htmlentities($field->exportValue())); ?>"></<?php print($tag); ?>>
+	<<?= $tag ?> style="display: none;"><input name="<?= $name ?>" type="hidden" value="<?= htmlentities($field->exportValue()) ?>"></<?= $tag ?>>
 	<?php
 }
 

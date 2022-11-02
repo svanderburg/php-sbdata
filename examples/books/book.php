@@ -114,7 +114,7 @@ catch(Exception $ex)
 	<body>
 		<p>
 			<a href="books.php">&laquo; Books</a> |
-			<a href="<?php print($_SERVER["PHP_SELF"]); ?>">Add book</a>
+			<a href="<?= $_SERVER["PHP_SELF"] ?>">Add book</a>
 		</p>
 		<?php
 		if($error === null)
@@ -127,7 +127,7 @@ catch(Exception $ex)
 		else
 		{
 			?>
-			<p><?php print($error); ?></p>
+			<p><?= $error ?></p>
 			<?php
 		}
 		?>

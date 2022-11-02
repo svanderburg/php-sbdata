@@ -17,7 +17,7 @@ function displayGenericTextField(GenericTextField $field): void
 function displayEditableGenericTextField(string $name, GenericTextField $field): void
 {
 	?>
-	<input name="<?php print($name); ?>" type="text" value="<?php print(htmlentities($field->exportValue())); ?>" size="<?php print($field->size); ?>"<?php if($field->value->maxlength !== null) print(' maxlength="'.$field->value->maxlength.'"'); ?>>
+	<input name="<?= $name ?>" type="text" value="<?= htmlentities($field->exportValue()) ?>" size="<?= $field->size ?>"<?php if($field->value->maxlength !== null) print(' maxlength="'.$field->value->maxlength.'"'); ?>>
 	<?php
 }
 

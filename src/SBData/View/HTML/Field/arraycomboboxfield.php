@@ -23,12 +23,12 @@ function displayArrayComboBoxField(ArrayComboBoxField $field): void
 function displayEditableArrayComboBoxField(string $name, ArrayComboBoxField $field): void
 {
 	?>
-	<select name="<?php print($name); ?>">
+	<select name="<?= $name ?>">
 		<?php
 		foreach($field->value->values as $key => $value)
 		{
 			?>
-			<option value="<?php print($key); ?>"<?php if($key == $field->exportValue()) print(" selected"); ?>><?php print($value); ?></option>
+			<option value="<?= $key ?>"<?php if($key == $field->exportValue()) print(" selected"); ?>><?= $value ?></option>
 			<?php
 		} 
 		?>

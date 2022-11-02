@@ -19,7 +19,7 @@ function displayTableHeader(Table $table): void
 			if($field->visible)
 			{
 				?>
-				<th><?php print($field->title); ?></th>
+				<th><?= $field->title ?></th>
 				<?php
 			}
 		}
@@ -32,7 +32,7 @@ function displayNoItemsLabel(Table $table, string $noItemsLabel, string $anchorP
 {
 	?>
 	<tr>
-		<td colspan="<?php print($table->computeNumberOfDisplayableColumns()); ?>"><?php if($table->identifyRows) { ?><a name="<?php print($anchorPrefix); ?>-0"></a><?php }; print($noItemsLabel); ?></td>
+		<td colspan="<?= $table->computeNumberOfDisplayableColumns() ?>"><?php if($table->identifyRows) { ?><a name="<?= $anchorPrefix ?>-0"></a><?php }; print($noItemsLabel); ?></td>
 	</tr>
 	<?php
 }
@@ -46,7 +46,7 @@ function displayFields(Table $table, Form $form, string $anchorPrefix): void
 		if($field->visible)
 		{
 			?>
-			<td><?php if($table->identifyRows && $first) { ?><a name="<?php print($anchorPrefix."-".$form->fields["__id"]->exportValue()); ?>"></a><?php }; displayField($field, $form); ?></td>
+			<td><?php if($table->identifyRows && $first) { ?><a name="<?= $anchorPrefix."-".$form->fields["__id"]->exportValue() ?>"></a><?php }; displayField($field, $form); ?></td>
 			<?php
 		}
 
@@ -96,7 +96,7 @@ function displayActionLink(Form $form, string $actionFunction, string $label): v
 	if($url !== null)
 	{
 		?>
-		<a href="<?php print($url); ?>"><?php print($label); ?></a>
+		<a href="<?= $url ?>"><?= $label ?></a>
 		<?php
 	}
 }
@@ -163,7 +163,7 @@ function displayEditableTableHeader(Table $table): void
 			if($field->visible)
 			{
 				?>
-				<span class="th"><?php print($field->title); displayMandatorySign($field); ?></span>
+				<span class="th"><?= $field->title ?><?php displayMandatorySign($field); ?></span>
 				<?php
 			}
 		}
@@ -176,7 +176,7 @@ function displayNoItemsLabelForEditableTable(string $noItemsLabel, string $ancho
 {
 	?>
 	<div class="tr">
-		<span class="td"><a name="<?php print($anchorPrefix); ?>-0"></a><?php print($noItemsLabel); ?></span>
+		<span class="td"><a name="<?= $anchorPrefix ?>-0"></a><?= $noItemsLabel ?></span>
 	</div>
 	<?php
 }
@@ -212,7 +212,7 @@ function displayActionLinksForEditableTable(Table $table, Form $form): void
 function displayEditButtonForEditableTable(Table $table, Form $form, string $editLabel, string $anchorPrefix): void
 {
 	?>
-	<span class="td"><?php if($table->identifyRows) { ?><a name="<?php print($anchorPrefix."-".$form->fields["__id"]->exportValue()); ?>"><?php } ?><button><?php print($editLabel); ?></button><?php if($table->identifyRows) { ?></a><?php } ?></span>
+	<span class="td"><?php if($table->identifyRows) { ?><a name="<?= $anchorPrefix."-".$form->fields["__id"]->exportValue() ?>"><?php } ?><button><?= $editLabel ?></button><?php if($table->identifyRows) { ?></a><?php } ?></span>
 	<?php
 }
 
@@ -251,7 +251,7 @@ function displayEditableTable(Table $table, Form $submittedForm = null, string $
 					if($submittedForm !== null && !$submittedForm->checkValid() && $submittedForm->fields["__id"]->exportValue() == $rowId)
 						$form = $submittedForm; // If a submitted form is given use that}
 					?>
-					<form class="tbody" method="post" action="<?php print($_SERVER["PHP_SELF"]."#".$anchorPrefix."-".$rowId); ?>"<?php print($encTypeAttribute); ?>>
+					<form class="tbody" method="post" action="<?= $_SERVER["PHP_SELF"]."#".$anchorPrefix."-".$rowId ?>"<?= $encTypeAttribute ?>>
 						<div class="tr">
 							<?php
 							displayEditableFields($form);

@@ -26,8 +26,8 @@ function displayForm(Form $form): void
 				{
 					?>
 					<tr>
-						<th><?php print($field->title); ?></th>
-						<td><?php displayField($field, $form); ?></td>
+						<th><?= $field->title ?></th>
+						<td><?= displayField($field, $form) ?></td>
 					</tr>
 					<?php
 				}
@@ -67,14 +67,14 @@ function displayEditableForm(Form $form, string $submitLabel, string $generalErr
 	if(!$form->checkValid())
 	{
 		?>
-		<p><?php print($generalErrorMessage); ?></p>
+		<p><?= $generalErrorMessage ?></p>
 		<?php
 	}
 	
 	/* Display the form */
 	?>
 	<div class="formwrapper">
-		<form method="post" action="<?php print(htmlspecialchars($form->actionURL === null ? $_SERVER["PHP_SELF"] : $form->actionURL)); ?>"<?php print(composeEncTypeAttribute($form)); ?>>
+		<form method="post" action="<?= htmlspecialchars($form->actionURL === null ? $_SERVER["PHP_SELF"] : $form->actionURL) ?>"<?= composeEncTypeAttribute($form) ?>>
 			<?php
 			/* Display each field */
 			foreach($form->fields as $name => $field)
@@ -83,7 +83,7 @@ function displayEditableForm(Form $form, string $submitLabel, string $generalErr
 				{
 					?>
 					<div>
-						<label><?php print($field->title); displayMandatorySign($field); ?></label>
+						<label><?= $field->title ?><?php displayMandatorySign($field); ?></label>
 						<?php
 						displayEditableField($name, $field, $form);
 
@@ -91,7 +91,7 @@ function displayEditableForm(Form $form, string $submitLabel, string $generalErr
 						if(!$field->isValid())
 						{
 							?>
-							<br><span class="mandatory"><?php print($fieldErrorMessage); ?></span>
+							<br><span class="mandatory"><?= $fieldErrorMessage ?></span>
 							<?php
 						}
 						?>
@@ -102,7 +102,7 @@ function displayEditableForm(Form $form, string $submitLabel, string $generalErr
 					displayEditableFieldRow($name, false, $field, $form);
 			}
 			?>
-			<p><button><?php print($submitLabel); ?></button></p>
+			<p><button><?= $submitLabel ?></button></p>
 		</form>
 	</div>
 	<?php

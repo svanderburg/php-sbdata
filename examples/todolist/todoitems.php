@@ -130,7 +130,7 @@ catch(Exception $ex)
 		if($error !== null)
 		{
 			?>
-			<p><?php print($error); ?></p>
+			<p><?= $error ?></p>
 			<?php
 		}
 		else if(($stmt = TodoItem::queryPage($dbh, $requestMap->values["page"]->value, $pageSize)) !== false)
@@ -140,7 +140,7 @@ catch(Exception $ex)
 			if($requestMap->values["viewmode"]->value == 1) // If viewmode is selected, display ordinary table
 			{
 				?>
-				<p><a href="<?php print($_SERVER["PHP_SELF"]); ?>?viewmode=2&amp;page=<?php print($requestMap->values["page"]->value); ?>">Semi edit</a></p>
+				<p><a href="<?= $_SERVER["PHP_SELF"] ?>?viewmode=2&amp;page=<?= $requestMap->values["page"]->value ?>">Semi edit</a></p>
 				<?php
 				\SBData\View\HTML\displayPagedDBTable($table);
 			}
@@ -149,7 +149,7 @@ catch(Exception $ex)
 				?>
 				<p>
 					<a href="todoitem.php">Add TODO item</a> |
-					<a href="<?php print($_SERVER["PHP_SELF"]); ?>?page=<?php print($requestMap->values["page"]->value); ?>">Edit</a>
+					<a href="<?= $_SERVER["PHP_SELF"] ?>?page=<?= $requestMap->values["page"]->value ?>">Edit</a>
 				</p>
 				<?php
 				\SBData\View\HTML\displaySemiEditablePagedDBTable($table);
@@ -159,7 +159,7 @@ catch(Exception $ex)
 				?>
 				<p>
 					<a href="todoitem.php">Add TODO item</a> |
-					<a href="<?php print($_SERVER["PHP_SELF"]); ?>?viewmode=1&amp;page=<?php print($requestMap->values["page"]->value); ?>">View</a>
+					<a href="<?= $_SERVER["PHP_SELF"] ?>?viewmode=1&amp;page=<?= $requestMap->values["page"]->value ?>">View</a>
 				</p>
 				<?php
 				\SBData\View\HTML\displayEditablePagedDBTable($table, $submittedForm);

@@ -29,12 +29,12 @@ function displayPagesNavigation(Pager $pager, string $previousLabel = "&laquo; P
 			if($currentPage > 0)
 			{
 				?>
-				<a href="<?php print($pager->baseURL); ?>?<?php print($pager->paramName); ?>=<?php print($currentPage - 1); ?>"><?php print($previousLabel); ?></a>
-				<a href="<?php print($pager->baseURL); ?>?<?php print($pager->paramName); ?>=0">0</a>
+				<a href="<?= $pager->baseURL ?>?<?= $pager->paramName ?>=<?= $currentPage - 1 ?>"><?= $previousLabel ?></a>
+				<a href="<?= $pager->baseURL ?>?<?= $pager->paramName ?>=0">0</a>
 				<?php
 			}
 			?>
-			<a href="<?php print($pager->baseURL); ?>?<?php print($pager->paramName); ?>=<?php print($currentPage); ?>" class="active_page"><?php print($currentPage); ?></a>
+			<a href="<?= $pager->baseURL ?>?<?= $pager->paramName ?>=<?= $currentPage ?>" class="active_page"><?= $currentPage ?></a>
 			<?php
 
 			$lastPage = $numOfPages - 1;
@@ -42,8 +42,8 @@ function displayPagesNavigation(Pager $pager, string $previousLabel = "&laquo; P
 			if($currentPage < $lastPage)
 			{
 				?>
-				<a href="<?php print($pager->baseURL); ?>?<?php print($pager->paramName); ?>=<?php print($lastPage); ?>"><?php print($lastPage); ?></a>
-				<a href="<?php print($pager->baseURL); ?>?<?php print($pager->paramName); ?>=<?php print($currentPage + 1); ?>"><?php print($nextLabel); ?></a>
+				<a href="<?= $pager->baseURL ?>?<?= $pager->paramName ?>=<?= $lastPage ?>"><?= $lastPage ?></a>
+				<a href="<?= $pager->baseURL ?>?<?= $pager->paramName ?>=<?= $currentPage + 1 ?>"><?= $nextLabel ?></a>
 				<?php
 			}
 			?>
