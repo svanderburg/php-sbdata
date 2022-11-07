@@ -32,7 +32,7 @@ function importAndCheckParameters(): ParameterMap
 
 function constructTable(ParameterMap $getMap): DBTable
 {
-	function composeBookLink(NumericIntKeyLinkField $field, Form $form): string
+	$composeBookLinkFunction = function (NumericIntKeyLinkField $field, Form $form): string
 	{
 		$bookId = $field->exportValue();
 		$viewMode = $form->parameterMap->values["viewmode"]->value;
@@ -47,24 +47,24 @@ function constructTable(ParameterMap $getMap): DBTable
 			return "book.php?".http_build_query(array(
 				"BOOK_ID" => $bookId
 			), "", "&amp;", PHP_QUERY_RFC3986);
-	}
+	};
 
-	function deleteBookLink(Form $form): string
+	$deleteBookLinkFunction = function (Form $form): string
 	{
 		$bookId = $form->fields["BOOK_ID"]->exportValue();
 		return "?".http_build_query(array(
 			"__operation" => "delete",
 			"BOOK_ID" => $bookId
 		), "", "&amp;", PHP_QUERY_RFC3986).AnchorRow::composeRowParameter($form);
-	}
+	};
 
 	return new DBTable(array(
-		"BOOK_ID" => new NumericIntKeyLinkField("Id", "composeBookLink", true, 20, 255),
+		"BOOK_ID" => new NumericIntKeyLinkField("Id", $composeBookLinkFunction, true, 20, 255),
 		"Title" => new TextField("Title", true, 30, 255),
 		"Subtitle" => new TextField("Subtitle", false, 30, 255),
 		"PUBLISHER_ID" => new NumericIntTextField("Publisher", true, 10),
 	), array(
-		"Delete" => "deleteBookLink"
+		"Delete" => $deleteBookLinkFunction
 	), $getMap);
 }
 

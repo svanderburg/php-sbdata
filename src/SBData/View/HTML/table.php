@@ -6,6 +6,7 @@
  * @{
  */
 namespace SBData\View\HTML;
+use Closure;
 use SBData\Model\Form;
 use SBData\Model\Table\Table;
 
@@ -89,7 +90,7 @@ function displayTable(Table $table, string $noItemsLabel = "No items", string $a
 	<?php
 }
 
-function displayActionLink(Form $form, string $actionFunction, string $label): void
+function displayActionLink(Form $form, string|Closure $actionFunction, string $label): void
 {
 	$url = $actionFunction($form);
 

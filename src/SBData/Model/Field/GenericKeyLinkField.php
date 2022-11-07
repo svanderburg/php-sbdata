@@ -1,5 +1,6 @@
 <?php
 namespace SBData\Model\Field;
+use Closure;
 use SBData\Model\Value\Value;
 
 /**
@@ -8,8 +9,8 @@ use SBData\Model\Value\Value;
  */
 class GenericKeyLinkField extends VisibleField
 {
-	/** Name of the function that composes the URL where the field should be linked to */
-	public string $composeURLFunction;
+	/** Function that composes the URL where the field should be linked to */
+	public string|Closure $composeURLFunction;
 
 	/**
 	 * Constructs a new GenericKeyLinkField instance.
@@ -18,7 +19,7 @@ class GenericKeyLinkField extends VisibleField
 	 * @param $composeURLFunction Name of the function that composes the URL where the field should be linked to
 	 * @param $value An object that stores and checks the value of the field
 	 */
-	public function __construct(string $title, string $composeURLFunction, Value $value)
+	public function __construct(string $title, string|Closure $composeURLFunction, Value $value)
 	{
 		parent::__construct($title, $value);
 		$this->composeURLFunction = $composeURLFunction;

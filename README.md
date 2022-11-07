@@ -499,8 +499,50 @@ $table = new DBTable(array(
 ));
 ```
 
-In the above example, we create a link with label: "Delete" that refers to a
-page executing the delete operation.
+In the above example, we create a link with label: `"Delete"` that invokes the
+`deletePersonLink` function to refer to a page executing the delete operation.
+
+It is also possible to define the `deletePersonLink` as an anonymous function:
+
+```php
+$deletePersonLinkFunction = function (Form $form): string
+{
+    $personId = $form->fields["PERSON_ID"]->exportValue();
+    return "?".http_build_query(array(
+        "__operation" => "delete",
+        "PERSON_ID" => $personId
+    ), "", "&amp;", PHP_QUERY_RFC3986);
+};
+```
+
+In the above example, the `$deletePersonLinkFunction` refers to a function
+that composes a delete action link.
+
+We can refer to the the closure of the above function as follows:
+
+```php
+$table = new DBTable(array(
+    "PERSON_ID" => new HiddenField("Id", true),
+    "firstname" => new TextField("First name", true),
+    "lastname" => new TextField("Last name", true),
+    "address" => new TextField("Street", true),
+    "number" => new NumericIntTextField("House number", true),
+    "zipcode" => new TextField("Zipcode", true, 6, 6),
+    "phone" => new TextField("Phone", false, 10, 10),
+    "city" => new TextField("City", true),
+    "country" => new ArrayComboBoxField("Country", array("Netherlands", "Belgium"), true),
+    "email" => new EmailField("Email"),
+    "homepage" => new URLField("Homepage"),
+    "birthdate" => new DateField("Birth date", true, true),
+    "drivinglicense" => new CheckBoxField("Driving license", false, "1"),
+    "comments" => new TextAreaField("Comments", false, 30, 15)
+), array(
+    "Delete" => $deletePersonLinkFunction
+));
+```
+
+In the above example, the `"Delete"` action link refers to the closure of the
+anonymous function: `$deletePersonLinkFunction`.
 
 To display a table with action links, you must use the following function
 invocation:
@@ -763,6 +805,10 @@ function queryNumOfPages(PDO $dbh, int $pageSize): int
 The above function invokes a function named: `queryNumOfItems` that determines
 the amount of records in the database and divides it by the page size. Rounding
 the result up gives us the required amount pages.
+
+(As a sidenote: in addition to referring to the function name, it is also
+possible to define the query function as an anonymous function and refer to the
+closure).
 
 In addition to defining the table, we must also query the records that the table
 needs to display.

@@ -35,25 +35,25 @@ function importAndCheckParameters(): ParameterMap
 
 function constructTable(PDO $dbh, int $pageSize, ParameterMap $requestMap): PagedDBTable
 {
-	function queryNumOfPages(PDO $dbh, int $pageSize): int
+	$queryNumOfPagesFunction = function (PDO $dbh, int $pageSize): int
 	{
 		return ceil(TodoItem::queryNumOfItems($dbh) / $pageSize);
-	}
+	};
 
-	function deleteTodoItemLink(Form $form): string
+	$deleteTodoItemLinkFunction = function (Form $form): string
 	{
 		return "?".http_build_query(array(
 			"__operation" => "delete",
 			"ITEM_ID" => $form->fields["ITEM_ID"]->exportValue(),
 			"page" => $form->fields["page"]->exportValue()
 		), "", "&amp;", PHP_QUERY_RFC3986);
-	}
+	};
 
 	return new PagedDBTable(array(
 		"ITEM_ID" => new ReadOnlyNumericIntTextField("Id", true, 20, 255),
 		"Description" => new TextField("Description", true, 30, 255)
-	), $dbh, $pageSize, "queryNumOfPages", $requestMap, array(
-		"Delete" => "deleteTodoItemLink"
+	), $dbh, $pageSize, $queryNumOfPagesFunction, $requestMap, array(
+		"Delete" => $deleteTodoItemLinkFunction
 	));
 }
 

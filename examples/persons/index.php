@@ -31,7 +31,7 @@ function importAndCheckParameters(): ParameterMap
 
 function constructTable(): ArrayTable
 {
-	function deletePersonLink(Form $form): string
+	$deletePersonLink = function (Form $form): string
 	{
 		$id = $form->fields["id"]->exportValue();
 
@@ -39,7 +39,7 @@ function constructTable(): ArrayTable
 			"__operation" => "delete",
 			"id" => $id
 		), "", "&amp;", PHP_QUERY_RFC3986);
-	}
+	};
 
 	$table = new ArrayTable(array(
 		"id" => new HiddenNumericIntField(true),
@@ -53,7 +53,7 @@ function constructTable(): ArrayTable
 		"email" => new EmailField("Email"),
 		"homepage" => new URLField("Homepage")
 	), array(
-		"Delete" => "deletePersonLink"
+		"Delete" => $deletePersonLink
 	));
 
 	/* Define a test rowset */

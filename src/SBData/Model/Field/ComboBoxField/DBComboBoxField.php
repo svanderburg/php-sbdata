@@ -1,5 +1,6 @@
 <?php
 namespace SBData\Model\Field\ComboBoxField;
+use Closure;
 use PDO;
 use PDOStatement;
 use SBData\Model\Field\VisibleField;
@@ -14,22 +15,22 @@ class DBComboBoxField extends VisibleField
 	/** A database connection handler */
 	public PDO $dbh;
 
-	/** A name of a function that fetches all possible options for the combobox */
-	public string $queryOptionsFunction;
+	/** Function that fetches all possible options for the combobox */
+	public string|Closure $queryOptionsFunction;
 
-	/** A name of a function that fetches the selected value for the combobox */
-	public string $queryValueFunction;
+	/** Function that fetches the selected value for the combobox */
+	public string|Closure $queryValueFunction;
 
 	/**
 	 * Constructs a new DBComboBoxField.
 	 *
 	 * @param $title Title of the field
 	 * @param $dbh A database connection handler
-	 * @param $queryOptionsFunction A name of a function that fetches all possible options for the combobox
-	 * @param $queryValueFunction A name of a function that fetches the selected value for the combobox
+	 * @param $queryOptionsFunction Function that fetches all possible options for the combobox
+	 * @param $queryValueFunction Function that fetches the selected value for the combobox
 	 * @param $mandatory Indicates whether a given value is mandatory
 	 */
-	public function __construct(string $title, PDO $dbh, string $queryOptionsFunction, string $queryValueFunction, bool $mandatory = false)
+	public function __construct(string $title, PDO $dbh, string|Closure $queryOptionsFunction, string|Closure $queryValueFunction, bool $mandatory = false)
 	{
 		parent::__construct($title, new Value($mandatory));
 		$this->dbh = $dbh;
