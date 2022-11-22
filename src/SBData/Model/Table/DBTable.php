@@ -1,7 +1,6 @@
 <?php
 namespace SBData\Model\Table;
 use PDOStatement;
-use SBData\Model\ParameterMap;
 use SBData\Model\Form;
 
 /**
@@ -17,12 +16,12 @@ class DBTable extends Table
 	 *
 	 * @param $columns An executed PDOStatement object that fetches the data to be displayed from a RDBMS
 	 * @param $actions An associative array of labels mapping to function names displaying action links
-	 * @param $parameterMap A map of parameters that can be consumed by any form consumer
+	 * @param $actionURL Action URL where the user gets redirected to (defaults to same page)
 	 * @param $identifyRows Indicates whether to add an extra column that can be used to track which row in the table is modified
 	 */
-	public function __construct(array $columns, array $actions = null, ParameterMap $parameterMap = null, bool $identifyRows = true)
+	public function __construct(array $columns, array $actions = null, string $actionURL = null, bool $identifyRows = true)
 	{
-		parent::__construct($columns, $actions, $parameterMap, $identifyRows);
+		parent::__construct($columns, $actions, $actionURL, $identifyRows);
 	}
 	
 	/**

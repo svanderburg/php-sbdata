@@ -13,7 +13,7 @@ use SBData\Model\Field\TextField;
 use SBData\Model\Field\URLField;
 use SBData\Model\Table\ArrayTable;
 
-function importAndCheckParameters(): ParameterMap
+function importAndCheckParameters(): array
 {
 	$getMap = new ParameterMap(array(
 		"viewmode" => new IntegerValue(false),
@@ -24,7 +24,7 @@ function importAndCheckParameters(): ParameterMap
 	$getMap->checkValues();
 
 	if($getMap->checkValid())
-		return $getMap;
+		return $getMap->exportValues();
 	else
 		throw new Exception($getMap->composeErrorMessage("The following parameters are invalid:"));
 }
@@ -78,7 +78,7 @@ function constructTable(): ArrayTable
 	return $table;
 }
 
-function executeOperation(ArrayTable $table, ParameterMap $getMap): ?Form
+function executeOperation(ArrayTable $table, array $getParameters): ?Form
 {
 	if(count($_POST) > 0) // If an edit has been made, override the test rowset with the change
 	{
@@ -119,7 +119,7 @@ function executeOperation(ArrayTable $table, ParameterMap $getMap): ?Form
 	{
 		if($_GET["__operation"] == "delete")
 		{
-			$id = $getMap->values["id"]->value;
+			$id = $getParameters["id"];
 
 			if($id == "")
 				throw new Exception("No id provided!");
@@ -145,9 +145,9 @@ $error = null;
 
 try
 {
-	$getMap = importAndCheckParameters();
-	$table = constructTable($getMap);
-	$submittedForm = executeOperation($table, $getMap);
+	$getParameters = importAndCheckParameters();
+	$table = constructTable($getParameters);
+	$submittedForm = executeOperation($table, $getParameters);
 }
 catch(Exception $ex)
 {
@@ -168,7 +168,7 @@ catch(Exception $ex)
 		<?php
 		if($error === null)
 		{
-			if($getMap->values["viewmode"]->value == 1) // If viewmode is selected, display ordinary table
+			if($getParameters["viewmode"] == 1) // If viewmode is selected, display ordinary table
 			{
 				?>
 				<p><a href="<?= $_SERVER["PHP_SELF"] ?>">Edit</a></p>

@@ -3,7 +3,7 @@ require_once(dirname(__FILE__)."/../vendor/autoload.php");
 
 use PHPUnit\Framework\TestCase;
 use SBData\Model\ParameterMap;
-use SBData\Model\Value\IntegerValue;
+use SBData\Model\Value\PageValue;
 use SBData\Model\Form;
 use SBData\Model\Field\HiddenNumericIntField;
 use SBData\Model\Field\TextField;
@@ -49,12 +49,14 @@ class PagedDBTableTest extends TestCase
 	{
 		/* Define a page param (page 1) */
 		$requestMap = new ParameterMap(array(
-			"page" => new IntegerValue(false, null, 0)
+			"page" => new PageValue()
 		));
 
 		$requestMap->importValues(array(
 			"page" => 1
 		));
+
+		$requestParameters = $requestMap->exportValues();
 
 		/* Create a paged database table */
 		$pageSize = 3;
@@ -67,10 +69,10 @@ class PagedDBTableTest extends TestCase
 		$table = new PagedDBTable(array(
 			"id" => new HiddenNumericIntField("id", true),
 			"character" => new TextField("Character", true),
-		), self::$dbh, $pageSize, "queryNumOfPages", $requestMap);
+		), self::$dbh, $pageSize, "queryNumOfPages");
 
 		/* Query the data and attach the statement to the table */
-		$page = $requestMap->values["page"]->value;
+		$page = $requestParameters["page"];
 		$offset = (int)($page * $pageSize);
 
 		$stmt = self::$dbh->prepare("select * from characters order by id limit ?, ?");

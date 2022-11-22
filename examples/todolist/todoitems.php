@@ -16,7 +16,7 @@ use Examples\TodoList\Entity\TodoItem;
 
 $pageSize = 5;
 
-function importAndCheckParameters(): ParameterMap
+function importAndCheckParameters(): array
 {
 	$requestMap = new ParameterMap(array(
 		"viewmode" => new IntegerValue(false),
@@ -28,36 +28,40 @@ function importAndCheckParameters(): ParameterMap
 	$requestMap->checkValues();
 
 	if($requestMap->checkValid())
-		return $requestMap;
+		return $requestMap->exportValues();
 	else
 		throw new Exception($requestMap->composeErrorMessage("The following parameters are invalid:"));
 }
 
-function constructTable(PDO $dbh, int $pageSize, ParameterMap $requestMap): PagedDBTable
+function constructTable(PDO $dbh, int $pageSize, array $requestParameters): PagedDBTable
 {
 	$queryNumOfPagesFunction = function (PDO $dbh, int $pageSize): int
 	{
 		return ceil(TodoItem::queryNumOfItems($dbh) / $pageSize);
 	};
 
-	$deleteTodoItemLinkFunction = function (Form $form): string
+	$deleteTodoItemLinkFunction = function (Form $form) use ($requestParameters): string
 	{
 		return "?".http_build_query(array(
 			"__operation" => "delete",
 			"ITEM_ID" => $form->fields["ITEM_ID"]->exportValue(),
-			"page" => $form->fields["page"]->exportValue()
+			"page" => $requestParameters["page"]
 		), "", "&amp;", PHP_QUERY_RFC3986);
 	};
+
+	$actionURL = $_SERVER["PHP_SELF"]."?".http_build_query(array(
+		"page" => $requestParameters["page"]
+	), "", "&amp;", PHP_QUERY_RFC3986);
 
 	return new PagedDBTable(array(
 		"ITEM_ID" => new ReadOnlyNumericIntTextField("Id", true, 20, 255),
 		"Description" => new TextField("Description", true, 30, 255)
-	), $dbh, $pageSize, $queryNumOfPagesFunction, $requestMap, array(
+	), $dbh, $pageSize, $queryNumOfPagesFunction, array(
 		"Delete" => $deleteTodoItemLinkFunction
-	));
+	), $actionURL);
 }
 
-function executeOperation(PagedDBTable $table, ParameterMap $requestMap, PDO $dbh): ?Form
+function executeOperation(PagedDBTable $table, array $requestParameters, PDO $dbh): ?Form
 {
 	if(count($_POST) > 0) // If POST parameters are given, try to update a record
 	{
@@ -79,7 +83,7 @@ function executeOperation(PagedDBTable $table, ParameterMap $requestMap, PDO $db
 	{
 		if($_GET["__operation"] == "delete")
 		{
-			$id = $requestMap->values["ITEM_ID"]->value;
+			$id = $requestParameters["ITEM_ID"];
 
 			if($id == "")
 				throw new Exception("No ITEM_ID specified!");
@@ -88,7 +92,7 @@ function executeOperation(PagedDBTable $table, ParameterMap $requestMap, PDO $db
 				TodoItem::delete($dbh, $id);
 
 				header("Location: todoitems.php?".http_build_query(array(
-					"page" => $requestMap->values["page"]->value
+					"page" => $requestParameters["page"]
 				), null, "", PHP_QUERY_RFC3986).AnchorRow::composePreviousRowFragment());
 				exit;
 			}
@@ -104,9 +108,9 @@ $error = null;
 
 try
 {
-	$requestMap = importAndCheckParameters();
-	$table = constructTable($dbh, $pageSize, $requestMap);
-	$submittedForm = executeOperation($table, $requestMap, $dbh);
+	$requestParameters = importAndCheckParameters();
+	$table = constructTable($dbh, $pageSize, $requestParameters);
+	$submittedForm = executeOperation($table, $requestParameters, $dbh);
 }
 catch(Exception $ex)
 {
@@ -133,36 +137,36 @@ catch(Exception $ex)
 			<p><?= $error ?></p>
 			<?php
 		}
-		else if(($stmt = TodoItem::queryPage($dbh, $requestMap->values["page"]->value, $pageSize)) !== false)
+		else if(($stmt = TodoItem::queryPage($dbh, (int)$requestParameters["page"], $pageSize)) !== false)
 		{
 			$table->stmt = $stmt;
 
-			if($requestMap->values["viewmode"]->value == 1) // If viewmode is selected, display ordinary table
+			if($requestParameters["viewmode"] == 1) // If viewmode is selected, display ordinary table
 			{
 				?>
-				<p><a href="<?= $_SERVER["PHP_SELF"] ?>?viewmode=2&amp;page=<?= $requestMap->values["page"]->value ?>">Semi edit</a></p>
+				<p><a href="<?= $_SERVER["PHP_SELF"] ?>?viewmode=2&amp;page=<?= $requestParameters["page"] ?>">Semi edit</a></p>
 				<?php
-				\SBData\View\HTML\displayPagedDBTable($table);
+				\SBData\View\HTML\displayPagedDBTable($table, $requestParameters);
 			}
-			else if($requestMap->values["viewmode"]->value == 2) // If semi-edit mode is selected, display ordinary table with delete links
+			else if($requestParameters["viewmode"] == 2) // If semi-edit mode is selected, display ordinary table with delete links
 			{
 				?>
 				<p>
 					<a href="todoitem.php">Add TODO item</a> |
-					<a href="<?= $_SERVER["PHP_SELF"] ?>?page=<?= $requestMap->values["page"]->value ?>">Edit</a>
+					<a href="<?= $_SERVER["PHP_SELF"] ?>?page=<?= $requestParameters["page"] ?>">Edit</a>
 				</p>
 				<?php
-				\SBData\View\HTML\displaySemiEditablePagedDBTable($table);
+				\SBData\View\HTML\displaySemiEditablePagedDBTable($table, $requestParameters);
 			}
 			else
 			{
 				?>
 				<p>
 					<a href="todoitem.php">Add TODO item</a> |
-					<a href="<?= $_SERVER["PHP_SELF"] ?>?viewmode=1&amp;page=<?= $requestMap->values["page"]->value ?>">View</a>
+					<a href="<?= $_SERVER["PHP_SELF"] ?>?viewmode=1&amp;page=<?= $requestParameters["page"] ?>">View</a>
 				</p>
 				<?php
-				\SBData\View\HTML\displayEditablePagedDBTable($table, $submittedForm);
+				\SBData\View\HTML\displayEditablePagedDBTable($table, $requestParameters, $submittedForm);
 			}
 		}
 		else

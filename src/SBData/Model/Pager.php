@@ -18,9 +18,6 @@ class Pager
 	/** Name of a function that determines the total amount of pages */
 	public string|Closure $queryFunction;
 
-	/** A map of values that correspond to page parameters */
-	public ParameterMap $parameterMap;
-
 	/** Name of the parameter in the parameter map that indicates the page size */
 	public string $paramName;
 
@@ -33,29 +30,28 @@ class Pager
 	 * @param $dbh A database connection handler
 	 * @param $pageSize Determines the page size
 	 * @param $queryFunction Function that determines the total amount of pages
-	 * @param $parameterMap A map of values that correspond to page parameters
 	 * @param $paramName Name of the parameter in the parameter map that indicates the page size (defaults to: page)
 	 * @param $baseURL URL that user gets directed to (defaults to the same page)
 	 */
-	public function __construct(PDO $dbh, int $pageSize, string|Closure $queryFunction, ParameterMap $parameterMap, string $paramName = "page", string $baseURL = "")
+	public function __construct(PDO $dbh, int $pageSize, string|Closure $queryFunction, string $paramName = "page", string $baseURL = "")
 	{
 		$this->dbh = $dbh;
 		$this->pageSize = $pageSize;
 		$this->queryFunction = $queryFunction;
 		$this->paramName = $paramName;
 		$this->baseURL = $baseURL;
-		$this->parameterMap = $parameterMap;
 	}
 
 	/**
 	 * Determines which page is currently selected.
 	 *
+	 * @param $requestParameters An array containing request parameters, e.g. $_GET/$_POST/$_REQUEST
 	 * @return Current page number
 	 */
-	public function determineCurrentPage(): int
+	public function determineCurrentPage(array $requestParameters): int
 	{
-		if(array_key_exists($this->paramName, $this->parameterMap->values))
-			return (int)($this->parameterMap->values[$this->paramName]->value);
+		if(array_key_exists($this->paramName, $requestParameters))
+			return (int)($requestParameters[$this->paramName]);
 		else
 			return 0;
 	}

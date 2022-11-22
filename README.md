@@ -574,10 +574,10 @@ used to process and validate these values.
 If the provided `$submittedForm` is an invalid form, then the invalid table cells
 are marked as such, using the `invalid` style class. You can use CSS to give it a
 visually distinct appearance, such as a red border. If `$submittedForm` is `null`
-then the table is just being rendered without any error markings.
+then the table is just rendered without any error markings.
 
 Furthermore, the view function adds an additional hidden input field to each
-table row named `__id` so that you know which row has been modified.
+table row named `__id` so that it is known which row has been modified.
 
 Constructing a form from a table definition
 --------------------------------------------
@@ -754,7 +754,7 @@ To make pagination possible, we must choose a request parameter that indicates
 the page we want to display. By default, this parameter is: `page`, but it can
 be changed to any other parameter name.
 
-We can use a `ParameterMap` to validate the `page` parameter as follows:
+We can use a `ParameterMap` to validate the `page` request parameter as follows:
 
 ```php
 $requestMap = new ParameterMap(array(
@@ -765,6 +765,7 @@ $requestMap->importValues($_REQUEST);
 
 $requestMap->checkValues();
 $valid = $requestMap->checkValid();
+$requestParameters = $requestParameters->exportValues();
 ```
 
 We can create a paged database table as follows:
@@ -780,7 +781,7 @@ $table = new PagedDBTable(array(
     "Subtitle" => new TextField("Subtitle", false, 30, 255),
     "PUBLISHER_ID" => new MetaDataField(true, 10),
     "PublisherName" => new KeyLinkField("Id", "composePublisherLink", true, 255)
-), $dbh, $pageSize, "queryNumOfPages", $requestMap);
+), $dbh, $pageSize, $queryNumOfPages);
 ```
 
 The above code fragment creates a table displaying books (similar to the previous
@@ -790,16 +791,14 @@ example) using the following options for pagination:
   at the time.
 * It invokes a function with the name: `queryNumOfPages` to determine how many
   pages are available.
-* It propagates the page parameters map: `$requestMap` as a parameter to the
-  constructor so that the table knows which page has been selected by the user.
 
 We can implement the `queryNumOfPages` function as follows:
 
 ```php
-function queryNumOfPages(PDO $dbh, int $pageSize): int
+$queryNumOfPages = function (PDO $dbh, int $pageSize): int
 {
     return ceil(TodoItem::queryNumOfItems($dbh) / $pageSize);
-}
+};
 ```
 
 The above function invokes a function named: `queryNumOfItems` that determines
@@ -807,8 +806,7 @@ the amount of records in the database and divides it by the page size. Rounding
 the result up gives us the required amount pages.
 
 (As a sidenote: in addition to referring to the function name, it is also
-possible to define the query function as an anonymous function and refer to the
-closure).
+possible to define the query function as a string).
 
 In addition to defining the table, we must also query the records that the table
 needs to display.
@@ -819,7 +817,7 @@ The following code fragment queries a specific page to display:
 /* Do some database initialisation first somewhere */
 
 /* Compute the offset from the page */
-$page = $requestMap->values["page"]->value;
+$page = $requestParameters["page"];
 $offset = (int)($page * $pageSize);
 
 /* Compose a statment that queries the persons */
@@ -833,14 +831,15 @@ $stmt->execute();
 $table->stmt = $stmt;
 ```
 
-In the above code fragement, we use the `page` parameter from the `$requestMap`
-to compute the `$offset` in the database. Then we use the offset and page size
-to query a specific data page from the database, and we attach it to the table.
+In the above code fragement, we use the `page` parameter from the
+`$requestParameters` to compute the `$offset` in the database. Then we use the
+offset and page size to query a specific data page from the database, and we
+attach it to the table.
 
 We can display the paged database table in read-only mode as follows:
 
 ```php
-\SBData\View\HTML\displayPagedDBTable($table);
+\SBData\View\HTML\displayPagedDBTable($table, $requestParameters);
 ```
 
 In addition to rendering a table with a sub set of records, the above function
@@ -849,13 +848,13 @@ also renders the controls to navigate a user through the available pages.
 We can display the table in semi-editable mode with:
 
 ```php
-\SBData\View\HTML\displaySemiEditablePagedDBTable($table);
+\SBData\View\HTML\displaySemiEditablePagedDBTable($table, $requestParameters);
 ```
 
 and in editable mode with:
 
 ```php
-\SBData\View\HTML\displayEditablePagedDBTable($table);
+\SBData\View\HTML\displayEditablePagedDBTable($table, $requestParameters);
 ```
 
 Fields

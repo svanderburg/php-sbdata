@@ -3,7 +3,6 @@ namespace SBData\Model\Table;
 use Closure;
 use PDO;
 use SBData\Model\Pager;
-use SBData\Model\ParameterMap;
 use SBData\Model\Form;
 use SBData\Model\Field\HiddenNumericIntField;
 
@@ -23,34 +22,16 @@ class PagedDBTable extends DBTable
 	 * @param $dbh A database connection handler
 	 * @param $pageSize Determines the page size
 	 * @param $queryFunction Function that determines the total amount of pages
-	 * @param $parameterMap A map of values that correspond to page parameters
 	 * @param $actions An associative array of labels mapping to function names displaying action links
+	 * @param $actionURL Action URL where the user gets redirected to (defaults to same page)
+	 * @param $baseURL URL that the user gets directed when paging (defaults to the same page)
 	 * @param $paramName Name of the parameter in the parameter map that indicates the page size (defaults to: page)
-	 * @param $baseURL URL that user gets directed to (defaults to the same page)
 	 * @param $identifyRows Indicates whether to add an extra column that can be used to track which row in the table is modified
 	 */
-	public function __construct(array $columns, PDO $dbh, int $pageSize, string|Closure $queryFunction, ParameterMap $parameterMap, array $actions = null, string $paramName = "page", string $baseURL = "", bool $identifyRows = true)
+	public function __construct(array $columns, PDO $dbh, int $pageSize, string|Closure $queryFunction, array $actions = null, string $actionURL = null, string $baseURL = "", string $paramName = "page", bool $identifyRows = true)
 	{
-		$columns[$paramName] = new HiddenNumericIntField(true);
-		parent::__construct($columns, $actions, $parameterMap, $identifyRows);
-		$this->pager = new Pager($dbh, $pageSize, $queryFunction, $parameterMap, $paramName, $baseURL);
-	}
-
-	/**
-	 * @see Table::nextForm()
-	 */
-	public function nextForm(): Form|null
-	{
-		$form = parent::nextForm();
-
-		if($form === null)
-			return null;
-		else
-		{
-			$page = $this->pager->determineCurrentPage();
-			$form->fields[$this->pager->paramName]->importValue($page);
-			return $form;
-		}
+		parent::__construct($columns, $actions, $actionURL, $identifyRows);
+		$this->pager = new Pager($dbh, $pageSize, $queryFunction, $paramName, $baseURL);
 	}
 }
 ?>

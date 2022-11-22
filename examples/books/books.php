@@ -14,7 +14,7 @@ use SBData\Model\Field\NumericIntTextField;
 use SBData\Model\Field\TextField;
 use Examples\Books\Entity\Book;
 
-function importAndCheckParameters(): ParameterMap
+function importAndCheckParameters(): array
 {
 	$getMap = new ParameterMap(array(
 		"viewmode" => new IntegerValue(false),
@@ -25,17 +25,17 @@ function importAndCheckParameters(): ParameterMap
 	$getMap->checkValues();
 
 	if($getMap->checkValid())
-		return $getMap;
+		return $getMap->exportValues();
 	else
 		throw new Exception($getMap->composeErrorMessage("The following parameters are invalid:"));
 }
 
-function constructTable(ParameterMap $getMap): DBTable
+function constructTable(array $getParameters): DBTable
 {
-	$composeBookLinkFunction = function (NumericIntKeyLinkField $field, Form $form): string
+	$composeBookLinkFunction = function (NumericIntKeyLinkField $field, Form $form) use ($getParameters): string
 	{
 		$bookId = $field->exportValue();
-		$viewMode = $form->parameterMap->values["viewmode"]->value;
+		$viewMode = $getParameters["viewmode"];
 
 		/* Determine the URL for edit or view mode */
 		if($viewMode == 1)
@@ -65,10 +65,10 @@ function constructTable(ParameterMap $getMap): DBTable
 		"PUBLISHER_ID" => new NumericIntTextField("Publisher", true, 10),
 	), array(
 		"Delete" => $deleteBookLinkFunction
-	), $getMap);
+	));
 }
 
-function executeOperation(DBTable $table, ParameterMap $getMap, PDO $dbh): ?Form
+function executeOperation(DBTable $table, array $getParameters, PDO $dbh): ?Form
 {
 	if(count($_POST) > 0)
 	{
@@ -90,10 +90,10 @@ function executeOperation(DBTable $table, ParameterMap $getMap, PDO $dbh): ?Form
 	{
 		if($_GET["__operation"] == "delete")
 		{
-			if($getMap->values["BOOK_ID"]->value == "")
+			if($getParameters["BOOK_ID"] == "")
 				throw new Exception("No BOOK_ID provided!");
 			else
-				Book::delete($dbh, $getMap->values["BOOK_ID"]->value);
+				Book::delete($dbh, $getParameters["BOOK_ID"]);
 
 			header("Location: books.php".AnchorRow::composePreviousRowFragment());
 			exit;
@@ -109,9 +109,9 @@ $error = null;
 
 try
 {
-	$getMap = importAndCheckParameters();
-	$table = constructTable($getMap);
-	$submittedForm = executeOperation($table, $getMap, $dbh);
+	$getParameters = importAndCheckParameters();
+	$table = constructTable($getParameters);
+	$submittedForm = executeOperation($table, $getParameters, $dbh);
 }
 catch(Exception $ex)
 {
@@ -140,14 +140,14 @@ catch(Exception $ex)
 		{
 			$table->stmt = $stmt;
 
-			if($getMap->values["viewmode"]->value == 1) // If viewmode is selected, display ordinary table
+			if($getParameters["viewmode"] == 1) // If viewmode is selected, display ordinary table
 			{
 				?>
 				<p><a href="<?= $_SERVER["PHP_SELF"] ?>?viewmode=2">Semi edit</a></p>
 				<?php
 				\SBData\View\HTML\displayTable($table);
 			}
-			else if($getMap->values["viewmode"]->value == 2) // If semi-edit mode is selected, display ordinary table with delete links
+			else if($getParameters["viewmode"] == 2) // If semi-edit mode is selected, display ordinary table with delete links
 			{
 				?>
 				<p>

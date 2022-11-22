@@ -10,9 +10,6 @@ class Form
 	/** An associative array mapping field names to fields that should be checked and displayed */
 	public array $fields;
 
-	/** A map of parameters that can be consumed by any form consumer */
-	public ?ParameterMap $parameterMap;
-
 	/** Action URL where the user gets redirected to (defaults to same page if null) */
 	public ?string $actionURL;
 
@@ -20,13 +17,11 @@ class Form
 	 * Constructs a new Form instance.
 	 *
 	 * @param $fields An associative array mapping field names to fields that should be checked and displayed
-	 * @param $parameterMap A map of parameters that can be consumed by any form consumer
 	 * @param $actionURL Action URL where the user gets redirected to (defaults to same page)
 	 */
-	public function __construct(array $fields, ParameterMap $parameterMap = null, string $actionURL = null)
+	public function __construct(array $fields, string $actionURL = null)
 	{
 		$this->fields = $fields;
-		$this->parameterMap = $parameterMap;
 		$this->actionURL = $actionURL;
 	}
 	

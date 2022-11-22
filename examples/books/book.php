@@ -14,7 +14,7 @@ use SBData\Model\Field\ComboBoxField\DBComboBoxField;
 use Examples\Books\Entity\Book;
 use Examples\Books\Entity\Publisher;
 
-function importAndCheckParameters(): ParameterMap
+function importAndCheckParameters(): array
 {
 	$getMap = new ParameterMap(array(
 		"viewmode" => new IntegerValue(false),
@@ -24,12 +24,12 @@ function importAndCheckParameters(): ParameterMap
 	$getMap->checkValues();
 
 	if($getMap->checkValid())
-		return $getMap;
+		return $getMap->exportValues();
 	else
 		throw new Exception($getMap->composeErrorMessage("The following parameters are invalid:"));
 }
 
-function constructForm(ParameterMap $getMap, PDO $dbh): Form
+function constructForm(PDO $dbh): Form
 {
 	return new Form(array(
 		"__operation" => new HiddenField(false),
@@ -40,7 +40,7 @@ function constructForm(ParameterMap $getMap, PDO $dbh): Form
 	));
 }
 
-function executeOperation(ParameterMap $getMap, Form $form, PDO $dbh): void
+function executeOperation(array $getParameters, Form $form, PDO $dbh): void
 {
 	if(array_key_exists("__operation", $_POST))
 	{
@@ -72,7 +72,7 @@ function executeOperation(ParameterMap $getMap, Form $form, PDO $dbh): void
 	}
 	else
 	{
-		$bookId = $getMap->values["BOOK_ID"]->value;
+		$bookId = $getParameters["BOOK_ID"];
 
 		if($bookId == "")
 			$form->fields["__operation"]->importValue("insert_book");
@@ -92,9 +92,9 @@ $error = null;
 
 try
 {
-	$getMap = importAndCheckParameters();
-	$form = constructForm($getMap, $dbh);
-	executeOperation($getMap, $form, $dbh);
+	$getParameters = importAndCheckParameters();
+	$form = constructForm($dbh);
+	executeOperation($getParameters, $form, $dbh);
 }
 catch(Exception $ex)
 {
@@ -119,7 +119,7 @@ catch(Exception $ex)
 		<?php
 		if($error === null)
 		{
-			if($getMap->values["viewmode"]->value == 1)
+			if($getParameters["viewmode"] == 1)
 				\SBData\View\HTML\displayForm($form);
 			else
 				\SBData\View\HTML\displayEditableForm($form, "Submit", "One or more fields are incorrectly specified and marked with a red color!", "This field is incorrectly specified!");

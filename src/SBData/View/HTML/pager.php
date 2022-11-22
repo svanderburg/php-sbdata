@@ -12,10 +12,11 @@ use SBData\Model\Pager;
  * Displays a navigation bar allowing the user to navigate through pages.
  *
  * @param $pager Pager to display
+ * @param $requestParameters An array containing request parameters, e.g. $_GET/$_POST/$_REQUEST
  * @param $previousLabel Label of the previous button
  * @param $nextLabel Label of the next button
  */
-function displayPagesNavigation(Pager $pager, string $previousLabel = "&laquo; Previous", string $nextLabel = "Next &raquo;"): void
+function displayPagesNavigation(Pager $pager, array $requestParameters, string $previousLabel = "&laquo; Previous", string $nextLabel = "Next &raquo;"): void
 {
 	$numOfPages = ($pager->queryFunction)($pager->dbh, $pager->pageSize);
 
@@ -24,7 +25,7 @@ function displayPagesNavigation(Pager $pager, string $previousLabel = "&laquo; P
 		?>
 		<div class="pagesnavigation">
 			<?php
-			$currentPage = $pager->determineCurrentPage();
+			$currentPage = $pager->determineCurrentPage($requestParameters);
 
 			if($currentPage > 0)
 			{
