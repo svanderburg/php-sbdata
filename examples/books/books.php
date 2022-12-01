@@ -70,7 +70,7 @@ function constructTable(array $getParameters): DBTable
 
 function executeOperation(DBTable $table, array $getParameters, PDO $dbh): ?Form
 {
-	if(count($_POST) > 0)
+	if($_SERVER["REQUEST_METHOD"] == "POST")
 	{
 		/* Validate record */
 		$submittedForm = $table->constructForm();

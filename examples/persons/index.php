@@ -80,7 +80,7 @@ function constructTable(): ArrayTable
 
 function executeOperation(ArrayTable $table, array $getParameters): ?Form
 {
-	if(count($_POST) > 0) // If an edit has been made, override the test rowset with the change
+	if($_SERVER["REQUEST_METHOD"] == "POST") // If an edit has been made, override the test rowset with the change
 	{
 		/* Validate the user input */
 		$submittedForm = $table->constructForm();

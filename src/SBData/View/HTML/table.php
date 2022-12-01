@@ -252,7 +252,7 @@ function displayEditableTable(Table $table, Form $submittedForm = null, string $
 					if($submittedForm !== null && !$submittedForm->checkValid() && $submittedForm->fields["__id"]->exportValue() == $rowId)
 						$form = $submittedForm; // If a submitted form is given use that}
 					?>
-					<form class="tbody" method="post" action="<?= ($form->actionURL === null ? $_SERVER["PHP_SELF"] : $form->actionURL)."#".$anchorPrefix."-".$rowId ?>"<?= $encTypeAttribute ?>>
+					<form class="tbody" method="post" action="<?= htmlspecialchars($form->actionURL === null ? $_SERVER["PHP_SELF"] : $form->actionURL)."#".$anchorPrefix."-".$rowId ?>"<?= $encTypeAttribute ?>>
 						<div class="tr">
 							<?php
 							displayEditableFields($form);

@@ -63,7 +63,7 @@ function constructTable(PDO $dbh, int $pageSize, array $requestParameters): Page
 
 function executeOperation(PagedDBTable $table, array $requestParameters, PDO $dbh): ?Form
 {
-	if(count($_POST) > 0) // If POST parameters are given, try to update a record
+	if($_SERVER["REQUEST_METHOD"] == "POST") // If POST parameters are given, try to update a record
 	{
 		/* Validate record */
 		$submittedForm = $table->constructForm();

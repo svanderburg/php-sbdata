@@ -32,7 +32,7 @@ $form = new Form(array(
 	"comments" => new TextAreaField("Comments", false, 30, 15)
 ));
 
-if(count($_POST) > 0)
+if($_SERVER["REQUEST_METHOD"] == "POST")
 {
 	$form->importValues($_POST);
 	$form->checkFields();
@@ -52,7 +52,7 @@ if(count($_POST) > 0)
 	
 	<body>
 		<?php
-		if(count($_POST) > 0 && $valid)
+		if($_SERVER["REQUEST_METHOD"] == "POST" && $valid)
 			\SBData\View\HTML\displayForm($form);
 		else
 			\SBData\View\HTML\displayEditableForm($form, "Submit", "One or more fields are incorrectly specified and marked with a red color!", "This field is incorrectly specified!");
