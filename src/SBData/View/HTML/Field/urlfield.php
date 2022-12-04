@@ -13,7 +13,7 @@ function displayURLField(URLField $field): void
 {
 	$value = $field->exportValue();
 
-	if($value !== "")
+	if($value !== null && $value !== "")
 	{
 		?>
 		<a href="<?= $value ?>"><?= htmlentities($value) ?></a>
