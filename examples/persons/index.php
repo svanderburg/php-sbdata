@@ -171,14 +171,14 @@ catch(Exception $ex)
 			if($getParameters["viewmode"] == 1) // If viewmode is selected, display ordinary table
 			{
 				?>
-				<p><a href="<?= $_SERVER["PHP_SELF"] ?>">Edit</a></p>
+				<p><a href="?viewmode=0">Edit</a></p>
 				<?php
 				\SBData\View\HTML\displaySemiEditableTable($table);
 			}
 			else // Otherwise display editable table
 			{
 				?>
-				<p><a href="<?= $_SERVER["PHP_SELF"] ?>?viewmode=1">View</a></p>
+				<p><a href="?viewmode=1">View</a></p>
 				<?php
 				\SBData\View\HTML\displayEditableTable($table, $submittedForm);
 			}

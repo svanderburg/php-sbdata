@@ -61,7 +61,7 @@ function executeOperation(array $getParameters, Form $form, PDO $dbh): void
 					Book::update($dbh, $book);
 				}
 
-				header("Location: ".$_SERVER["PHP_SELF"]."?".http_build_query(array(
+				header("Location: ?".http_build_query(array(
 					"BOOK_ID" => $bookId
 				), "", null, PHP_QUERY_RFC3986));
 				exit;
@@ -114,7 +114,7 @@ catch(Exception $ex)
 	<body>
 		<p>
 			<a href="books.php">&laquo; Books</a> |
-			<a href="<?= $_SERVER["PHP_SELF"] ?>">Add book</a>
+			<a href="?">Add book</a>
 		</p>
 		<?php
 		if($error === null)

@@ -57,7 +57,7 @@ function executeOperation(ParameterMap $getMap, Form $form, PDO $dbh): void
 					TodoItem::update($dbh, $item);
 				}
 
-				header("Location: ".$_SERVER["PHP_SELF"]."?".http_build_query(array(
+				header("Location: ?".http_build_query(array(
 					"ITEM_ID" => $itemId
 				), "", null, PHP_QUERY_RFC3986));
 				exit;
@@ -110,7 +110,7 @@ catch(Exception $ex)
 	<body>
 		<p>
 			<a href="todoitems.php">&laquo; TODO items</a> |
-			<a href="<?= $_SERVER["PHP_SELF"] ?>">Add TODO item</a>
+			<a href="?">Add TODO item</a>
 		</p>
 		<?php
 		if($error === null)

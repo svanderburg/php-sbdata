@@ -46,10 +46,10 @@ function constructTable(PDO $dbh, int $pageSize, array $requestParameters): Page
 			"__operation" => "delete",
 			"ITEM_ID" => $form->fields["ITEM_ID"]->exportValue(),
 			"page" => $requestParameters["page"]
-		), "", "&amp;", PHP_QUERY_RFC3986);
+		), "", "&amp;", PHP_QUERY_RFC3986).AnchorRow::composeRowParameter($form);
 	};
 
-	$actionURL = $_SERVER["PHP_SELF"]."?".http_build_query(array(
+	$actionURL = "?".http_build_query(array(
 		"page" => $requestParameters["page"]
 	), "", "&amp;", PHP_QUERY_RFC3986);
 
@@ -144,7 +144,7 @@ catch(Exception $ex)
 			if($requestParameters["viewmode"] == 1) // If viewmode is selected, display ordinary table
 			{
 				?>
-				<p><a href="<?= $_SERVER["PHP_SELF"] ?>?viewmode=2&amp;page=<?= $requestParameters["page"] ?>">Semi edit</a></p>
+				<p><a href="?viewmode=2&amp;page=<?= $requestParameters["page"] ?>">Semi edit</a></p>
 				<?php
 				\SBData\View\HTML\displayPagedDBTable($table, $requestParameters);
 			}
@@ -153,7 +153,7 @@ catch(Exception $ex)
 				?>
 				<p>
 					<a href="todoitem.php">Add TODO item</a> |
-					<a href="<?= $_SERVER["PHP_SELF"] ?>?page=<?= $requestParameters["page"] ?>">Edit</a>
+					<a href="?page=<?= $requestParameters["page"] ?>">Edit</a>
 				</p>
 				<?php
 				\SBData\View\HTML\displaySemiEditablePagedDBTable($table, $requestParameters);
@@ -163,7 +163,7 @@ catch(Exception $ex)
 				?>
 				<p>
 					<a href="todoitem.php">Add TODO item</a> |
-					<a href="<?= $_SERVER["PHP_SELF"] ?>?viewmode=1&amp;page=<?= $requestParameters["page"] ?>">View</a>
+					<a href="?viewmode=1&amp;page=<?= $requestParameters["page"] ?>">View</a>
 				</p>
 				<?php
 				\SBData\View\HTML\displayEditablePagedDBTable($table, $requestParameters, $submittedForm);
