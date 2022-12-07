@@ -19,7 +19,7 @@ class DBTable extends Table
 	 * @param $actionURL Action URL where the user gets redirected to (defaults to same page)
 	 * @param $identifyRows Indicates whether to add an extra column that can be used to track which row in the table is modified
 	 */
-	public function __construct(array $columns, array $actions = null, string $actionURL = null, bool $identifyRows = true)
+	public function __construct(array $columns, array $actions = null, string $actionURL = "", bool $identifyRows = true)
 	{
 		parent::__construct($columns, $actions, $actionURL, $identifyRows);
 	}

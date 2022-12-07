@@ -74,7 +74,7 @@ function displayEditableForm(Form $form, string $submitLabel, string $generalErr
 	/* Display the form */
 	?>
 	<div class="formwrapper">
-		<form method="post" action="<?= $form->actionURL === null ? "" : htmlspecialchars($form->actionURL) ?>"<?= composeEncTypeAttribute($form) ?>>
+		<form method="post" action="<?= htmlspecialchars($form->actionURL) ?>"<?= composeEncTypeAttribute($form) ?>>
 			<?php
 			/* Display each field */
 			foreach($form->fields as $name => $field)

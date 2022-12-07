@@ -28,7 +28,7 @@ class PagedDBTable extends DBTable
 	 * @param $paramName Name of the parameter in the parameter map that indicates the page size (defaults to: page)
 	 * @param $identifyRows Indicates whether to add an extra column that can be used to track which row in the table is modified
 	 */
-	public function __construct(array $columns, PDO $dbh, int $pageSize, string|Closure $queryFunction, array $actions = null, string $actionURL = null, string $baseURL = "", string $paramName = "page", bool $identifyRows = true)
+	public function __construct(array $columns, PDO $dbh, int $pageSize, string|Closure $queryFunction, array $actions = null, string $actionURL = "", string $baseURL = "", string $paramName = "page", bool $identifyRows = true)
 	{
 		parent::__construct($columns, $actions, $actionURL, $identifyRows);
 		$this->pager = new Pager($dbh, $pageSize, $queryFunction, $paramName, $baseURL);
