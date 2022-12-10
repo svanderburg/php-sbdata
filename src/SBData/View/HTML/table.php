@@ -250,9 +250,9 @@ function displayEditableTable(Table $table, Form $submittedForm = null, string $
 					$rowId = $form->fields["__id"]->exportValue();
 
 					if($submittedForm !== null && !$submittedForm->checkValid() && $submittedForm->fields["__id"]->exportValue() == $rowId)
-						$form = $submittedForm; // If a submitted form is given use that}
+						$form = $submittedForm; // If a submitted form is given use that
 					?>
-					<form class="tbody" method="post" action="<?= htmlspecialchars($form->actionURL)."#".$anchorPrefix."-".$rowId ?>"<?= $encTypeAttribute ?>>
+					<form class="tbody" method="post" action="<?= htmlspecialchars($form->actionURL === null ? composeSafeURLToSelf() : $form->actionURL)."#".$anchorPrefix."-".$rowId ?>"<?= $encTypeAttribute ?>>
 						<div class="tr">
 							<?php
 							displayEditableFields($form);

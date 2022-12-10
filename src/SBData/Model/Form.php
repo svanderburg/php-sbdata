@@ -11,7 +11,7 @@ class Form
 	public array $fields;
 
 	/** Action URL where the user gets redirected to (defaults to same page if null) */
-	public string $actionURL;
+	public ?string $actionURL;
 
 	/**
 	 * Constructs a new Form instance.
@@ -19,7 +19,7 @@ class Form
 	 * @param $fields An associative array mapping field names to fields that should be checked and displayed
 	 * @param $actionURL Action URL where the user gets redirected to (defaults to same page)
 	 */
-	public function __construct(array $fields, string $actionURL = "")
+	public function __construct(array $fields, string $actionURL = null)
 	{
 		$this->fields = $fields;
 		$this->actionURL = $actionURL;
