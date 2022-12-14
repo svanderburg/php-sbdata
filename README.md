@@ -880,6 +880,8 @@ Currently the following `Field` classes are provided by this library:
   and checks whether a value is a valid email address.
 * `URLField`. Displays a field as a hyperlink and text input field.
   It also checks whether user provided input is a valid URL.
+* `IPAddressField`. Displays a field as a text field and checks whether user
+  input is a valid IPv4/IPv6 address.
 * `PasswordField`. Display a field as a password field and restricts viewing it.
 * `CheckBoxField`. Displays a field as a checkbox and uses a preconfigured
   value to determine whether it has been checked or not.
@@ -957,6 +959,8 @@ The following value classes are provided:
   format.
 * `EmailValue`. Checks whether user provided input is a valid email address.
 * `URLValue`. Checks whether user provided input is a valid URL.
+* `IPAddressValue`. Checkes whether user provided input is a valid IPv4/IPv6
+  address.
 * `FileValue`. Checks whether a file was uploaded correctly and (optionally) of
   the correct MIME type.
 * `AcceptableFileNameValue`. Checks whether a string contains a valid file name

@@ -25,6 +25,7 @@
           "src/SBData/View/HTML/Field/checkboxfield.php",
           "src/SBData/View/HTML/Field/numericinttextfield.php",
           "src/SBData/View/HTML/Field/emailfield.php",
+          "src/SBData/View/HTML/Field/ipaddressfield.php",
           "src/SBData/View/HTML/Field/generichiddenfield.php",
           "src/SBData/View/HTML/Field/generickeylinkfield.php",
           "src/SBData/View/HTML/Field/generictextfield.php",

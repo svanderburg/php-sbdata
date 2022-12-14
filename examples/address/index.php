@@ -12,6 +12,7 @@ use SBData\Model\Field\NumericIntTextField;
 use SBData\Model\Field\TextField;
 use SBData\Model\Field\TextAreaField;
 use SBData\Model\Field\URLField;
+use SBData\Model\Field\IPAddressField;
 use SBData\Model\Field\ComboBoxField\ArrayComboBoxField;
 
 /* Define a form */
@@ -26,6 +27,7 @@ $form = new Form(array(
 	"country" => new ArrayComboBoxField("Country", array("Netherlands", "Belgium"), true),
 	"email" => new EmailField("Email"),
 	"homepage" => new URLField("Homepage"),
+	"ip" => new IPAddressField("IP address"),
 	"birthdate" => new DateField("Birth date", true, true),
 	"drivinglicense" => new CheckBoxField("Driving license", false, "1"),
 	"filename" => new AcceptableFileNameField("File name", false, 20, 255),
