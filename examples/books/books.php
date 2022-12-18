@@ -5,20 +5,20 @@ require(dirname(__FILE__)."/../../vendor/autoload.php");
 require_once("includes/db.php");
 
 use SBData\Model\ParameterMap;
-use SBData\Model\Value\IntegerValue;
+use SBData\Model\Value\NaturalNumberValue;
 use SBData\Model\Form;
 use SBData\Model\Table\DBTable;
 use SBData\Model\Table\Anchor\AnchorRow;
-use SBData\Model\Field\IntegerKeyLinkField;
-use SBData\Model\Field\IntegerTextField;
+use SBData\Model\Field\NaturalNumberKeyLinkField;
+use SBData\Model\Field\NaturalNumberTextField;
 use SBData\Model\Field\TextField;
 use Examples\Books\Entity\Book;
 
 function importAndCheckParameters(): array
 {
 	$getMap = new ParameterMap(array(
-		"viewmode" => new IntegerValue(false),
-		"BOOK_ID" => new IntegerValue(false, 255)
+		"viewmode" => new NaturalNumberValue(false),
+		"BOOK_ID" => new NaturalNumberValue(false, 255)
 	));
 
 	$getMap->importValues($_GET);
@@ -32,7 +32,7 @@ function importAndCheckParameters(): array
 
 function constructTable(array $getParameters): DBTable
 {
-	$composeBookLinkFunction = function (IntegerKeyLinkField $field, Form $form) use ($getParameters): string
+	$composeBookLinkFunction = function (NaturalNumberKeyLinkField $field, Form $form) use ($getParameters): string
 	{
 		$bookId = $field->exportValue();
 		$viewMode = $getParameters["viewmode"];
@@ -59,10 +59,10 @@ function constructTable(array $getParameters): DBTable
 	};
 
 	return new DBTable(array(
-		"BOOK_ID" => new IntegerKeyLinkField("Id", $composeBookLinkFunction, true, 20, 255),
+		"BOOK_ID" => new NaturalNumberKeyLinkField("Id", $composeBookLinkFunction, true, 20, 255),
 		"Title" => new TextField("Title", true, 30, 255),
 		"Subtitle" => new TextField("Subtitle", false, 30, 255),
-		"PUBLISHER_ID" => new IntegerTextField("Publisher", true, 10),
+		"PUBLISHER_ID" => new NaturalNumberTextField("Publisher", true, 10),
 	), array(
 		"Delete" => $deleteBookLinkFunction
 	));

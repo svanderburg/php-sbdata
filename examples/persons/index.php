@@ -4,11 +4,11 @@ error_reporting(E_STRICT | E_ALL);
 require(dirname(__FILE__)."/../../vendor/autoload.php");
 
 use SBData\Model\ParameterMap;
-use SBData\Model\Value\IntegerValue;
+use SBData\Model\Value\NaturalNumberValue;
 use SBData\Model\Form;
 use SBData\Model\Field\EmailField;
-use SBData\Model\Field\HiddenIntegerField;
-use SBData\Model\Field\IntegerTextField;
+use SBData\Model\Field\HiddenNaturalNumberField;
+use SBData\Model\Field\NaturalNumberTextField;
 use SBData\Model\Field\TextField;
 use SBData\Model\Field\URLField;
 use SBData\Model\Table\ArrayTable;
@@ -16,8 +16,8 @@ use SBData\Model\Table\ArrayTable;
 function importAndCheckParameters(): array
 {
 	$getMap = new ParameterMap(array(
-		"viewmode" => new IntegerValue(false),
-		"id" => new IntegerValue(false)
+		"viewmode" => new NaturalNumberValue(false),
+		"id" => new NaturalNumberValue(false)
 	));
 
 	$getMap->importValues($_GET);
@@ -42,11 +42,11 @@ function constructTable(): ArrayTable
 	};
 
 	$table = new ArrayTable(array(
-		"id" => new HiddenIntegerField(true),
+		"id" => new HiddenNaturalNumberField(true),
 		"firstname" => new TextField("First name", true),
 		"lastname" => new TextField("Last name", true),
 		"address" => new TextField("Street", true),
-		"number" => new IntegerTextField("House number", true),
+		"number" => new NaturalNumberTextField("House number", true),
 		"zipcode" => new TextField("Zipcode", true, 6, 6),
 		"phone" => new TextField("Phone", false, 10, 10),
 		"city" => new TextField("City", true),

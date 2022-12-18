@@ -5,13 +5,13 @@ require(dirname(__FILE__)."/../../vendor/autoload.php");
 require_once("includes/db.php");
 
 use SBData\Model\Form;
-use SBData\Model\Field\HiddenIntegerField;
+use SBData\Model\Field\HiddenNaturalNumberField;
 use SBData\Model\Field\TextField;
 use Examples\Books\Entity\Publisher;
 
 /* Define a form model */
 
-$idField = new HiddenIntegerField(false);
+$idField = new HiddenNaturalNumberField(false);
 
 $form = new Form(array(
 	"PUBLISHER_ID" => $idField,

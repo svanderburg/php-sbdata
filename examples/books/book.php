@@ -5,9 +5,9 @@ require(dirname(__FILE__)."/../../vendor/autoload.php");
 require_once("includes/db.php");
 
 use SBData\Model\ParameterMap;
-use SBData\Model\Value\IntegerValue;
+use SBData\Model\Value\NaturalNumberValue;
 use SBData\Model\Form;
-use SBData\Model\Field\ReadOnlyIntegerTextField;
+use SBData\Model\Field\ReadOnlyNaturalNumberTextField;
 use SBData\Model\Field\TextField;
 use SBData\Model\Field\HiddenField;
 use SBData\Model\Field\ComboBoxField\DBComboBoxField;
@@ -17,8 +17,8 @@ use Examples\Books\Entity\Publisher;
 function importAndCheckParameters(): array
 {
 	$getMap = new ParameterMap(array(
-		"viewmode" => new IntegerValue(false),
-		"BOOK_ID" => new IntegerValue(false, 255)
+		"viewmode" => new NaturalNumberValue(false),
+		"BOOK_ID" => new NaturalNumberValue(false, 255)
 	));
 	$getMap->importValues($_GET);
 	$getMap->checkValues();
@@ -33,7 +33,7 @@ function constructForm(PDO $dbh): Form
 {
 	return new Form(array(
 		"__operation" => new HiddenField(false),
-		"BOOK_ID" => new ReadOnlyIntegerTextField("Id", false, 20, 255),
+		"BOOK_ID" => new ReadOnlyNaturalNumberTextField("Id", false, 20, 255),
 		"Title" => new TextField("Title", true),
 		"Subtitle" => new TextField("Subtitle", false, 30, 255),
 		"PUBLISHER_ID" => new DBComboBoxField("Publisher", $dbh, "Examples\\Books\\Entity\\Publisher::queryAll", "Examples\\Books\\Entity\\Publisher::queryOne", true),

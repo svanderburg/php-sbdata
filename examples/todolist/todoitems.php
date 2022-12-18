@@ -5,11 +5,11 @@ require(dirname(__FILE__)."/../../vendor/autoload.php");
 require_once("includes/db.php");
 
 use SBData\Model\ParameterMap;
-use SBData\Model\Value\IntegerValue;
+use SBData\Model\Value\NaturalNumberValue;
 use SBData\Model\Value\PageValue;
 use SBData\Model\Form;
 use SBData\Model\Table\PagedDBTable;
-use SBData\Model\Field\ReadOnlyIntegerTextField;
+use SBData\Model\Field\ReadOnlyNaturalNumberTextField;
 use SBData\Model\Field\TextField;
 use SBData\Model\Table\Anchor\AnchorRow;
 use Examples\TodoList\Entity\TodoItem;
@@ -19,8 +19,8 @@ $pageSize = 5;
 function importAndCheckParameters(): array
 {
 	$requestMap = new ParameterMap(array(
-		"viewmode" => new IntegerValue(false),
-		"ITEM_ID" => new IntegerValue(false, 255),
+		"viewmode" => new NaturalNumberValue(false),
+		"ITEM_ID" => new NaturalNumberValue(false, 255),
 		"page" => new PageValue()
 	));
 
@@ -54,7 +54,7 @@ function constructTable(PDO $dbh, int $pageSize, array $requestParameters): Page
 	), "", "&amp;", PHP_QUERY_RFC3986);
 
 	return new PagedDBTable(array(
-		"ITEM_ID" => new ReadOnlyIntegerTextField("Id", true, 20, 255),
+		"ITEM_ID" => new ReadOnlyNaturalNumberTextField("Id", true, 20, 255),
 		"Description" => new TextField("Description", true, 30, 255)
 	), $dbh, $pageSize, $queryNumOfPagesFunction, array(
 		"Delete" => $deleteTodoItemLinkFunction
