@@ -8,7 +8,7 @@ use SBData\Model\Field\AcceptableFileNameField;
 use SBData\Model\Field\CheckBoxField;
 use SBData\Model\Field\DateField;
 use SBData\Model\Field\EmailField;
-use SBData\Model\Field\NumericIntTextField;
+use SBData\Model\Field\IntegerTextField;
 use SBData\Model\Field\TextField;
 use SBData\Model\Field\TextAreaField;
 use SBData\Model\Field\URLField;
@@ -20,7 +20,7 @@ $form = new Form(array(
 	"firstname" => new TextField("First name", true),
 	"lastname" => new TextField("Last name", true),
 	"address" => new TextField("Street", true),
-	"number" => new NumericIntTextField("House number", true),
+	"number" => new IntegerTextField("House number", true),
 	"zipcode" => new TextField("Zipcode", true, 6, 6),
 	"phone" => new TextField("Phone", false, 10, 10),
 	"city" => new TextField("City", true),

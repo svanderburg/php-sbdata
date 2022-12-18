@@ -3,18 +3,18 @@ require_once(dirname(__FILE__)."/../vendor/autoload.php");
 
 use PHPUnit\Framework\TestCase;
 use SBData\Model\Field\Field;
-use SBData\Model\Field\NumericIntTextField;
-use SBData\Model\Field\HiddenNumericField;
-use SBData\Model\Field\NumericIntKeyLinkField;
+use SBData\Model\Field\IntegerTextField;
+use SBData\Model\Field\HiddenIntegerField;
+use SBData\Model\Field\IntegerKeyLinkField;
 
-class NumericIntTextFieldTest extends TestCase
+class IntegerTextFieldTest extends TestCase
 {
 	public function classesProvider(): array
 	{
 		return [
-			["SBData\\Model\\Field\\NumericIntTextField"],
-			["SBData\\Model\\Field\\HiddenNumericIntField"],
-			["SBData\\Model\\Field\\NumericIntKeyLinkField"]
+			["SBData\\Model\\Field\\IntegerTextField"],
+			["SBData\\Model\\Field\\HiddenIntegerField"],
+			["SBData\\Model\\Field\\IntegerKeyLinkField"]
 		];
 	}
 

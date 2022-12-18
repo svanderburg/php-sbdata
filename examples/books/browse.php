@@ -7,11 +7,11 @@ require_once("includes/db.php");
 use SBData\Model\Form;
 use SBData\Model\Table\DBTable;
 use SBData\Model\Field\MetaDataField;
-use SBData\Model\Field\NumericIntKeyLinkField;
+use SBData\Model\Field\IntegerKeyLinkField;
 use SBData\Model\Field\TextField;
 use Examples\Books\Entity\Book;
 
-$composeBookLinkFunction = function (NumericIntKeyLinkField $field, Form $form): string
+$composeBookLinkFunction = function (IntegerKeyLinkField $field, Form $form): string
 {
 	$bookId = $field->exportValue();
 	return "book.php?".http_build_query(array(
@@ -20,7 +20,7 @@ $composeBookLinkFunction = function (NumericIntKeyLinkField $field, Form $form):
 	), "", "&amp;", PHP_QUERY_RFC3986);
 };
 
-$composePublisherLinkFunction = function (NumericIntKeyLinkField $field, Form $form): string
+$composePublisherLinkFunction = function (IntegerKeyLinkField $field, Form $form): string
 {
 	$publisherId = $form->fields["PUBLISHER_ID"]->exportValue();
 	return "publisher.php?".http_build_query(array(
@@ -31,11 +31,11 @@ $composePublisherLinkFunction = function (NumericIntKeyLinkField $field, Form $f
 /* Configure a table model */
 
 $table = new DBTable(array(
-	"BOOK_ID" => new NumericIntKeyLinkField("Id", $composeBookLinkFunction, true, 255),
+	"BOOK_ID" => new IntegerKeyLinkField("Id", $composeBookLinkFunction, true, 255),
 	"Title" => new TextField("Title", true, 30, 255),
 	"Subtitle" => new TextField("Subtitle", false, 30, 255),
 	"PUBLISHER_ID" => new MetaDataField(true, 255),
-	"PublisherName" => new NumericIntKeyLinkField("Publisher", $composePublisherLinkFunction, true, 255)
+	"PublisherName" => new IntegerKeyLinkField("Publisher", $composePublisherLinkFunction, true, 255)
 ));
 
 /* Display the page and table */

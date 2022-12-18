@@ -229,7 +229,7 @@ use SBData\Model\Form;
 use SBData\Model\Field\CheckBoxField;
 use SBData\Model\Field\DateField;
 use SBData\Model\Field\EmailField;
-use SBData\Model\Field\NumericIntTextField;
+use SBData\Model\Field\IntegerTextField;
 use SBData\Model\Field\TextField;
 use SBData\Model\Field\TextAreaField;
 use SBData\Model\Field\URLField;
@@ -239,7 +239,7 @@ $form = new Form(array(
     "firstname" => new TextField("First name", true),
     "lastname" => new TextField("Last name", true),
     "address" => new TextField("Street", true),
-    "number" => new NumericIntTextField("House number", true),
+    "number" => new IntegerTextField("House number", true),
     "zipcode" => new TextField("Zipcode", true, 6, 6),
     "phone" => new TextField("Phone", false, 10, 10),
     "city" => new TextField("City", true),
@@ -344,7 +344,7 @@ $table = new ArrayTable(array(
     "firstname" => new TextField("First name", true),
     "lastname" => new TextField("Last name", true),
     "address" => new TextField("Street", true),
-    "number" => new NumericIntTextField("House number", true),
+    "number" => new IntegerTextField("House number", true),
     "zipcode" => new TextField("Zipcode", true, 6, 6),
     "phone" => new TextField("Phone", false, 10, 10),
     "city" => new TextField("City", true),
@@ -387,7 +387,7 @@ $table = new DBTable(array(
     "firstname" => new TextField("First name", true),
     "lastname" => new TextField("Last name", true),
     "address" => new TextField("Street", true),
-    "number" => new NumericIntTextField("House number", true),
+    "number" => new IntegerTextField("House number", true),
     "zipcode" => new TextField("Zipcode", true, 6, 6),
     "phone" => new TextField("Phone", false, 10, 10),
     "city" => new TextField("City", true),
@@ -484,7 +484,7 @@ $table = new DBTable(array(
     "firstname" => new TextField("First name", true),
     "lastname" => new TextField("Last name", true),
     "address" => new TextField("Street", true),
-    "number" => new NumericIntTextField("House number", true),
+    "number" => new IntegerTextField("House number", true),
     "zipcode" => new TextField("Zipcode", true, 6, 6),
     "phone" => new TextField("Phone", false, 10, 10),
     "city" => new TextField("City", true),
@@ -526,7 +526,7 @@ $table = new DBTable(array(
     "firstname" => new TextField("First name", true),
     "lastname" => new TextField("Last name", true),
     "address" => new TextField("Street", true),
-    "number" => new NumericIntTextField("House number", true),
+    "number" => new IntegerTextField("House number", true),
     "zipcode" => new TextField("Zipcode", true, 6, 6),
     "phone" => new TextField("Phone", false, 10, 10),
     "city" => new TextField("City", true),
@@ -869,12 +869,11 @@ Currently the following `Field` classes are provided by this library:
   sanitized.
 * `RawTextAreaField`. Displays a field as text and text area. Input is not
   sanitized.
-* `NumericIntTextField`. Displays a field as text and text input field which
-  only accepts numeric integer values. Input is also checked for valid integer
-  numbers.
+* `IntegerTextField`. Displays a field as text and text input field which
+  only accepts integer values. Input is also checked for valid integer numbers.
 * It is also possible to use a read-only variant of this field:
-  `ReadOnlyNumericIntTextField` that is particularly useful for records having a
-  numeric key that is not allowed to change, such as primary keys.
+  `ReadOnlyIntegerTextField` that is particularly useful for records having a
+  integer key that is not allowed to change, such as primary keys.
 * `DateField`. Displays a field as text and validates it as a ISO date value.
 * `EmailField` Displays a field as e-mail hyperlink and text input field
   and checks whether a value is a valid email address.
@@ -895,7 +894,7 @@ Currently the following `Field` classes are provided by this library:
    can be retrieved through the `$_FILES["fieldname"]` variable.
 * `HiddenField`. Displays a field as hidden field.
 * `KeyLinkField`. Displays a link to a page constructed from a valid string value.
-* `NumericIntKeyLinkField`. Displays a link to a page constructed from a valid
+* `IntegerKeyLinkField`. Displays a link to a page constructed from a valid
   integer value.
   `AcceptableFileNameField`. Displays a text field with a valid file name on
   UNIX and Windows.

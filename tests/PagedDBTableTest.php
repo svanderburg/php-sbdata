@@ -5,7 +5,7 @@ use PHPUnit\Framework\TestCase;
 use SBData\Model\ParameterMap;
 use SBData\Model\Value\PageValue;
 use SBData\Model\Form;
-use SBData\Model\Field\HiddenNumericIntField;
+use SBData\Model\Field\HiddenIntegerField;
 use SBData\Model\Field\TextField;
 use SBData\Model\Table\PagedDBTable;
 
@@ -67,7 +67,7 @@ class PagedDBTableTest extends TestCase
 		}
 
 		$table = new PagedDBTable(array(
-			"id" => new HiddenNumericIntField("id", true),
+			"id" => new HiddenIntegerField("id", true),
 			"character" => new TextField("Character", true),
 		), self::$dbh, $pageSize, "queryNumOfPages");
 

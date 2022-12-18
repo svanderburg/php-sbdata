@@ -5,11 +5,11 @@ require(dirname(__FILE__)."/../../vendor/autoload.php");
 
 use SBData\Model\Form;
 use SBData\Model\Field\FileField;
-use SBData\Model\Field\HiddenNumericIntField;
+use SBData\Model\Field\HiddenIntegerField;
 
 /* Define a form */
 $form = new Form(array(
-	"MAX_FILE_SIZE" => new HiddenNumericIntField(true),
+	"MAX_FILE_SIZE" => new HiddenIntegerField(true),
 	"file" => new FileField("File", "text/plain", true)
 ));
 

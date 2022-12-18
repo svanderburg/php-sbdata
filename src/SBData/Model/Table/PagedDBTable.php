@@ -4,7 +4,6 @@ use Closure;
 use PDO;
 use SBData\Model\Pager;
 use SBData\Model\Form;
-use SBData\Model\Field\HiddenNumericIntField;
 
 /**
  * A table that retrieves its data by executing a PDO Statement and handles data

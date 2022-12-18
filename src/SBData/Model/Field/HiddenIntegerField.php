@@ -7,10 +7,10 @@ use SBData\Model\Value\IntegerValue;
  * value and is kept hidden from the user but still propagates a parameter to a
  * form.
  */
-class HiddenNumericIntField extends GenericHiddenField
+class HiddenIntegerField extends GenericHiddenField
 {
 	/**
-	 * Constructs a new HiddenField instance.
+	 * Constructs a new HiddenIntegerField instance.
 	 *
 	 * @param $mandatory Indicates whether a given value is mandatory
 	 * @param $maxlength Maximum size of the text field or null for infinite size

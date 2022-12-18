@@ -9,7 +9,7 @@ use SBData\Model\Value\IntegerValue;
 use SBData\Model\Value\PageValue;
 use SBData\Model\Form;
 use SBData\Model\Table\PagedDBTable;
-use SBData\Model\Field\ReadOnlyNumericIntTextField;
+use SBData\Model\Field\ReadOnlyIntegerTextField;
 use SBData\Model\Field\TextField;
 use SBData\Model\Table\Anchor\AnchorRow;
 use Examples\TodoList\Entity\TodoItem;
@@ -54,7 +54,7 @@ function constructTable(PDO $dbh, int $pageSize, array $requestParameters): Page
 	), "", "&amp;", PHP_QUERY_RFC3986);
 
 	return new PagedDBTable(array(
-		"ITEM_ID" => new ReadOnlyNumericIntTextField("Id", true, 20, 255),
+		"ITEM_ID" => new ReadOnlyIntegerTextField("Id", true, 20, 255),
 		"Description" => new TextField("Description", true, 30, 255)
 	), $dbh, $pageSize, $queryNumOfPagesFunction, array(
 		"Delete" => $deleteTodoItemLinkFunction

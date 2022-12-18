@@ -9,8 +9,8 @@ use SBData\Model\Value\IntegerValue;
 use SBData\Model\Form;
 use SBData\Model\Table\DBTable;
 use SBData\Model\Table\Anchor\AnchorRow;
-use SBData\Model\Field\NumericIntKeyLinkField;
-use SBData\Model\Field\NumericIntTextField;
+use SBData\Model\Field\IntegerKeyLinkField;
+use SBData\Model\Field\IntegerTextField;
 use SBData\Model\Field\TextField;
 use Examples\Books\Entity\Book;
 
@@ -32,7 +32,7 @@ function importAndCheckParameters(): array
 
 function constructTable(array $getParameters): DBTable
 {
-	$composeBookLinkFunction = function (NumericIntKeyLinkField $field, Form $form) use ($getParameters): string
+	$composeBookLinkFunction = function (IntegerKeyLinkField $field, Form $form) use ($getParameters): string
 	{
 		$bookId = $field->exportValue();
 		$viewMode = $getParameters["viewmode"];
@@ -59,10 +59,10 @@ function constructTable(array $getParameters): DBTable
 	};
 
 	return new DBTable(array(
-		"BOOK_ID" => new NumericIntKeyLinkField("Id", $composeBookLinkFunction, true, 20, 255),
+		"BOOK_ID" => new IntegerKeyLinkField("Id", $composeBookLinkFunction, true, 20, 255),
 		"Title" => new TextField("Title", true, 30, 255),
 		"Subtitle" => new TextField("Subtitle", false, 30, 255),
-		"PUBLISHER_ID" => new NumericIntTextField("Publisher", true, 10),
+		"PUBLISHER_ID" => new IntegerTextField("Publisher", true, 10),
 	), array(
 		"Delete" => $deleteBookLinkFunction
 	));

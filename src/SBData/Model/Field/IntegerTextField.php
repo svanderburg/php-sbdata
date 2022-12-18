@@ -3,12 +3,12 @@ namespace SBData\Model\Field;
 use SBData\Model\Value\IntegerValue;
 
 /**
- * Represents the structure of an individual data element containing  numeric values that should be displayed as a text field.
+ * Represents the structure of an individual data element containing integer values that should be displayed as a text field.
  */
-class NumericIntTextField extends GenericTextField
+class IntegerTextField extends GenericTextField
 {
 	/**
-	 * Constructs a new NumericIntTextField instance.
+	 * Constructs a new IntegerTextField instance.
 	 *
 	 * @param $title Title of the field
 	 * @param $mandatory Indicates whether a given value is mandatory

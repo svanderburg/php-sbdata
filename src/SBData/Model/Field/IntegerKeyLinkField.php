@@ -8,10 +8,10 @@ use SBData\Model\Value\IntegerValue;
  * Represents the structure of an individual data element representing an integer that can be used to
  * compose a link to another page.
  */
-class NumericIntKeyLinkField extends GenericKeyLinkField
+class IntegerKeyLinkField extends GenericKeyLinkField
 {
 	/**
-	 * Constructs a new NumericIntKeyLinkField instance
+	 * Constructs a new IntegerKeyLinkField instance
 	 *
 	 * @param $title Title of the field
 	 * @param $composeURLFunction Function that composes the URL where the field should be linked to

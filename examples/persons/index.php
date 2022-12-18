@@ -7,8 +7,8 @@ use SBData\Model\ParameterMap;
 use SBData\Model\Value\IntegerValue;
 use SBData\Model\Form;
 use SBData\Model\Field\EmailField;
-use SBData\Model\Field\HiddenNumericIntField;
-use SBData\Model\Field\NumericIntTextField;
+use SBData\Model\Field\HiddenIntegerField;
+use SBData\Model\Field\IntegerTextField;
 use SBData\Model\Field\TextField;
 use SBData\Model\Field\URLField;
 use SBData\Model\Table\ArrayTable;
@@ -42,11 +42,11 @@ function constructTable(): ArrayTable
 	};
 
 	$table = new ArrayTable(array(
-		"id" => new HiddenNumericIntField(true),
+		"id" => new HiddenIntegerField(true),
 		"firstname" => new TextField("First name", true),
 		"lastname" => new TextField("Last name", true),
 		"address" => new TextField("Street", true),
-		"number" => new NumericIntTextField("House number", true),
+		"number" => new IntegerTextField("House number", true),
 		"zipcode" => new TextField("Zipcode", true, 6, 6),
 		"phone" => new TextField("Phone", false, 10, 10),
 		"city" => new TextField("City", true),

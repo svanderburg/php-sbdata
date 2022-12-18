@@ -2,7 +2,7 @@
 namespace SBData\Model\Table;
 use SBData\Model\Form;
 use SBData\Model\Field\GenericHiddenField;
-use SBData\Model\Field\HiddenNumericIntField;
+use SBData\Model\Field\HiddenIntegerField;
 
 /**
  * A table represents a collection of forms (with fields).
@@ -41,7 +41,7 @@ abstract class Table
 		$this->rowCount = 0;
 
 		if($identifyRows)
-			$this->columns["__id"] = new HiddenNumericIntField(false);
+			$this->columns["__id"] = new HiddenIntegerField(false);
 	}
 	
 	/**
