@@ -13,16 +13,31 @@ class Form
 	/** Action URL where the user gets redirected to (defaults to same page if null) */
 	public ?string $actionURL;
 
+	/** Label to be displayed on the submit button */
+	public string $submitLabel;
+
+	/** Error message displayed on form level when a field is invalid */
+	public string $validationErrorMessage;
+
+	/** Error message displayed for an invalid field */
+	public string $fieldErrorMessage;
+
 	/**
 	 * Constructs a new Form instance.
 	 *
 	 * @param $fields An associative array mapping field names to fields that should be checked and displayed
 	 * @param $actionURL Action URL where the user gets redirected to (defaults to same page)
+	 * @param $submitLabel Label to be displayed on the submit button
+	 * @param $validationErrorMessage Error message displayed on form level when a field is invalid
+	 * @param $fieldErrorMessage Error message displayed for an invalid field
 	 */
-	public function __construct(array $fields, string $actionURL = null)
+	public function __construct(array $fields, string $actionURL = null, string $submitLabel = "Submit", string $validationErrorMessage = "One or more fields are invalid and marked with a red color", string $fieldErrorMessage = "This value is incorrect!")
 	{
 		$this->fields = $fields;
 		$this->actionURL = $actionURL;
+		$this->submitLabel = $submitLabel;
+		$this->validationErrorMessage = $validationErrorMessage;
+		$this->fieldErrorMessage = $fieldErrorMessage;
 	}
 	
 	/**

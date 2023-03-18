@@ -49,7 +49,7 @@ print($contents);
 			<?php
 		}
 		else
-			\SBData\View\HTML\displayEditableForm($form, "Submit", "One or more fields are incorrectly specified and marked with a red color!", "This field is incorrectly specified!");
+			\SBData\View\HTML\displayEditableForm($form);
 		?>
 	</body>
 </html>

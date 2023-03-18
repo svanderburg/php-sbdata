@@ -315,10 +315,7 @@ Displaying an editable form
 We can also display an editable variant of the same form:
 
 ```php
-\SBData\View\HTML\displayEditableForm($form,
-    "Submit",
-    "One or more fields are incorrectly specified and marked with a red color!",
-    "This field is incorrectly specified!");
+\SBData\View\HTML\displayEditableForm($form);
 ```
 
 The above function invocation generates a `form` element which action URL points

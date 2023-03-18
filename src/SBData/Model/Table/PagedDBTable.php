@@ -23,13 +23,16 @@ class PagedDBTable extends DBTable
 	 * @param $queryFunction Function that determines the total amount of pages
 	 * @param $actions An associative array of labels mapping to function names displaying action links
 	 * @param $actionURL Action URL where the user gets redirected to (defaults to same page)
+	 * @param $noItemsLabel Label to be displayed when there are no items in the table
+	 * @param $anchorPrefix The prefix that the hidden anchor elements should have
+	 * @param $editLabel Label to be displayed on the edit button
 	 * @param $baseURL URL that the user gets directed when paging (defaults to the same page)
 	 * @param $paramName Name of the parameter in the parameter map that indicates the page size (defaults to: page)
 	 * @param $identifyRows Indicates whether to add an extra column that can be used to track which row in the table is modified
 	 */
-	public function __construct(array $columns, PDO $dbh, int $pageSize, string|Closure $queryFunction, array $actions = null, string $actionURL = "", string $baseURL = "", string $paramName = "page", bool $identifyRows = true)
+	public function __construct(array $columns, PDO $dbh, int $pageSize, string|Closure $queryFunction, array $actions = null, string $actionURL = "", string $noItemsLabel = "No items", string $anchorPrefix = "table-row", string $editLabel = "Edit", string $baseURL = "", string $paramName = "page", bool $identifyRows = true)
 	{
-		parent::__construct($columns, $actions, $actionURL, $identifyRows);
+		parent::__construct($columns, $actions, $noItemsLabel, $anchorPrefix, $editLabel, $actionURL, $identifyRows);
 		$this->pager = new Pager($dbh, $pageSize, $queryFunction, $paramName, $baseURL);
 	}
 }

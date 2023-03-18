@@ -29,16 +29,16 @@ function displayTableHeader(Table $table): void
 	<?php
 }
 
-function displayNoItemsLabel(Table $table, string $noItemsLabel, string $anchorPrefix): void
+function displayNoItemsLabel(Table $table): void
 {
 	?>
 	<tr>
-		<td colspan="<?= $table->computeNumberOfDisplayableColumns() ?>"><?php if($table->identifyRows) { ?><a name="<?= $anchorPrefix ?>-0"></a><?php }; print($noItemsLabel); ?></td>
+		<td colspan="<?= $table->computeNumberOfDisplayableColumns() ?>"><?php if($table->identifyRows) { ?><a name="<?= $table->anchorPrefix ?>-0"></a><?php }; print($table->noItemsLabel); ?></td>
 	</tr>
 	<?php
 }
 
-function displayFields(Table $table, Form $form, string $anchorPrefix): void
+function displayFields(Table $table, Form $form): void
 {
 	$first = true;
 
@@ -47,7 +47,7 @@ function displayFields(Table $table, Form $form, string $anchorPrefix): void
 		if($field->visible)
 		{
 			?>
-			<td><?php if($table->identifyRows && $first) { ?><a name="<?= $anchorPrefix."-".$form->fields["__id"]->exportValue() ?>"></a><?php }; displayField($field, $form); ?></td>
+			<td><?php if($table->identifyRows && $first) { ?><a name="<?= $table->anchorPrefix."-".$form->fields["__id"]->exportValue() ?>"></a><?php }; displayField($field, $form); ?></td>
 			<?php
 		}
 
@@ -59,10 +59,8 @@ function displayFields(Table $table, Form $form, string $anchorPrefix): void
  * Displays a table with fields in a non-editable way.
  *
  * @param $table Table to display
- * @param $noItemsLabel Label to be displayed when there are no items in the table
- * @param $anchorPrefix The prefix that the hidden anchor elements should have
  */
-function displayTable(Table $table, string $noItemsLabel = "No items", string $anchorPrefix = "table-row"): void
+function displayTable(Table $table): void
 {
 	?>
 	<div class="tablewrapper">
@@ -71,14 +69,14 @@ function displayTable(Table $table, string $noItemsLabel = "No items", string $a
 			displayTableHeader($table);
 
 			if(($form = $table->nextForm()) === null)
-				displayNoItemsLabel($table, $noItemsLabel, $anchorPrefix);
+				displayNoItemsLabel($table);
 			else
 			{
 				do
 				{
 					?>
 					<tr>
-						<?php displayFields($table, $form, $anchorPrefix); ?>
+						<?php displayFields($table, $form); ?>
 					</tr>
 					<?php
 				}
@@ -120,10 +118,8 @@ function displayActionLinks(Table $table, Form $form): void
  * not be edited, but there are edit and delete buttons.
  *
  * @param $table Table to display
- * @param $noItemsLabel Label to be displayed when there are no items in the table
- * @param $anchorPrefix The prefix that the hidden anchor elements should have
  */
-function displaySemiEditableTable(Table $table, string $noItemsLabel = "No items", string $anchorPrefix = "table-row"): void
+function displaySemiEditableTable(Table $table): void
 {
 	?>
 	<div class="tablewrapper">
@@ -132,7 +128,7 @@ function displaySemiEditableTable(Table $table, string $noItemsLabel = "No items
 			displayTableHeader($table);
 
 			if(($form = $table->nextForm()) === null)
-				displayNoItemsLabel($table, $noItemsLabel, $anchorPrefix);
+				displayNoItemsLabel($table);
 			else
 			{
 				do
@@ -140,7 +136,7 @@ function displaySemiEditableTable(Table $table, string $noItemsLabel = "No items
 					?>
 					<tr>
 						<?php
-						displayFields($table, $form, $anchorPrefix);
+						displayFields($table, $form);
 						displayActionLinks($table, $form);
 						?>
 					</tr>
@@ -173,11 +169,11 @@ function displayEditableTableHeader(Table $table): void
 	<?php
 }
 
-function displayNoItemsLabelForEditableTable(string $noItemsLabel, string $anchorPrefix): void
+function displayNoItemsLabelForEditableTable(Table $table): void
 {
 	?>
 	<div class="tr">
-		<span class="td"><a name="<?= $anchorPrefix ?>-0"></a><?= $noItemsLabel ?></span>
+		<span class="td"><a name="<?= $table->anchorPrefix ?>-0"></a><?= $table->noItemsLabel ?></span>
 	</div>
 	<?php
 }
@@ -210,10 +206,10 @@ function displayActionLinksForEditableTable(Table $table, Form $form): void
 	}
 }
 
-function displayEditButtonForEditableTable(Table $table, Form $form, string $editLabel, string $anchorPrefix): void
+function displayEditButtonForEditableTable(Table $table, Form $form): void
 {
 	?>
-	<span class="td"><?php if($table->identifyRows) { ?><a name="<?= $anchorPrefix."-".$form->fields["__id"]->exportValue() ?>"><?php } ?><button><?= $editLabel ?></button><?php if($table->identifyRows) { ?></a><?php } ?></span>
+	<span class="td"><?php if($table->identifyRows) { ?><a name="<?= $table->anchorPrefix."-".$form->fields["__id"]->exportValue() ?>"><?php } ?><button><?= $table->editLabel ?></button><?php if($table->identifyRows) { ?></a><?php } ?></span>
 	<?php
 }
 
@@ -222,11 +218,8 @@ function displayEditButtonForEditableTable(Table $table, Form $form, string $edi
  *
  * @param $table Table to display
  * @param $submittedForm Form that contains the last submitted data that has changed, or null if no data was submitted
- * @param $noItemsLabel Label to be displayed when there are no items in the table
- * @param $editLabel Label to be displayed on the edit button
- * @param $anchorPrefix The prefix that the hidden anchor elements should have
  */
-function displayEditableTable(Table $table, Form $submittedForm = null, string $noItemsLabel = "No items", string $editLabel = "Edit", string $anchorPrefix = "table-row"): void
+function displayEditableTable(Table $table, Form $submittedForm = null): void
 {
 	?>
 	<div class="tablewrapper">
@@ -237,7 +230,7 @@ function displayEditableTable(Table $table, Form $submittedForm = null, string $
 			/* Display the editable records */
 
 			if(($form = $table->nextForm()) === null)
-				displayNoItemsLabelForEditableTable($noItemsLabel, $anchorPrefix);
+				displayNoItemsLabelForEditableTable($table);
 			else
 			{
 				do
@@ -252,11 +245,11 @@ function displayEditableTable(Table $table, Form $submittedForm = null, string $
 					if($submittedForm !== null && !$submittedForm->checkValid() && $submittedForm->fields["__id"]->exportValue() == $rowId)
 						$form = $submittedForm; // If a submitted form is given use that
 					?>
-					<form class="tbody" method="post" action="<?= htmlspecialchars($form->actionURL === null ? composeSafeURLToSelf() : $form->actionURL)."#".$anchorPrefix."-".$rowId ?>"<?= $encTypeAttribute ?>>
+					<form class="tbody" method="post" action="<?= htmlspecialchars($form->actionURL === null ? composeSafeURLToSelf() : $form->actionURL)."#".$table->anchorPrefix."-".$rowId ?>"<?= $encTypeAttribute ?>>
 						<div class="tr">
 							<?php
 							displayEditableFields($form);
-							displayEditButtonForEditableTable($table, $form, $editLabel, $anchorPrefix);
+							displayEditButtonForEditableTable($table, $form);
 							displayActionLinksForEditableTable($table, $form);
 							?>
 						</div>

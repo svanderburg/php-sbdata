@@ -15,6 +15,15 @@ abstract class Table
 	/** An associative array of labels mapping to function names displaying action links */
 	public ?array $actions;
 
+	/** Label to be displayed when there are no items in the table */
+	public string $noItemsLabel;
+
+	/** The prefix that the hidden anchor elements should have */
+	public string $anchorPrefix;
+
+	/** Label to be displayed on the edit button */
+	public string $editLabel;
+
 	/** Action URL where the user gets redirected to (defaults to same page) */
 	public ?string $actionURL;
 
@@ -29,13 +38,19 @@ abstract class Table
 	 *
 	 * @param $columns An associative array mapping field names to fields that should be checked and displayed
 	 * @param $actions An associative array of labels mapping to function names displaying action links
+	 * @param $noItemsLabel Label to be displayed when there are no items in the table
+	 * @param $anchorPrefix The prefix that the hidden anchor elements should have
+	 * @param $editLabel Label to be displayed on the edit button
 	 * @param $actionURL Action URL where the user gets redirected to (defaults to same page)
 	 * @param $identifyRows Indicates whether to add an extra column that can be used to track which row in the table is modified
 	 */
-	public function __construct(array $columns, array $actions = null, string $actionURL = null, bool $identifyRows = true)
+	public function __construct(array $columns, array $actions = null, string $noItemsLabel = "No items", string $anchorPrefix = "table-row", string $editLabel = "Edit", string $actionURL = null, bool $identifyRows = true)
 	{
 		$this->columns = $columns;
 		$this->actions = $actions;
+		$this->noItemsLabel = $noItemsLabel;
+		$this->anchorPrefix = $anchorPrefix;
+		$this->editLabel = $editLabel;
 		$this->actionURL = $actionURL;
 		$this->identifyRows = $identifyRows;
 		$this->rowCount = 0;
@@ -54,7 +69,7 @@ abstract class Table
 	{
 		/* Clone the columns fields */
 		$fields = array();
-		
+
 		foreach($this->columns as $id => $field)
 			$fields[$id] = clone $field;
 

@@ -56,18 +56,15 @@ function displayMandatorySign(Field $field): void
  * Displays a form with fields in an editable way.
  *
  * @param $form Form to display
- * @param $submitLabel Label to be displayed on the submit button
- * @param $generalErrorMessage General error message displayed when a field is invalid
- * @param $fieldErrorMessage Error message displayed for an invalid field
  */
-function displayEditableForm(Form $form, string $submitLabel, string $generalErrorMessage, string $fieldErrorMessage): void
+function displayEditableForm(Form $form): void
 {
 	/* If the form is invalid state display the general error message */
 	
 	if(!$form->checkValid())
 	{
 		?>
-		<p><?= $generalErrorMessage ?></p>
+		<p><?= $form->validationErrorMessage ?></p>
 		<?php
 	}
 	
@@ -91,7 +88,7 @@ function displayEditableForm(Form $form, string $submitLabel, string $generalErr
 						if(!$field->isValid())
 						{
 							?>
-							<br><span class="mandatory"><?= $fieldErrorMessage ?></span>
+							<br><span class="mandatory"><?= $form->fieldErrorMessage ?></span>
 							<?php
 						}
 						?>
@@ -102,7 +99,7 @@ function displayEditableForm(Form $form, string $submitLabel, string $generalErr
 					displayEditableFieldRow($name, false, $field, $form);
 			}
 			?>
-			<p><button><?= $submitLabel ?></button></p>
+			<p><button><?= $form->submitLabel ?></button></p>
 		</form>
 	</div>
 	<?php
