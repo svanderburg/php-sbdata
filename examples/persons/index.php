@@ -11,6 +11,7 @@ use SBData\Model\Field\HiddenNaturalNumberField;
 use SBData\Model\Field\NaturalNumberTextField;
 use SBData\Model\Field\TextField;
 use SBData\Model\Field\URLField;
+use SBData\Model\Table\Action;
 use SBData\Model\Table\ArrayTable;
 
 function importAndCheckParameters(): array
@@ -53,7 +54,7 @@ function constructTable(): ArrayTable
 		"email" => new EmailField("Email"),
 		"homepage" => new URLField("Homepage")
 	), array(
-		"Delete" => $deletePersonLink
+		"Delete" => new Action($deletePersonLink)
 	));
 
 	/* Define a test rowset */

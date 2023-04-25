@@ -8,6 +8,7 @@
 namespace SBData\View\HTML;
 use Closure;
 use SBData\Model\Form;
+use SBData\Model\Table\Action;
 use SBData\Model\Table\Table;
 
 function displayTableHeader(Table $table): void
@@ -88,14 +89,26 @@ function displayTable(Table $table): void
 	<?php
 }
 
-function displayActionLink(Form $form, string|Closure $actionFunction, string $label): void
+function displayActionLinkLabel(Action $action, string $label): void
 {
-	$url = $actionFunction($form);
+	if($action->icon === null)
+	{
+		?><?= $label ?><?php
+	}
+	else
+	{
+		?><img src="<?= $action->icon ?>" alt="<?= $label ?>"><?php
+	}
+}
+
+function displayActionLink(Form $form, Action $action, string $label): void
+{
+	$url = ($action->generateURLFunction)($form);
 
 	if($url !== null)
 	{
 		?>
-		<a href="<?= $url ?>"><?= $label ?></a>
+		<a href="<?= $url ?>"><?php displayActionLinkLabel($action, $label); ?></a>
 		<?php
 	}
 }
@@ -104,10 +117,10 @@ function displayActionLinks(Table $table, Form $form): void
 {
 	if($table->actions !== null)
 	{
-		foreach($table->actions as $label => $actionFunction)
+		foreach($table->actions as $label => $action)
 		{
 			?>
-			<td><?php displayActionLink($form, $actionFunction, $label); ?></td>
+			<td><?php displayActionLink($form, $action, $label); ?></td>
 			<?php
 		}
 	}
@@ -197,10 +210,10 @@ function displayActionLinksForEditableTable(Table $table, Form $form): void
 {
 	if($table->actions !== null)
 	{
-		foreach($table->actions as $label => $actionFunction)
+		foreach($table->actions as $label => $action)
 		{
 			?>
-			<span class="td"><?php displayActionLink($form, $actionFunction, $label); ?></span>
+			<span class="td"><?php displayActionLink($form, $action, $label); ?></span>
 			<?php
 		}
 	}
@@ -209,7 +222,7 @@ function displayActionLinksForEditableTable(Table $table, Form $form): void
 function displayEditButtonForEditableTable(Table $table, Form $form): void
 {
 	?>
-	<span class="td"><?php if($table->identifyRows) { ?><a name="<?= $table->anchorPrefix."-".$form->fields["__id"]->exportValue() ?>"><?php } ?><button><?= $table->editLabel ?></button><?php if($table->identifyRows) { ?></a><?php } ?></span>
+	<span class="td"><?php if($table->identifyRows) { ?><a name="<?= $table->anchorPrefix."-".$form->fields["__id"]->exportValue() ?>"><?php } ?><button><?php displayLabel($table->saveLabel) ?></button><?php if($table->identifyRows) { ?></a><?php } ?></span>
 	<?php
 }
 

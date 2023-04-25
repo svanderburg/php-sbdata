@@ -7,11 +7,13 @@ require_once("includes/db.php");
 use SBData\Model\ParameterMap;
 use SBData\Model\Value\NaturalNumberValue;
 use SBData\Model\Form;
+use SBData\Model\Table\Action;
 use SBData\Model\Table\DBTable;
 use SBData\Model\Table\Anchor\AnchorRow;
 use SBData\Model\Field\NaturalNumberKeyLinkField;
 use SBData\Model\Field\NaturalNumberTextField;
 use SBData\Model\Field\TextField;
+use SBData\Model\Label\IconLabel;
 use Examples\Books\Entity\Book;
 
 function importAndCheckParameters(): array
@@ -64,8 +66,8 @@ function constructTable(array $getParameters): DBTable
 		"Subtitle" => new TextField("Subtitle", false, 30, 255),
 		"PUBLISHER_ID" => new NaturalNumberTextField("Publisher", true, 10),
 	), array(
-		"Delete" => $deleteBookLinkFunction
-	));
+		"Delete" => new Action($deleteBookLinkFunction, "image/delete.png")
+	), "No items", "table-row", new IconLabel("Save", "image/save.png"));
 }
 
 function executeOperation(DBTable $table, array $getParameters, PDO $dbh): ?Form
@@ -125,7 +127,7 @@ catch(Exception $ex)
 	<head>
 		<title>Books</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-		<link rel="stylesheet" type="text/css" href="style.css">
+		<link rel="stylesheet" type="text/css" href="styles/style.css">
 	</head>
 	
 	<body>

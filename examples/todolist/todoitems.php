@@ -8,10 +8,11 @@ use SBData\Model\ParameterMap;
 use SBData\Model\Value\NaturalNumberValue;
 use SBData\Model\Value\PageValue;
 use SBData\Model\Form;
+use SBData\Model\Table\Action;
 use SBData\Model\Table\PagedDBTable;
+use SBData\Model\Table\Anchor\AnchorRow;
 use SBData\Model\Field\ReadOnlyNaturalNumberTextField;
 use SBData\Model\Field\TextField;
-use SBData\Model\Table\Anchor\AnchorRow;
 use Examples\TodoList\Entity\TodoItem;
 
 $pageSize = 5;
@@ -57,7 +58,7 @@ function constructTable(PDO $dbh, int $pageSize, array $requestParameters): Page
 		"ITEM_ID" => new ReadOnlyNaturalNumberTextField("Id", true, 20, 255),
 		"Description" => new TextField("Description", true, 30, 255)
 	), $dbh, $pageSize, $queryNumOfPagesFunction, array(
-		"Delete" => $deleteTodoItemLinkFunction
+		"Delete" => new Action($deleteTodoItemLinkFunction)
 	), $actionURL);
 }
 

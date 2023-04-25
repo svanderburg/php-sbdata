@@ -476,6 +476,8 @@ parameters.
 Action links can be attached to a table by providing a second array parameter:
 
 ```php
+use SBData\Model\Table\Action;
+
 $table = new DBTable(array(
     "PERSON_ID" => new HiddenField("Id", true),
     "firstname" => new TextField("First name", true),
@@ -492,7 +494,7 @@ $table = new DBTable(array(
     "drivinglicense" => new CheckBoxField("Driving license", false, "1"),
     "comments" => new TextAreaField("Comments", false, 30, 15)
 ), array(
-    "Delete" => "deletePersonLink"
+    "Delete" => new Action("deletePersonLink")
 ));
 ```
 
@@ -534,7 +536,7 @@ $table = new DBTable(array(
     "drivinglicense" => new CheckBoxField("Driving license", false, "1"),
     "comments" => new TextAreaField("Comments", false, 30, 15)
 ), array(
-    "Delete" => $deletePersonLinkFunction
+    "Delete" => new Action($deletePersonLinkFunction)
 ));
 ```
 

@@ -11,6 +11,7 @@ use SBData\Model\Field\ReadOnlyNaturalNumberTextField;
 use SBData\Model\Field\TextField;
 use SBData\Model\Field\HiddenField;
 use SBData\Model\Field\ComboBoxField\DBComboBoxField;
+use SBData\Model\Label\IconWithTextLabel;
 use Examples\Books\Entity\Book;
 use Examples\Books\Entity\Publisher;
 
@@ -37,7 +38,7 @@ function constructForm(PDO $dbh): Form
 		"Title" => new TextField("Title", true),
 		"Subtitle" => new TextField("Subtitle", false, 30, 255),
 		"PUBLISHER_ID" => new DBComboBoxField("Publisher", $dbh, "Examples\\Books\\Entity\\Publisher::queryAll", "Examples\\Books\\Entity\\Publisher::queryOne", true),
-	));
+	), null, new IconWithTextLabel("Submit", "image/save.png"));
 }
 
 function executeOperation(array $getParameters, Form $form, PDO $dbh): void
@@ -108,7 +109,7 @@ catch(Exception $ex)
 	<head>
 		<title>Book</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-		<link rel="stylesheet" type="text/css" href="style.css">
+		<link rel="stylesheet" type="text/css" href="styles/style.css">
 	</head>
 
 	<body>

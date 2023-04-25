@@ -99,7 +99,7 @@ function displayEditableForm(Form $form): void
 					displayEditableFieldRow($name, false, $field, $form);
 			}
 			?>
-			<p><button><?= $form->submitLabel ?></button></p>
+			<div><button><?php displayLabel($form->submitLabel); ?></button></div>
 		</form>
 	</div>
 	<?php

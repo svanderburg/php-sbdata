@@ -1,6 +1,8 @@
 <?php
 namespace SBData\Model;
 use SBData\Model\Field\FileField;
+use SBData\Model\Label\Label;
+use SBData\Model\Label\TextLabel;
 
 /**
  * A form represents a collection of fields that together represent one object.
@@ -14,7 +16,7 @@ class Form
 	public ?string $actionURL;
 
 	/** Label to be displayed on the submit button */
-	public string $submitLabel;
+	public Label $submitLabel;
 
 	/** Error message displayed on form level when a field is invalid */
 	public string $validationErrorMessage;
@@ -31,11 +33,16 @@ class Form
 	 * @param $validationErrorMessage Error message displayed on form level when a field is invalid
 	 * @param $fieldErrorMessage Error message displayed for an invalid field
 	 */
-	public function __construct(array $fields, string $actionURL = null, string $submitLabel = "Submit", string $validationErrorMessage = "One or more fields are invalid and marked with a red color", string $fieldErrorMessage = "This value is incorrect!")
+	public function __construct(array $fields, string $actionURL = null, Label $submitLabel = null, string $validationErrorMessage = "One or more fields are invalid and marked with a red color", string $fieldErrorMessage = "This value is incorrect!")
 	{
 		$this->fields = $fields;
 		$this->actionURL = $actionURL;
-		$this->submitLabel = $submitLabel;
+
+		if($submitLabel === null)
+			$this->submitLabel = new TextLabel("Submit");
+		else
+			$this->submitLabel = $submitLabel;
+
 		$this->validationErrorMessage = $validationErrorMessage;
 		$this->fieldErrorMessage = $fieldErrorMessage;
 	}
