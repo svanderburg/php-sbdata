@@ -7,10 +7,11 @@
  */
 
 namespace SBData\View\HTML\Field;
+use SBData\Model\ReadOnlyForm;
 use SBData\Model\Form;
 use SBData\Model\Field\IntegerKeyLinkField;
 
-function displayIntegerKeyLinkField(IntegerKeyLinkField $field, Form $form): void
+function displayIntegerKeyLinkField(IntegerKeyLinkField $field, ReadOnlyForm $form): void
 {
 	displayGenericKeyLinkField($field, $form);
 }

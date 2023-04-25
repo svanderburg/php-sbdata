@@ -7,6 +7,7 @@
  */
 namespace SBData\View\HTML;
 use ReflectionClass;
+use SBData\Model\ReadOnlyForm;
 use SBData\Model\Form;
 use SBData\Model\Field\Field;
 
@@ -16,7 +17,7 @@ use SBData\Model\Field\Field;
  * @param $field Field to display
  * @param $form Form where the field belongs to (optional)
  */
-function displayField(Field $field, Form $form = null): void
+function displayField(Field $field, ReadOnlyForm $form = null): void
 {
 	/* Dynamically invoke the corresponding the display function belonging to the given class */
 	$reflect = new ReflectionClass($field);

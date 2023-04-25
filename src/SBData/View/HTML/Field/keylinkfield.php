@@ -7,10 +7,11 @@
  */
 
 namespace SBData\View\HTML\Field;
+use SBData\Model\ReadOnlyForm;
 use SBData\Model\Form;
 use SBData\Model\Field\KeyLinkField;
 
-function displayKeyLinkField(KeyLinkField $field, Form $form): void
+function displayKeyLinkField(KeyLinkField $field, ReadOnlyForm $form): void
 {
 	displayGenericKeyLinkField($field, $form);
 }

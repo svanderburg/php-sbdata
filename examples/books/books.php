@@ -6,6 +6,7 @@ require_once("includes/db.php");
 
 use SBData\Model\ParameterMap;
 use SBData\Model\Value\NaturalNumberValue;
+use SBData\Model\ReadOnlyForm;
 use SBData\Model\Form;
 use SBData\Model\Table\Action;
 use SBData\Model\Table\DBTable;
@@ -34,7 +35,7 @@ function importAndCheckParameters(): array
 
 function constructTable(array $getParameters): DBTable
 {
-	$composeBookLinkFunction = function (NaturalNumberKeyLinkField $field, Form $form) use ($getParameters): string
+	$composeBookLinkFunction = function (NaturalNumberKeyLinkField $field, ReadOnlyForm $form) use ($getParameters): string
 	{
 		$bookId = $field->exportValue();
 		$viewMode = $getParameters["viewmode"];

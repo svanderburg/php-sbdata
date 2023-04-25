@@ -6,12 +6,10 @@ use SBData\Model\Label\TextLabel;
 
 /**
  * A form represents a collection of fields that together represent one object.
+ * A form can be used to check and display data objects in read and write mode.
  */
-class Form
+class Form extends ReadOnlyForm
 {
-	/** An associative array mapping field names to fields that should be checked and displayed */
-	public array $fields;
-
 	/** Action URL where the user gets redirected to (defaults to same page if null) */
 	public ?string $actionURL;
 
@@ -35,7 +33,7 @@ class Form
 	 */
 	public function __construct(array $fields, string $actionURL = null, Label $submitLabel = null, string $validationErrorMessage = "One or more fields are invalid and marked with a red color", string $fieldErrorMessage = "This value is incorrect!")
 	{
-		$this->fields = $fields;
+		parent::__construct($fields);
 		$this->actionURL = $actionURL;
 
 		if($submitLabel === null)
@@ -46,21 +44,7 @@ class Form
 		$this->validationErrorMessage = $validationErrorMessage;
 		$this->fieldErrorMessage = $fieldErrorMessage;
 	}
-	
-	/**
-	 * Imports an array of values into the form fields.
-	 *
-	 * @param $values An associative array in which every key corresponds to a field and every value to a field value.
-	 */
-	public function importValues(array $values): void
-	{
-		foreach($this->fields as $name => $field)
-		{
-			if(array_key_exists($name, $values))
-				$field->importValue($values[$name]);
-		}
-	}
-	
+
 	/**
 	 * Clears the values in the form fields.
 	 */

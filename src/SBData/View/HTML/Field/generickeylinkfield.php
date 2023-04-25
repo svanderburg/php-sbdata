@@ -7,10 +7,11 @@
  */
 
 namespace SBData\View\HTML\Field;
+use SBData\Model\ReadOnlyForm;
 use SBData\Model\Form;
 use SBData\Model\Field\GenericKeyLinkField;
 
-function displayGenericKeyLinkField(GenericKeyLinkField $field, Form $form): void
+function displayGenericKeyLinkField(GenericKeyLinkField $field, ReadOnlyForm $form): void
 {
 	$composeURLFunction = $field->composeURLFunction;
 	$linkURL = $composeURLFunction($field, $form);

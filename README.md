@@ -601,7 +601,9 @@ display a link that redirects the user to the related record.
 By constructing a `KeyLinkField` we can compose such a link, for example:
 
 ```php
-function composeBookLink(KeyLinkField $field, Form $form): string
+use SBData\Model\ReadOnlyForm;
+
+function composeBookLink(KeyLinkField $field, ReadOnlyForm $form): string
 {
     $bookId = $field->exportValue();
     return "book.php?".http_build_query(array(
@@ -609,7 +611,7 @@ function composeBookLink(KeyLinkField $field, Form $form): string
     ), "", "&amp;", PHP_QUERY_RFC3986);
 }
 
-function composePublisherLink(KeyLinkField $field, Form $form): ?string
+function composePublisherLink(KeyLinkField $field, ReadOnlyForm $form): ?string
 {
     $publisherId = $form->fields["PUBLISHER_ID"]->exportValue();
 

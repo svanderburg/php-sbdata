@@ -7,10 +7,11 @@
  */
 
 namespace SBData\View\HTML\Field;
+use SBData\Model\ReadOnlyForm;
 use SBData\Model\Form;
 use SBData\Model\Field\NaturalNumberKeyLinkField;
 
-function displayNaturalNumberKeyLinkField(NaturalNumberKeyLinkField $field, Form $form): void
+function displayNaturalNumberKeyLinkField(NaturalNumberKeyLinkField $field, ReadOnlyForm $form): void
 {
 	displayGenericKeyLinkField($field, $form);
 }

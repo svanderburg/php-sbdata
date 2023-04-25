@@ -6,6 +6,7 @@
  * @{
  */
 namespace SBData\View\HTML;
+use SBData\Model\ReadOnlyForm;
 use SBData\Model\Form;
 use SBData\Model\Field\Field;
 
@@ -14,7 +15,7 @@ use SBData\Model\Field\Field;
  *
  * @param $form Form to display
  */
-function displayForm(Form $form): void
+function displayForm(ReadOnlyForm $form): void
 {
 	?>
 	<div class="formwrapper">

@@ -5,13 +5,14 @@ require(dirname(__FILE__)."/../../vendor/autoload.php");
 require_once("includes/db.php");
 
 use SBData\Model\Form;
+use SBData\Model\ReadOnlyForm;
 use SBData\Model\Table\DBTable;
 use SBData\Model\Field\MetaDataField;
 use SBData\Model\Field\NaturalNumberKeyLinkField;
 use SBData\Model\Field\TextField;
 use Examples\Books\Entity\Book;
 
-$composeBookLinkFunction = function (NaturalNumberKeyLinkField $field, Form $form): string
+$composeBookLinkFunction = function (NaturalNumberKeyLinkField $field, ReadOnlyForm $form): string
 {
 	$bookId = $field->exportValue();
 	return "book.php?".http_build_query(array(
@@ -20,7 +21,7 @@ $composeBookLinkFunction = function (NaturalNumberKeyLinkField $field, Form $for
 	), "", "&amp;", PHP_QUERY_RFC3986);
 };
 
-$composePublisherLinkFunction = function (NaturalNumberKeyLinkField $field, Form $form): string
+$composePublisherLinkFunction = function (NaturalNumberKeyLinkField $field, ReadOnlyForm $form): string
 {
 	$publisherId = $form->fields["PUBLISHER_ID"]->exportValue();
 	return "publisher.php?".http_build_query(array(
