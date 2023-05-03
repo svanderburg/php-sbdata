@@ -81,23 +81,30 @@ class PagedDBTableTest extends TestCase
 
 		$stmt->execute();
 
-		$table->stmt = $stmt;
+		$table->setStatement($stmt);
 
 		/* Check if the values are from the second page */
-		$form = $table->nextForm();
+		$table->iterator->rewind();
+
+		$this->assertTrue($table->iterator->valid());
+		$form = $table->iterator->current();
 		$this->assertInstanceOf(Form::class, $form);
 		$this->assertTrue($form->fields["character"]->exportValue() == "D");
+		$table->iterator->next();
 
-		$form = $table->nextForm();
+		$this->assertTrue($table->iterator->valid());
+		$form = $table->iterator->current();
 		$this->assertInstanceOf(Form::class, $form);
 		$this->assertTrue($form->fields["character"]->exportValue() == "E");
+		$table->iterator->next();
 
-		$form = $table->nextForm();
+		$this->assertTrue($table->iterator->valid());
+		$form = $table->iterator->current();
 		$this->assertInstanceOf(Form::class, $form);
 		$this->assertTrue($form->fields["character"]->exportValue() == "F");
+		$table->iterator->next();
 
 		/* Check if we have reached the end of the page */
-		$form = $table->nextForm();
-		$this->assertNull($form);
+		$this->assertFalse($table->iterator->valid());
 	}
 }

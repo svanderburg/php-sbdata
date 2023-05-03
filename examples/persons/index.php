@@ -92,8 +92,11 @@ function executeOperation(ArrayTable $table, array $getParameters): ?Form
 		{
 			/* Do a linear search for the element that needs to be changed (yes I know it can be done more efficiently, but I'm too lazy to implement a smarter way) */
 
-			foreach($table->rows as $index => $row)
+			$rows = array();
+
+			foreach($table->iterator as $index => $form)
 			{
+				$row = $form->exportValues();
 				$id = $submittedForm->fields["id"]->exportValue();
 
 				if($row["id"] == $id)
@@ -110,8 +113,10 @@ function executeOperation(ArrayTable $table, array $getParameters): ?Form
 					$row["homepage"] = $submittedForm->fields["homepage"]->exportValue();
 				}
 
-				$table->rows[$index] = $row; // Update the row in the array
+				$rows[$index] = $row; // Update the row in the array
 			}
+
+			$table->setRows($rows);
 		}
 
 		return $submittedForm;
@@ -126,14 +131,18 @@ function executeOperation(ArrayTable $table, array $getParameters): ?Form
 				throw new Exception("No id provided!");
 
 			/* Do a linear search for the element that needs to be deleted (yes yes, see previous note) */
-			foreach($table->rows as $index => $row)
+
+			$rows = array();
+
+			foreach($table->iterator as $index => $form)
 			{
-				if($row["id"] == $id)
-				{
-					array_splice($table->rows, $index, 1); // Delete the found row
-					break;
-				}
+				$row = $form->exportValues();
+
+				if($row["id"] != $id) // Include all but the deleted row
+					$rows[$index] = $row;
 			}
+
+			$table->setRows($rows);
 		}
 		else
 			throw new Exception("Unknown operation: ".$_GET["__operation"]);

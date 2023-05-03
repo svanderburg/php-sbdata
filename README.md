@@ -434,7 +434,7 @@ $stmt = $dbh->prepare("select * from persons order by PERSON_ID");
 $stmt->execute();
 
 /* Attach the statement to the table */
-$table->stmt = $stmt;
+$table->setStatement($stmt);
 ```
 
 Displaying a table
@@ -829,7 +829,7 @@ $stmt->bindParam(2, $pageSize, PDO::PARAM_INT);
 $stmt->execute();
 
 /* Attach the statement to the table */
-$table->stmt = $stmt;
+$table->setStatement($stmt);
 ```
 
 In the above code fragement, we use the `page` parameter from the

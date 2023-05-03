@@ -140,7 +140,7 @@ catch(Exception $ex)
 		}
 		else if(($stmt = TodoItem::queryPage($dbh, (int)$requestParameters["page"], $pageSize)) !== false)
 		{
-			$table->stmt = $stmt;
+			$table->setStatement($stmt);
 
 			if($requestParameters["viewmode"] == 1) // If viewmode is selected, display ordinary table
 			{

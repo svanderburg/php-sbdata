@@ -3,15 +3,13 @@ namespace SBData\Model\Table;
 use PDOStatement;
 use SBData\Model\Form;
 use SBData\Model\Label\Label;
+use SBData\Model\Table\Iterator\DBTableIterator;
 
 /**
  * A table that retrieves its data by executing a PDO Statement
  */
 class DBTable extends Table
 {
-	/** An executed PDOStatement object that fetches the data to be displayed from a RDBMS */
-	public PDOStatement $stmt;
-
 	/**
 	 * Constructs a new DBTable instance.
 	 *
@@ -27,20 +25,13 @@ class DBTable extends Table
 	{
 		parent::__construct($columns, $actions, $noItemsLabel, $anchorPrefix, $saveLabel, $actionURL, $identifyRows);
 	}
-	
+
 	/**
-	 * @see Table::fetchForm()
+	 * Attaches an executed PDOStatement object that fetches the data to be displayed from a RDBMS.
 	 */
-	public function fetchForm(): Form|null
+	public function setStatement(PDOStatement $stmt): void
 	{
-		if(($row = $this->stmt->fetch()) === false)
-			return null;
-		else
-		{
-			$form = $this->constructForm();
-			$form->importValues($row);
-			return $form;
-		}
+		$this->setIterator(new DBTableIterator($stmt));
 	}
 }
 ?>

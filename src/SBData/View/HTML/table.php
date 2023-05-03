@@ -69,20 +69,25 @@ function displayTable(Table $table): void
 			<?php
 			displayTableHeader($table);
 
-			if(($form = $table->nextForm()) === null)
-				displayNoItemsLabel($table);
-			else
+			$table->iterator->rewind();
+
+			if($table->iterator->valid())
 			{
 				do
 				{
+					$form = $table->iterator->current();
+
 					?>
 					<tr>
 						<?php displayFields($table, $form); ?>
 					</tr>
 					<?php
+					$table->iterator->next();
 				}
-				while(($form = $table->nextForm()) !== null);
+				while($table->iterator->valid());
 			}
+			else
+				displayNoItemsLabel($table);
 			?>
 		</table>
 	</div>
@@ -140,12 +145,13 @@ function displaySemiEditableTable(Table $table): void
 			<?php
 			displayTableHeader($table);
 
-			if(($form = $table->nextForm()) === null)
-				displayNoItemsLabel($table);
-			else
+			$table->iterator->rewind();
+
+			if($table->iterator->valid())
 			{
 				do
 				{
+					$form = $table->iterator->current();
 					?>
 					<tr>
 						<?php
@@ -154,9 +160,12 @@ function displaySemiEditableTable(Table $table): void
 						?>
 					</tr>
 					<?php
+					$table->iterator->next();
 				}
-				while(($form = $table->nextForm()) !== null);
+				while($table->iterator->valid());
 			}
+			else
+				displayNoItemsLabel($table);
 			?>
 		</table>
 	</div>
@@ -242,12 +251,14 @@ function displayEditableTable(Table $table, Form $submittedForm = null): void
 
 			/* Display the editable records */
 
-			if(($form = $table->nextForm()) === null)
-				displayNoItemsLabelForEditableTable($table);
-			else
+			$table->iterator->rewind();
+
+			if($table->iterator->valid())
 			{
 				do
 				{
+					$form = $table->iterator->current();
+
 					/* Compose an encType attribute if the form contains a file field */
 					$encTypeAttribute = composeEncTypeAttribute($form);
 
@@ -268,9 +279,12 @@ function displayEditableTable(Table $table, Form $submittedForm = null): void
 						</div>
 					</form>
 					<?php
+					$table->iterator->next();
 				}
-				while(($form = $table->nextForm()) !== null);
+				while($table->iterator->valid());
 			}
+			else
+				displayNoItemsLabelForEditableTable($table);
 			?>
 		</div>
 	</div>

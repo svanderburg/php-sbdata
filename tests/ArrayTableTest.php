@@ -23,13 +23,18 @@ class ArrayTableTest extends TestCase
 		));
 
 		// Check if we can iterate over two rows
-		$form = $table->nextForm();
-		$this->assertInstanceOf(Form::class, $form);
+		$table->iterator->rewind();
 
-		$form = $table->nextForm();
+		$this->assertTrue($table->iterator->valid());
+		$form = $table->iterator->current();
 		$this->assertInstanceOf(Form::class, $form);
+		$table->iterator->next();
 
-		$form = $table->nextForm();
-		$this->assertNull($form);
+		$this->assertTrue($table->iterator->valid());
+		$form = $table->iterator->current();
+		$this->assertInstanceOf(Form::class, $form);
+		$table->iterator->next();
+
+		$this->assertFalse($table->iterator->valid());
 	}
 }

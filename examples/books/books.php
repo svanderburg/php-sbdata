@@ -141,7 +141,7 @@ catch(Exception $ex)
 		}
 		else if(($stmt = Book::queryAll($dbh)) !== false)
 		{
-			$table->stmt = $stmt;
+			$table->setStatement($stmt);
 
 			if($getParameters["viewmode"] == 1) // If viewmode is selected, display ordinary table
 			{

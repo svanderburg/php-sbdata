@@ -5,11 +5,12 @@ use SBData\Model\Field\GenericHiddenField;
 use SBData\Model\Field\HiddenNaturalNumberField;
 use SBData\Model\Label\Label;
 use SBData\Model\Label\TextLabel;
+use SBData\Model\Table\Iterator\TableIterator;
 
 /**
  * A table represents a collection of forms (with fields).
  */
-abstract class Table
+class Table
 {
 	/** An associative array mapping field names to fields that should be checked and displayed */
 	public array $columns;
@@ -32,8 +33,11 @@ abstract class Table
 	/** Indicates whether to add an extra column that can be used to track which row in the table is modified */
 	public bool $identifyRows;
 
-	/** Counts the amount of retrieved rows */
-	public int $rowCount;
+	/** Name of the identity column */
+	public string $idColumnName;
+
+	/** Iterator that steps over every row in the table and generates a form to be displayed */
+	public TableIterator $iterator;
 
 	/**
 	 * Constructs a new Table instance.
@@ -45,8 +49,9 @@ abstract class Table
 	 * @param $saveLabel Label to be displayed on the save button
 	 * @param $actionURL Action URL where the user gets redirected to (defaults to same page)
 	 * @param $identifyRows Indicates whether to add an extra column that can be used to track which row in the table is modified
+	 * @param $idColumnName Name of the identity column
 	 */
-	public function __construct(array $columns, array $actions = null, string $noItemsLabel = "No items", string $anchorPrefix = "table-row", Label $saveLabel = null, string $actionURL = null, bool $identifyRows = true)
+	public function __construct(array $columns, array $actions = null, string $noItemsLabel = "No items", string $anchorPrefix = "table-row", Label $saveLabel = null, string $actionURL = null, bool $identifyRows = true, string $idColumnName = "__id")
 	{
 		$this->columns = $columns;
 		$this->actions = $actions;
@@ -60,10 +65,10 @@ abstract class Table
 
 		$this->actionURL = $actionURL;
 		$this->identifyRows = $identifyRows;
-		$this->rowCount = 0;
+		$this->idColumnName = $idColumnName;
 
 		if($identifyRows)
-			$this->columns["__id"] = new HiddenNaturalNumberField(false);
+			$this->columns[$idColumnName] = new HiddenNaturalNumberField(false);
 	}
 	
 	/**
@@ -83,37 +88,6 @@ abstract class Table
 		/* Construct a form with the fields */
 		return new Form($fields, $this->actionURL, $this->saveLabel);
 	}
-	
-	/**
-	 * Iterates over the data in the table and returns a form instance for
-	 * each row until the last one has been reached.
-	 *
-	 * @return A form instance representing a table row, or null if all table rows have been visited.
-	 */
-	public abstract function fetchForm(): Form|null;
-
-	/**
-	 * Iterates over the data in the table, modifies it if needed, and
-	 * returns a form instance for each row until the last one has been
-	 * reached.
-	 *
-	 * @return A form instance representing a table row, or null if all table rows have been visited.
-	 */
-	public function nextForm(): Form|null
-	{
-		$form = $this->fetchForm();
-
-		if($form === null)
-			return null;
-		else
-		{
-			if($this->identifyRows)
-				$form->fields["__id"]->importValue($this->rowCount);
-
-			$this->rowCount++;
-			return $form;
-		}
-	}
 
 	/**
 	 * Computes the number of displayable columns.
@@ -131,5 +105,18 @@ abstract class Table
 		}
 
 		return $count;
+	}
+
+	/**
+	 * Configures an iterator that can be used to step over each row to be displayed in a table.
+	 *
+	 * @param $iterator Iterator to use
+	 */
+	public function setIterator(TableIterator $iterator): void
+	{
+		$this->iterator = $iterator;
+		$this->iterator->identifyRows = $this->identifyRows;
+		$this->iterator->idColumnName = $this->idColumnName;
+		$this->iterator->setTable($this);
 	}
 }
