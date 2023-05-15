@@ -1,7 +1,7 @@
 <?php
 namespace SBData\Model\Table\Iterator;
 use Iterator;
-use SBData\Model\Form;
+use SBData\Model\ReadOnlyForm;
 use SBData\Model\Table\Table;
 
 /**
@@ -37,7 +37,7 @@ abstract class TableIterator implements Iterator
 	 * @param $row An object containing the data fields
 	 * @return A form that can be used to display and check the data in a row
 	 */
-	public function constructForm(array $row): Form
+	public function constructForm(array $row): ReadOnlyForm
 	{
 		$form = $this->table->constructForm();
 		$form->importValues($row);

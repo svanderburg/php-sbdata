@@ -9,7 +9,7 @@ use SBData\Model\Value\NaturalNumberValue;
 use SBData\Model\Value\PageValue;
 use SBData\Model\Form;
 use SBData\Model\Table\Action;
-use SBData\Model\Table\PagedDBTable;
+use SBData\Model\Table\EditablePagedDBTable;
 use SBData\Model\Table\Anchor\AnchorRow;
 use SBData\Model\Field\ReadOnlyNaturalNumberTextField;
 use SBData\Model\Field\TextField;
@@ -34,7 +34,7 @@ function importAndCheckParameters(): array
 		throw new Exception($requestMap->composeErrorMessage("The following parameters are invalid:"));
 }
 
-function constructTable(PDO $dbh, int $pageSize, array $requestParameters): PagedDBTable
+function constructTable(PDO $dbh, int $pageSize, array $requestParameters): EditablePagedDBTable
 {
 	$queryNumOfPagesFunction = function (PDO $dbh, int $pageSize): int
 	{
@@ -54,7 +54,7 @@ function constructTable(PDO $dbh, int $pageSize, array $requestParameters): Page
 		"page" => $requestParameters["page"]
 	), "", "&amp;", PHP_QUERY_RFC3986);
 
-	return new PagedDBTable(array(
+	return new EditablePagedDBTable(array(
 		"ITEM_ID" => new ReadOnlyNaturalNumberTextField("Id", true, 20, 255),
 		"Description" => new TextField("Description", true, 30, 255)
 	), $dbh, $pageSize, $queryNumOfPagesFunction, array(
@@ -62,7 +62,7 @@ function constructTable(PDO $dbh, int $pageSize, array $requestParameters): Page
 	), $actionURL);
 }
 
-function executeOperation(PagedDBTable $table, array $requestParameters, PDO $dbh): ?Form
+function executeOperation(EditablePagedDBTable $table, array $requestParameters, PDO $dbh): ?Form
 {
 	if($_SERVER["REQUEST_METHOD"] == "POST") // If POST parameters are given, try to update a record
 	{

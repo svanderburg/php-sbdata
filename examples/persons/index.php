@@ -12,7 +12,7 @@ use SBData\Model\Field\NaturalNumberTextField;
 use SBData\Model\Field\TextField;
 use SBData\Model\Field\URLField;
 use SBData\Model\Table\Action;
-use SBData\Model\Table\ArrayTable;
+use SBData\Model\Table\EditableArrayTable;
 
 function importAndCheckParameters(): array
 {
@@ -30,7 +30,7 @@ function importAndCheckParameters(): array
 		throw new Exception($getMap->composeErrorMessage("The following parameters are invalid:"));
 }
 
-function constructTable(): ArrayTable
+function constructTable(): EditableArrayTable
 {
 	$deletePersonLink = function (Form $form): string
 	{
@@ -42,7 +42,7 @@ function constructTable(): ArrayTable
 		), "", "&amp;", PHP_QUERY_RFC3986);
 	};
 
-	$table = new ArrayTable(array(
+	$table = new EditableArrayTable(array(
 		"id" => new HiddenNaturalNumberField(true),
 		"firstname" => new TextField("First name", true),
 		"lastname" => new TextField("Last name", true),
@@ -79,7 +79,7 @@ function constructTable(): ArrayTable
 	return $table;
 }
 
-function executeOperation(ArrayTable $table, array $getParameters): ?Form
+function executeOperation(EditableArrayTable $table, array $getParameters): ?Form
 {
 	if($_SERVER["REQUEST_METHOD"] == "POST") // If an edit has been made, override the test rowset with the change
 	{

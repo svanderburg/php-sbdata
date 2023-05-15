@@ -1,14 +1,12 @@
 <?php
 namespace SBData\Model\Table;
-use SBData\Model\Form;
+use SBData\Model\ReadOnlyForm;
 use SBData\Model\Field\GenericHiddenField;
 use SBData\Model\Field\HiddenNaturalNumberField;
-use SBData\Model\Label\Label;
-use SBData\Model\Label\TextLabel;
 use SBData\Model\Table\Iterator\TableIterator;
 
 /**
- * A table represents a collection of forms (with fields).
+ * A table that presents and validates collections of data. Each row is represented as a read-only form.
  */
 class Table
 {
@@ -23,12 +21,6 @@ class Table
 
 	/** The prefix that the hidden anchor elements should have */
 	public string $anchorPrefix;
-
-	/** Label to be displayed on the save button */
-	public Label $saveLabel;
-
-	/** Action URL where the user gets redirected to (defaults to same page) */
-	public ?string $actionURL;
 
 	/** Indicates whether to add an extra column that can be used to track which row in the table is modified */
 	public bool $identifyRows;
@@ -46,47 +38,46 @@ class Table
 	 * @param $actions An associative array of labels mapping to function names displaying action links
 	 * @param $noItemsLabel Label to be displayed when there are no items in the table
 	 * @param $anchorPrefix The prefix that the hidden anchor elements should have
-	 * @param $saveLabel Label to be displayed on the save button
-	 * @param $actionURL Action URL where the user gets redirected to (defaults to same page)
 	 * @param $identifyRows Indicates whether to add an extra column that can be used to track which row in the table is modified
 	 * @param $idColumnName Name of the identity column
 	 */
-	public function __construct(array $columns, array $actions = null, string $noItemsLabel = "No items", string $anchorPrefix = "table-row", Label $saveLabel = null, string $actionURL = null, bool $identifyRows = true, string $idColumnName = "__id")
+	public function __construct(array $columns, array $actions = null, string $noItemsLabel = "No items", string $anchorPrefix = "table-row", bool $identifyRows = true, string $idColumnName = "__id")
 	{
 		$this->columns = $columns;
 		$this->actions = $actions;
 		$this->noItemsLabel = $noItemsLabel;
 		$this->anchorPrefix = $anchorPrefix;
-
-		if($saveLabel === null)
-			$this->saveLabel = new TextLabel("Save");
-		else
-			$this->saveLabel = $saveLabel;
-
-		$this->actionURL = $actionURL;
 		$this->identifyRows = $identifyRows;
 		$this->idColumnName = $idColumnName;
 
 		if($identifyRows)
 			$this->columns[$idColumnName] = new HiddenNaturalNumberField(false);
 	}
-	
+
+	/**
+	 * Clones the fields so that a form can be created out of it
+	 *
+	 * @return An array of cloned fields
+	 */
+	protected function cloneColumnFields(): array
+	{
+		$fields = array();
+
+		foreach($this->columns as $id => $field)
+			$fields[$id] = clone $field;
+
+		return $fields;
+	}
+
 	/**
 	 * Constructs a form out of the table's columns, which can be used to validate
 	 * records that are inserted or modified in the table.
 	 *
 	 * @return A form with the table's columns as fields
 	 */
-	public function constructForm(): Form
+	public function constructForm(): ReadOnlyForm
 	{
-		/* Clone the columns fields */
-		$fields = array();
-
-		foreach($this->columns as $id => $field)
-			$fields[$id] = clone $field;
-
-		/* Construct a form with the fields */
-		return new Form($fields, $this->actionURL, $this->saveLabel);
+		return new ReadOnlyForm($this->cloneColumnFields());
 	}
 
 	/**

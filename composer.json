@@ -14,6 +14,7 @@
       "psr-4": { "SBData\\": "src/SBData" },
       "files": [
           "src/SBData/View/HTML/table.php",
+          "src/SBData/View/HTML/editabletable.php",
           "src/SBData/View/HTML/pager.php",
           "src/SBData/View/HTML/pageddbtable.php",
           "src/SBData/View/HTML/form.php",

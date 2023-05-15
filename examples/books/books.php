@@ -9,7 +9,7 @@ use SBData\Model\Value\NaturalNumberValue;
 use SBData\Model\ReadOnlyForm;
 use SBData\Model\Form;
 use SBData\Model\Table\Action;
-use SBData\Model\Table\DBTable;
+use SBData\Model\Table\EditableDBTable;
 use SBData\Model\Table\Anchor\AnchorRow;
 use SBData\Model\Field\NaturalNumberKeyLinkField;
 use SBData\Model\Field\NaturalNumberTextField;
@@ -33,7 +33,7 @@ function importAndCheckParameters(): array
 		throw new Exception($getMap->composeErrorMessage("The following parameters are invalid:"));
 }
 
-function constructTable(array $getParameters): DBTable
+function constructTable(array $getParameters): EditableDBTable
 {
 	$composeBookLinkFunction = function (NaturalNumberKeyLinkField $field, ReadOnlyForm $form) use ($getParameters): string
 	{
@@ -61,7 +61,7 @@ function constructTable(array $getParameters): DBTable
 		), "", "&amp;", PHP_QUERY_RFC3986).AnchorRow::composeRowParameter($form);
 	};
 
-	return new DBTable(array(
+	return new EditableDBTable(array(
 		"BOOK_ID" => new NaturalNumberKeyLinkField("Id", $composeBookLinkFunction, true, 20, 255),
 		"Title" => new TextField("Title", true, 30, 255),
 		"Subtitle" => new TextField("Subtitle", false, 30, 255),
@@ -71,7 +71,7 @@ function constructTable(array $getParameters): DBTable
 	), "No items", "table-row", new IconLabel("Save", "image/save.png"));
 }
 
-function executeOperation(DBTable $table, array $getParameters, PDO $dbh): ?Form
+function executeOperation(EditableDBTable $table, array $getParameters, PDO $dbh): ?Form
 {
 	if($_SERVER["REQUEST_METHOD"] == "POST")
 	{

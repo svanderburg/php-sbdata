@@ -2,7 +2,7 @@
 require_once(dirname(__FILE__)."/../vendor/autoload.php");
 
 use PHPUnit\Framework\TestCase;
-use SBData\Model\Form;
+use SBData\Model\ReadOnlyForm;
 use SBData\Model\Field\HiddenIntegerField;
 use SBData\Model\Field\TextField;
 use SBData\Model\Table\DBTable;
@@ -34,12 +34,12 @@ class DBTableTest extends TestCase
 
 		$this->assertTrue($table->iterator->valid());
 		$form = $table->iterator->current();
-		$this->assertInstanceOf(Form::class, $form);
+		$this->assertInstanceOf(ReadOnlyForm::class, $form);
 		$table->iterator->next();
 
 		$this->assertTrue($table->iterator->valid());
 		$form = $table->iterator->current();
-		$this->assertInstanceOf(Form::class, $form);
+		$this->assertInstanceOf(ReadOnlyForm::class, $form);
 		$table->iterator->next();
 
 		$this->assertFalse($table->iterator->valid());

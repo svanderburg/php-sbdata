@@ -8,6 +8,7 @@
 
 namespace SBData\View\HTML;
 use SBData\Model\Table\PagedDBTable;
+use SBData\Model\Table\EditablePagedDBTable;
 use SBData\Model\Form;
 
 /**
@@ -57,7 +58,7 @@ function displaySemiEditablePagedDBTable(PagedDBTable $table, array $requestPara
  * @param $nextLabel Label of the next button
  * @param $anchorPrefix The prefix that the hidden anchor elements should have
  */
-function displayEditablePagedDBTable(PagedDBTable $table, array $requestParameters, Form $submittedForm = null, string $noItemsLabel = "No items", string $editLabel = "Edit", string $previousLabel = "&laquo; Previous", string $nextLabel = "Next &raquo;", string $anchorPrefix = "table-row"): void
+function displayEditablePagedDBTable(EditablePagedDBTable $table, array $requestParameters, Form $submittedForm = null, string $noItemsLabel = "No items", string $editLabel = "Edit", string $previousLabel = "&laquo; Previous", string $nextLabel = "Next &raquo;", string $anchorPrefix = "table-row"): void
 {
 	displayPagesNavigation($table->pager, $requestParameters, $previousLabel, $nextLabel);
 	displayEditableTable($table, $submittedForm, $noItemsLabel, $editLabel, $anchorPrefix);
