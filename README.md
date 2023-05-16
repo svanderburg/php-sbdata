@@ -458,7 +458,7 @@ To support deletes we must implement an *action* function that returns a string
 representing the link to a delete URL:
 
 ```php
-function deletePersonLink(Form $form): string
+function deletePersonLink(ReadOnlyForm $form): string
 {
     $personId = $form->fields["PERSON_ID"]->exportValue();
     return "?".http_build_query(array(
@@ -504,7 +504,7 @@ In the above example, we create a link with label: `"Delete"` that invokes the
 It is also possible to define the `deletePersonLink` as an anonymous function:
 
 ```php
-$deletePersonLinkFunction = function (Form $form): string
+$deletePersonLinkFunction = function (ReadOnlyForm $form): string
 {
     $personId = $form->fields["PERSON_ID"]->exportValue();
     return "?".http_build_query(array(
@@ -675,7 +675,7 @@ When defining a form action or a `KeyLinkField`, we can use the `__id` field to
 retrieve the row id:
 
 ```php
-function deletePersonLink(Form $form): string
+function deletePersonLink(ReadOnlyForm $form): string
 {
     $rowId = $form->fields["__id"]->exportValue(); // refers to the anchor id of the row for which the action has been triggered
     $personId = $form->fields["PERSON_ID"]->exportValue();
@@ -702,7 +702,7 @@ it:
 
 
 ```php
-function deletePersonLink(Form $form): string
+function deletePersonLink(ReadOnlyForm $form): string
 {
     $personId = $form->fields["PERSON_ID"]->exportValue();
     return "?".http_build_query(array(
