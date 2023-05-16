@@ -1,6 +1,6 @@
 <?php
 namespace SBData\Model\Table\Anchor;
-use SBData\Model\Form;
+use SBData\Model\ReadOnlyForm;
 use SBData\Model\Value\IntegerValue;
 
 /**
@@ -94,7 +94,7 @@ class AnchorRow
 	 * @param $prefix Prefix of the provided parameter string
 	 * @return A GET parameter referring to the current row
 	 */
-	public static function composeRowParameter(Form $form, string $paramName = "__id", string $prefix = "&amp;"): string
+	public static function composeRowParameter(ReadOnlyForm $form, string $paramName = "__id", string $prefix = "&amp;"): string
 	{
 		$row = $form->fields[$paramName]->exportValue();
 		return $prefix.http_build_query(array(
