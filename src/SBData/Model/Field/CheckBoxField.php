@@ -3,7 +3,7 @@ namespace SBData\Model\Field;
 use SBData\Model\Value\BooleanValue;
 
 /**
- * Represents the structure of an individual data element containg a checked or unchecked state.
+ * Represents the structure of an individual data element containing a checked or unchecked state.
  */
 class CheckBoxField extends VisibleField
 {

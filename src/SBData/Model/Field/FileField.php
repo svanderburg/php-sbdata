@@ -7,6 +7,9 @@ use SBData\Model\Value\FileValue;
  */
 class FileField extends VisibleField
 {
+	/** Required MIME type for the file */
+	public string|array|null $mimeType;
+
 	/**
 	 * Constructs a new FileField instance.
 	 *

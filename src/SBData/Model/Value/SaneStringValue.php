@@ -11,7 +11,9 @@ class SaneStringValue extends Value
 	 */
 	public function checkValue(string $name): bool
 	{
-		$this->value = trim($this->value); // Trim whitespace that comes in front and after the input
+		if($this->value !== null)
+			$this->value = trim($this->value); // Trim whitespace that comes in front and after the input
+
 		return parent::checkValue($name);
 	}
 }

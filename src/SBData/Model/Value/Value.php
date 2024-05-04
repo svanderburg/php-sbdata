@@ -58,7 +58,7 @@ class Value
 		if($this->mandatory && $this->value == "") // Mandatory fields are not allowed to be empty
 			return false;
 
-		if($this->maxlength !== null && strlen($this->value) > $this->maxlength) // Text fields cannot exceed their maximum length
+		if($this->maxlength !== null && $this->value !== null && strlen($this->value) > $this->maxlength) // Text fields cannot exceed their maximum length
 			return false;
 
 		return true;

@@ -39,7 +39,7 @@ class IntegerValue extends SaneStringValue
 		if($this->value === "")
 			return true;
 
-		if(preg_match('/[0-9]+$/', $this->value) !== 1)
+		if($this->value !== null && preg_match('/[0-9]+$/', $this->value) !== 1)
 			return false;
 
 		if($this->minValue !== null && $this->value < $this->minValue)

@@ -16,8 +16,12 @@ function displayReadOnlyNaturalNumberTextField(ReadOnlyNaturalNumberTextField $f
 
 function displayEditableReadOnlyNaturalNumberTextField(string $name, ReadOnlyNaturalNumberTextField $field): void
 {
+	$fieldValue = $field->exportValue();
+
+	if($fieldValue !== null)
+		$fieldValue = htmlentities($fieldValue);
 	?>
-	<input name="<?= $name ?>" type="text" value="<?= htmlentities($field->exportValue()) ?>" size="<?= $field->size ?>"<?php if($field->value->maxlength !== null) print(' maxlength="'.$field->value->maxlength.'"'); ?> readonly>
+	<input name="<?= $name ?>" type="text" value="<?= $fieldValue ?>" size="<?= $field->size ?>"<?php if($field->value->maxlength !== null) print(' maxlength="'.$field->value->maxlength.'"'); ?> readonly>
 	<?php
 }
 
