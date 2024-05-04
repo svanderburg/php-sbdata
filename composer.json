@@ -20,6 +20,7 @@
           "src/SBData/View/HTML/field.php",
           "src/SBData/View/HTML/label.php",
           "src/SBData/View/HTML/Field/acceptablefilenamefield.php",
+          "src/SBData/View/HTML/Field/agreefield.php",
           "src/SBData/View/HTML/Field/arraycomboboxfield.php",
           "src/SBData/View/HTML/Field/textareafield.php",
           "src/SBData/View/HTML/Field/checkboxfield.php",
