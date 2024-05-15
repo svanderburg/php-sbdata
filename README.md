@@ -142,9 +142,9 @@ $parameterMap = new ParameterMap(array(
 ));
 ```
 
-The above example defines a parameter map that checks whether an object consists
-of an `id` that should refer to an integer value and `description` that is a
-string.
+The above example defines a `ParameterMap` object that checks whether an object
+(consisting of an `id` referring to an integer value and `description` that is
+supposed to be a string) is valid.
 
 The following instructions import an array and checks its validity:
 
@@ -772,6 +772,9 @@ Currently the following `Field` classes are provided by this library:
 * `PasswordField`. Display a field as a password field and restricts viewing it.
 * `CheckBoxField`. Displays a field as a checkbox and uses a preconfigured
   value to determine whether it has been checked or not.
+* `AgreeField`. Displays a field as a checkbox and is only valid when the
+  checkbox is enabled. This feature is useful to force a user to agree to a
+  policy.
 * `ArrayComboBoxField`. Displays a field as text or combo box. It retrieves
   key-value pairs from an array.
 * `DBComboBoxField`. Displays a field as text or combo box. It retrieves
@@ -839,6 +842,7 @@ The following value classes are provided:
   trailing white spaces.
 * `BooleanValue`. Does a boolean check. `true` corresponds to a predefined string
   and `false` corresponds to an empty string.
+* `TrueValue` is only valid when the value is `true`.
 * `IntegerValue`. Checks whether user provided input is a valid integer number.
 * `NaturalNumberValue`. Checks whether user provided input is a valid natural
   number (an integer that is 0 or greater).
