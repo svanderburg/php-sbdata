@@ -16,30 +16,30 @@ let
     "doctrine/instantiator" = {
       targetDir = "";
       src = composerEnv.buildZipPackage {
-        name = "doctrine-instantiator-c6222283fa3f4ac679f8b9ced9a4e23f163e80d0";
+        name = "doctrine-instantiator-0a0fa9780f5d4e507415a065172d26a98d02047b";
         src = fetchurl {
-          url = "https://api.github.com/repos/doctrine/instantiator/zipball/c6222283fa3f4ac679f8b9ced9a4e23f163e80d0";
-          sha256 = "059ahw73z0m24cal4f805j6h1i53f90mrmjr7s4f45yfxgwcqvcn";
+          url = "https://api.github.com/repos/doctrine/instantiator/zipball/0a0fa9780f5d4e507415a065172d26a98d02047b";
+          sha256 = "00qv07k8hpl2nj5pmamzihflgc0yx04h0rcln2fy3bz65jd6kb5j";
         };
       };
     };
     "myclabs/deep-copy" = {
       targetDir = "";
       src = composerEnv.buildZipPackage {
-        name = "myclabs-deep-copy-7284c22080590fb39f2ffa3e9057f10a4ddd0e0c";
+        name = "myclabs-deep-copy-3a6b9a42cd8f8771bd4295d13e1423fa7f3d942c";
         src = fetchurl {
-          url = "https://api.github.com/repos/myclabs/DeepCopy/zipball/7284c22080590fb39f2ffa3e9057f10a4ddd0e0c";
-          sha256 = "16k44y94bcr439bsxm5158xvmlyraph2c6n17qa5y29b04jqdw5j";
+          url = "https://api.github.com/repos/myclabs/DeepCopy/zipball/3a6b9a42cd8f8771bd4295d13e1423fa7f3d942c";
+          sha256 = "1aa2j8gdy9bdkzmigv81vl42jqyfl19508k13kmsbsncd2zhkvyp";
         };
       };
     };
     "nikic/php-parser" = {
       targetDir = "";
       src = composerEnv.buildZipPackage {
-        name = "nikic-php-parser-139676794dc1e9231bf7bcd123cfc0c99182cb13";
+        name = "nikic-php-parser-683130c2ff8c2739f4822ff7ac5c873ec529abd1";
         src = fetchurl {
-          url = "https://api.github.com/repos/nikic/PHP-Parser/zipball/139676794dc1e9231bf7bcd123cfc0c99182cb13";
-          sha256 = "1z4bvxvxs09099i3khiydmzy8lqjvk8kdani2qipmkq9vzf9pq56";
+          url = "https://api.github.com/repos/nikic/PHP-Parser/zipball/683130c2ff8c2739f4822ff7ac5c873ec529abd1";
+          sha256 = "1wwjddqsbq94grckdnplcg8c3423y2jw2mx97n2k7f8wlq4q1fhv";
         };
       };
     };
@@ -116,10 +116,10 @@ let
     "phpunit/phpunit" = {
       targetDir = "";
       src = composerEnv.buildZipPackage {
-        name = "phpunit-phpunit-a1a54a473501ef4cdeaae4e06891674114d79db8";
+        name = "phpunit-phpunit-49d7820565836236411f5dc002d16dd689cde42f";
         src = fetchurl {
-          url = "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/a1a54a473501ef4cdeaae4e06891674114d79db8";
-          sha256 = "1miqf97zad5wl5x8758za4sxrj3nhg65zj3wqdh6wwpdf99j9sgp";
+          url = "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/49d7820565836236411f5dc002d16dd689cde42f";
+          sha256 = "0892b5awdsxwngzih1k3g7cs9fp74kfvpj06k33982hm4810568z";
         };
       };
     };

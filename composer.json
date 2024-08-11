@@ -50,7 +50,8 @@
           "src/SBData/View/HTML/Field/integerkeylinkfield.php",
           "src/SBData/View/HTML/Field/naturalnumberkeylinkfield.php",
           "src/SBData/View/HTML/Field/dbcomboboxfield.php",
-          "src/SBData/View/HTML/Field/urlfield.php"
+          "src/SBData/View/HTML/Field/urlfield.php",
+          "src/SBData/View/HTML/Field/dutchzipcodefield.php"
       ]
   },
   "autoload-dev": {
