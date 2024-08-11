@@ -14,6 +14,7 @@ use SBData\Model\Field\TextField;
 use SBData\Model\Field\TextAreaField;
 use SBData\Model\Field\URLField;
 use SBData\Model\Field\IPAddressField;
+use SBData\Model\Field\DutchZipCodeField;
 use SBData\Model\Field\ComboBoxField\ArrayComboBoxField;
 
 /* Define a form */
@@ -22,7 +23,7 @@ $form = new Form(array(
 	"lastname" => new TextField("Last name", true),
 	"address" => new TextField("Street", true),
 	"number" => new NaturalNumberTextField("House number", true),
-	"zipcode" => new TextField("Zipcode", true, 6, 6),
+	"zipcode" => new DutchZipCodeField("Zipcode", true),
 	"phone" => new TextField("Phone", false, 10, 10),
 	"city" => new TextField("City", true),
 	"country" => new ArrayComboBoxField("Country", array("Netherlands", "Belgium"), true),

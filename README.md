@@ -791,6 +791,7 @@ Currently the following `Field` classes are provided by this library:
   valid natural number value.
 * `AcceptableFileNameField`. Displays a text field with a valid file name on
   UNIX and Windows.
+* `DutchZipCodeField`. Displays a text field with a valid Dutch zip code.
 * `MetaDataField`. Includes meta data (typically foreign keys) in a form that
   can be used as meta data for the key link fields.
 
@@ -860,6 +861,8 @@ The following value classes are provided:
   on UNIX and Windows systems.
 * `StringArrayElementValue`. Checks whether a user provided value is in an array
   of strings.
+* `DutchZipCode`. Checks whether a user provided value is a valid Dutch zip
+  code.
 
 Constructing custom fields
 ==========================
