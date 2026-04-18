@@ -64,7 +64,7 @@
       ]
   },
   "require-dev": {
-      "phpunit/phpunit": "9.x",
+      "phpunit/phpunit": "12.5.22",
       "abeautifulsite/simple-php-captcha": "1.0.x"
   }
 }
