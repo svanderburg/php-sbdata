@@ -17,7 +17,7 @@ class HiddenAcceptableFileNameField extends GenericHiddenField
 	 * @param $flags Flags that specify which filename properties to check
 	 * @param $defaultValue The value it defaults to
 	 */
-	public function __construct(bool $mandatory = false, int $maxlength = null, int $flags = AcceptableFileNameValue::FLAG_ALL, $defaultValue = null)
+	public function __construct(bool $mandatory = false, ?int $maxlength = null, int $flags = AcceptableFileNameValue::FLAG_ALL, $defaultValue = null)
 	{
 		parent::__construct(new AcceptableFileNameValue($mandatory, $maxlength, $flags, $defaultValue));
 	}

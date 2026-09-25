@@ -19,7 +19,7 @@ class Action
 	 * @param $generateURLFunction Function that generates the URL to a page that executes the action
 	 * @param $icon An optional icon
 	 */
-	public function __construct(string|Closure $generateURLFunction, string $icon = null)
+	public function __construct(string|Closure $generateURLFunction, ?string $icon = null)
 	{
 		$this->generateURLFunction = $generateURLFunction;
 		$this->icon = $icon;

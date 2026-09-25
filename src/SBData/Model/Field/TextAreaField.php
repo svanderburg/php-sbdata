@@ -18,7 +18,7 @@ class TextAreaField extends GenericTextAreaField
 	 * @param $maxlength Maximum size of the text field or null for infinite size
 	 * @param $defaultValue The value it defaults to
 	 */
-	public function __construct(string $title, bool $mandatory = false, int $cols = 20, int $rows = 20, int $maxlength = null, $defaultValue = null)
+	public function __construct(string $title, bool $mandatory = false, int $cols = 20, int $rows = 20, ?int $maxlength = null, $defaultValue = null)
 	{
 		parent::__construct($title, new SaneStringValue($mandatory, $maxlength, $defaultValue), $cols, $rows);
 	}

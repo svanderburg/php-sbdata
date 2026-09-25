@@ -29,7 +29,7 @@ class AcceptableFileNameValue extends Value
 	 * @param $flags Flags that specify which filename properties to check
 	 * @param $defaultValue The value it defaults to
 	 */
-	public function __construct(bool $mandatory = false, int $maxlength = null, int $flags = self::FLAG_ALL, $defaultValue = null)
+	public function __construct(bool $mandatory = false, ?int $maxlength = null, int $flags = self::FLAG_ALL, $defaultValue = null)
 	{
 		parent::__construct($mandatory, $maxlength, $defaultValue);
 		$this->flags = $flags;

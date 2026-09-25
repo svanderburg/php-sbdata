@@ -30,7 +30,7 @@ class Value
 	 * @param $maxlength Maximum size of the text field or null for infinite size
 	 * @param $defaultValue The value it defaults to
 	 */
-	public function __construct(bool $mandatory = false, int $maxlength = null, $defaultValue = null)
+	public function __construct(bool $mandatory = false, ?int $maxlength = null, $defaultValue = null)
 	{
 		$this->mandatory = $mandatory;
 		$this->maxlength = $maxlength;

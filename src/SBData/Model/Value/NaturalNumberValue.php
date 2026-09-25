@@ -9,7 +9,7 @@ class NaturalNumberValue extends IntegerValue
 	/**
 	 * @see IntegerValue::__construct()
 	 */
-	public function __construct(bool $mandatory = false, int $maxlength = null, $defaultValue = null, int $maxValue = null)
+	public function __construct(bool $mandatory = false, ?int $maxlength = null, $defaultValue = null, ?int $maxValue = null)
 	{
 		parent::__construct($mandatory, $maxlength, $defaultValue, 0, null);
 	}

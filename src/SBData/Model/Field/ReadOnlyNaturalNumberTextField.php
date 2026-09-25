@@ -10,7 +10,7 @@ class ReadOnlyNaturalNumberTextField extends NaturalNumberTextField
 	/**
 	 * @see NaturalNumberTextField::__construct()
 	 */
-	public function __construct(string $title, bool $mandatory, int $size = 20, int $maxlength = null, $defaultValue = null, int $maxValue = null)
+	public function __construct(string $title, bool $mandatory, int $size = 20, ?int $maxlength = null, $defaultValue = null, ?int $maxValue = null)
 	{
 		parent::__construct($title, $mandatory, $size, $maxlength, $defaultValue, $maxValue);
 	}

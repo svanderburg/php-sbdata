@@ -1,5 +1,5 @@
 <?php
-error_reporting(E_STRICT | E_ALL);
+error_reporting(E_ALL);
 
 require(dirname(__FILE__)."/../../vendor/autoload.php");
 
@@ -31,7 +31,7 @@ if(count($_FILES) == 1)
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 		<link rel="stylesheet" type="text/css" href="style.css">
 	</head>
-	
+
 	<body>
 		<p>This form can be used to upload a plain text file and display its contents.</p>
 		<p>The file size should be below 4096 bytes.</p>

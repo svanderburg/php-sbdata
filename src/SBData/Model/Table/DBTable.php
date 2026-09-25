@@ -19,7 +19,7 @@ class DBTable extends Table
 	 * @param $anchorPrefix The prefix that the hidden anchor elements should have
 	 * @param $identifyRows Indicates whether to add an extra column that can be used to track which row in the table is modified
 	 */
-	public function __construct(array $columns, array $actions = null, string $noItemsLabel = "No items", string $anchorPrefix = "table-row", bool $identifyRows = true)
+	public function __construct(array $columns, ?array $actions = null, string $noItemsLabel = "No items", string $anchorPrefix = "table-row", bool $identifyRows = true)
 	{
 		parent::__construct($columns, $actions, $noItemsLabel, $anchorPrefix, $identifyRows);
 	}

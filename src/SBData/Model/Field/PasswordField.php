@@ -15,7 +15,7 @@ class PasswordField extends RawTextField
 	 * @param $maxlength Maximum size of the text field or null for infinite size
 	 * @param $defaultValue The value it defaults to
 	 */
-	public function __construct(string $title, bool $mandatory = false, int $size = 20, int $maxlength = null, $defaultValue = null)
+	public function __construct(string $title, bool $mandatory = false, int $size = 20, ?int $maxlength = null, $defaultValue = null)
 	{
 		parent::__construct($title, $mandatory, $size, $maxlength, $defaultValue);
 	}

@@ -17,7 +17,7 @@ class AcceptableFileNameField extends GenericTextField
 	 * @param $flags Flags that specify which filename properties to check
 	 * @param $defaultValue The value it defaults to
 	 */
-	public function __construct(string $title, bool $mandatory = false, int $size = 20, int $maxlength = null, int $flags = AcceptableFileNameValue::FLAG_ALL, $defaultValue = null)
+	public function __construct(string $title, bool $mandatory = false, int $size = 20, ?int $maxlength = null, int $flags = AcceptableFileNameValue::FLAG_ALL, $defaultValue = null)
 	{
 		parent::__construct($title, new AcceptableFileNameValue($mandatory, $maxlength, $flags, $defaultValue), $size);
 	}

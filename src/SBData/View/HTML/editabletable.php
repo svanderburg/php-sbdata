@@ -78,7 +78,7 @@ function displayEditButtonForEditableTable(EditableTable $table, Form $form): vo
  * @param $table Editable table to display
  * @param $submittedForm Form that contains the last submitted data that has changed, or null if no data was submitted
  */
-function displayEditableTable(EditableTable $table, Form $submittedForm = null): void
+function displayEditableTable(EditableTable $table, ?Form $submittedForm = null): void
 {
 	?>
 	<div class="tablewrapper">

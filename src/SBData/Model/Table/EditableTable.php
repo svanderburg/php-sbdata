@@ -28,7 +28,7 @@ class EditableTable extends Table
 	 * @param $identifyRows Indicates whether to add an extra column that can be used to track which row in the table is modified
 	 * @param $idColumnName Name of the identity column
 	 */
-	public function __construct(array $columns, array $actions = null, string $noItemsLabel = "No items", string $anchorPrefix = "table-row", Label $saveLabel = null, string $actionURL = null, bool $identifyRows = true, string $idColumnName = "__id")
+	public function __construct(array $columns, ?array $actions = null, string $noItemsLabel = "No items", string $anchorPrefix = "table-row", ?Label $saveLabel = null, ?string $actionURL = null, bool $identifyRows = true, string $idColumnName = "__id")
 	{
 		parent::__construct($columns, $actions, $noItemsLabel, $anchorPrefix, $identifyRows, $idColumnName);
 

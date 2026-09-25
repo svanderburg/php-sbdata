@@ -12,7 +12,7 @@ class TrueValue extends BooleanValue
 	 * @param $checkedValue The string value that corresponds to: true
 	 * @param $maxlength Maximum size of the text field or null for infinite size
 	 */
-	public function __construct(string $checkedValue = "1", int $maxlength = null)
+	public function __construct(string $checkedValue = "1", ?int $maxlength = null)
 	{
 		parent::__construct($checkedValue, $maxlength, false);
 	}

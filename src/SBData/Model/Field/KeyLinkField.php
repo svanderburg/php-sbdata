@@ -19,7 +19,7 @@ class KeyLinkField extends GenericKeyLinkField
 	 * @param $maxlength Maximum size of the text field or null for infinite size
 	 * @param $defaultValue The value it defaults to
 	 */
-	public function __construct(string $title, string|Closure $composeURLFunction, bool $mandatory = false, int $maxlength = null, $defaultValue = null)
+	public function __construct(string $title, string|Closure $composeURLFunction, bool $mandatory = false, ?int $maxlength = null, $defaultValue = null)
 	{
 		parent::__construct($title, $composeURLFunction, new Value($mandatory, $maxlength, $defaultValue));
 	}

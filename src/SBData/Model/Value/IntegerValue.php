@@ -21,7 +21,7 @@ class IntegerValue extends SaneStringValue
 	 * @param $minValue Specifies the minimum value that is allowed or null if there is no lower boundary (defaults to null)
 	 * @param $maxValue Specifies the maximum value that is allowed or null if there is no upper boundary (defaults to null)
 	 */
-	public function __construct(bool $mandatory = false, int $maxlength = null, $defaultValue = null, int $minValue = null, int $maxValue = null)
+	public function __construct(bool $mandatory = false, ?int $maxlength = null, $defaultValue = null, ?int $minValue = null, ?int $maxValue = null)
 	{
 		parent::__construct($mandatory, $maxlength, $defaultValue);
 		$this->minValue = $minValue;

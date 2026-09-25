@@ -10,7 +10,7 @@ class ReadOnlyIntegerTextField extends IntegerTextField
 	/**
 	 * @see IntegerTextField::__construct()
 	 */
-	public function __construct(string $title, bool $mandatory, int $size = 20, int $maxlength = null, $defaultValue = null, int $minValue = null, int $maxValue = null)
+	public function __construct(string $title, bool $mandatory, int $size = 20, ?int $maxlength = null, $defaultValue = null, ?int $minValue = null, ?int $maxValue = null)
 	{
 		parent::__construct($title, $mandatory, $size, $maxlength, $defaultValue, $minValue, $maxValue);
 	}

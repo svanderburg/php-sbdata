@@ -17,7 +17,7 @@ use SBData\Model\Field\Field;
  * @param $field Field to display
  * @param $form Form where the field belongs to (optional)
  */
-function displayField(Field $field, ReadOnlyForm $form = null): void
+function displayField(Field $field, ?ReadOnlyForm $form = null): void
 {
 	/* Dynamically invoke the corresponding the display function belonging to the given class */
 	$reflect = new ReflectionClass($field);
@@ -32,7 +32,7 @@ function displayField(Field $field, ReadOnlyForm $form = null): void
  * @param $field Field to display
  * @param $form Form where the field belongs to (optional)
  */
-function displayEditableField(string $name, Field $field, Form $form = null): void
+function displayEditableField(string $name, Field $field, ?Form $form = null): void
 {
 	/* Dynamically invoke the corresponding the display function belonging to the given class */
 	$reflect = new ReflectionClass($field);
@@ -48,7 +48,7 @@ function displayEditableField(string $name, Field $field, Form $form = null): vo
  * @param $field Field to display
  * @param $form Form where the field belongs to (optional)
  */
-function displayEditableFieldRow(string $name, bool $inline, Field $field, Form $form = null): void
+function displayEditableFieldRow(string $name, bool $inline, Field $field, ?Form $form = null): void
 {
 	/* Dynamically invoke the corresponding the display function belonging to the given class */
 	$reflect = new ReflectionClass($field);

@@ -31,7 +31,7 @@ class Form extends ReadOnlyForm
 	 * @param $validationErrorMessage Error message displayed on form level when a field is invalid
 	 * @param $fieldErrorMessage Error message displayed for an invalid field
 	 */
-	public function __construct(array $fields, string $actionURL = null, Label $submitLabel = null, string $validationErrorMessage = "One or more fields are invalid and marked with a red color", string $fieldErrorMessage = "This value is incorrect!")
+	public function __construct(array $fields, ?string $actionURL = null, ?Label $submitLabel = null, string $validationErrorMessage = "One or more fields are invalid and marked with a red color", string $fieldErrorMessage = "This value is incorrect!")
 	{
 		parent::__construct($fields);
 		$this->actionURL = $actionURL;

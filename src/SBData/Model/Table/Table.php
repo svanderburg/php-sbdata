@@ -41,7 +41,7 @@ class Table
 	 * @param $identifyRows Indicates whether to add an extra column that can be used to track which row in the table is modified
 	 * @param $idColumnName Name of the identity column
 	 */
-	public function __construct(array $columns, array $actions = null, string $noItemsLabel = "No items", string $anchorPrefix = "table-row", bool $identifyRows = true, string $idColumnName = "__id")
+	public function __construct(array $columns, ?array $actions = null, string $noItemsLabel = "No items", string $anchorPrefix = "table-row", bool $identifyRows = true, string $idColumnName = "__id")
 	{
 		$this->columns = $columns;
 		$this->actions = $actions;

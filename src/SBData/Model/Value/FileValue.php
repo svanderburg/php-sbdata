@@ -16,7 +16,7 @@ class FileValue extends Value
 	 * @param $mandatory Indicates whether a given value is mandatory
 	 * @param $maxlength Maximum size of the text field or null for infinite size
 	 */
-	public function __construct(string|array|null $mimeType, bool $mandatory = false, int $maxlength = null)
+	public function __construct(string|array|null $mimeType, bool $mandatory = false, ?int $maxlength = null)
 	{
 		parent::__construct($mandatory, $maxlength);
 		$this->mimeType = $mimeType;

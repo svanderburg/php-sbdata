@@ -17,7 +17,7 @@ class HiddenNaturalNumberField extends GenericHiddenField
 	 * @param $defaultValue The value it defaults to
 	 * @param $maxValue Specifies the maximum value that is allowed or null if there is no upper boundary (defaults to null)
 	 */
-	public function __construct(bool $mandatory = false, int $maxlength = null, $defaultValue = null, int $maxValue = null)
+	public function __construct(bool $mandatory = false, ?int $maxlength = null, $defaultValue = null, ?int $maxValue = null)
 	{
 		parent::__construct(new NaturalNumberValue($mandatory, $maxlength, $defaultValue, $maxValue));
 	}
