@@ -1,14 +1,15 @@
 <?php
 require_once(dirname(__FILE__)."/../vendor/autoload.php");
 
+use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use SBData\Model\Field\Field;
 use SBData\Model\Field\AcceptableFileNameField;
 use SBData\Model\Field\HiddenAcceptableFileNameField;
-use PHPUnit\Framework\TestCase;
 
 class AcceptableFileNameFieldTest extends TestCase
 {
-	public function classesProvider(): array
+	public static function classesProvider(): array
 	{
 		return [
 			["SBData\\Model\\Field\\AcceptableFileNameField"],
@@ -24,9 +25,7 @@ class AcceptableFileNameFieldTest extends TestCase
 			return new $className("filename", $mandatory, 20, $maxlength);
 	}
 
-	/**
-	 * @dataProvider classesProvider
-	 */
+	#[DataProvider('classesProvider')]
 	public function testValidFileName(string $className): void
 	{
 		$field = $this->constructField($className, true, 255);
@@ -34,9 +33,7 @@ class AcceptableFileNameFieldTest extends TestCase
 		$this->assertTrue($field->checkField("filename"));
 	}
 
-	/**
-	 * @dataProvider classesProvider
-	 */
+	#[DataProvider('classesProvider')]
 	public function testInvalidUNIXFileName(string $className): void
 	{
 		$field = $this->constructField($className, true, 255);
@@ -44,9 +41,7 @@ class AcceptableFileNameFieldTest extends TestCase
 		$this->assertFalse($field->checkField("filename"));
 	}
 
-	/**
-	 * @dataProvider classesProvider
-	 */
+	#[DataProvider('classesProvider')]
 	public function testInvalidWindowsFileName(string $className): void
 	{
 		$field = $this->constructField($className, true, 255);
@@ -54,9 +49,7 @@ class AcceptableFileNameFieldTest extends TestCase
 		$this->assertFalse($field->checkField("filename"));
 	}
 
-	/**
-	 * @dataProvider classesProvider
-	 */
+	#[DataProvider('classesProvider')]
 	public function testInvalidWindowsFileName2(string $className): void
 	{
 		$field = $this->constructField($className, true, 255);
@@ -64,9 +57,7 @@ class AcceptableFileNameFieldTest extends TestCase
 		$this->assertFalse($field->checkField("filename"));
 	}
 
-	/**
-	 * @dataProvider classesProvider
-	 */
+	#[DataProvider('classesProvider')]
 	public function testInvalidWindowsFileName3(string $className): void
 	{
 		$field = $this->constructField($className, true, 255);
@@ -74,9 +65,7 @@ class AcceptableFileNameFieldTest extends TestCase
 		$this->assertFalse($field->checkField("filename"));
 	}
 
-	/**
-	 * @dataProvider classesProvider
-	 */
+	#[DataProvider('classesProvider')]
 	public function testParentDirectory(string $className): void
 	{
 		$field = $this->constructField($className, true, 255);

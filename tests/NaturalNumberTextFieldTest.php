@@ -2,6 +2,7 @@
 require_once(dirname(__FILE__)."/../vendor/autoload.php");
 
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use SBData\Model\Field\Field;
 use SBData\Model\Field\NaturalNumberTextField;
 use SBData\Model\Field\HiddenNaturalNumberField;
@@ -9,7 +10,7 @@ use SBData\Model\Field\NaturalNumberKeyLinkField;
 
 class NaturalNumberTextFieldTest extends TestCase
 {
-	public function classesProvider(): array
+	public static function classesProvider(): array
 	{
 		return [
 			["SBData\\Model\\Field\\NaturalNumberTextField"],
@@ -28,9 +29,7 @@ class NaturalNumberTextFieldTest extends TestCase
 			return new $className("Test", $mandatory, 20);
 	}
 
-	/**
-	 * @dataProvider classesProvider
-	 */
+	#[DataProvider('classesProvider')]
 	public function testNumericValue(string $className): void
 	{
 		$numericField = $this->constructField($className, false);
@@ -38,9 +37,7 @@ class NaturalNumberTextFieldTest extends TestCase
 		$this->assertTrue($numericField->checkField("Test"));
 	}
 
-	/**
-	 * @dataProvider classesProvider
-	 */
+	#[DataProvider('classesProvider')]
 	public function testInvalidNumericValue(string $className): void
 	{
 		$numericField = $this->constructField($className, false);
@@ -48,9 +45,7 @@ class NaturalNumberTextFieldTest extends TestCase
 		$this->assertFalse($numericField->checkField("Test"));
 	}
 
-	/**
-	 * @dataProvider classesProvider
-	 */
+	#[DataProvider('classesProvider')]
 	public function testNonNumericValue(string $className): void
 	{
 		$numericField = $this->constructField($className, true);

@@ -2,6 +2,7 @@
 require_once(dirname(__FILE__)."/../vendor/autoload.php");
 
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use SBData\Model\Field\Field;
 use SBData\Model\Field\IntegerTextField;
 use SBData\Model\Field\HiddenIntegerField;
@@ -9,7 +10,7 @@ use SBData\Model\Field\IntegerKeyLinkField;
 
 class IntegerTextFieldTest extends TestCase
 {
-	public function classesProvider(): array
+	public static function classesProvider(): array
 	{
 		return [
 			["SBData\\Model\\Field\\IntegerTextField"],
@@ -18,7 +19,7 @@ class IntegerTextFieldTest extends TestCase
 		];
 	}
 
-	private function constructField(string $className, bool $mandatory, int $minValue = null, int $maxValue = null): Field
+	private function constructField(string $className, bool $mandatory, ?int $minValue = null, ?int $maxValue = null): Field
 	{
 		if(str_contains($className, "Hidden"))
 			return new $className($mandatory, null, null, $minValue, $maxValue);
@@ -28,9 +29,7 @@ class IntegerTextFieldTest extends TestCase
 			return new $className("Test", $mandatory, 20, null, null, $minValue, $maxValue);
 	}
 
-	/**
-	 * @dataProvider classesProvider
-	 */
+	#[DataProvider('classesProvider')]
 	public function testNumericValue(string $className): void
 	{
 		$numericField = $this->constructField($className, false);
@@ -38,9 +37,7 @@ class IntegerTextFieldTest extends TestCase
 		$this->assertTrue($numericField->checkField("Test"));
 	}
 
-	/**
-	 * @dataProvider classesProvider
-	 */
+	#[DataProvider('classesProvider')]
 	public function testNonNumericValue(string $className): void
 	{
 		$numericField = $this->constructField($className, true);
@@ -48,9 +45,7 @@ class IntegerTextFieldTest extends TestCase
 		$this->assertFalse($numericField->checkField("Test"));
 	}
 
-	/**
-	 * @dataProvider classesProvider
-	 */
+	#[DataProvider('classesProvider')]
 	public function testValidRange(string $className): void
 	{
 		$numericField = $this->constructField($className, true, 2, 10);
@@ -58,9 +53,7 @@ class IntegerTextFieldTest extends TestCase
 		$this->assertTrue($numericField->checkField("Test"));
 	}
 
-	/**
-	 * @dataProvider classesProvider
-	 */
+	#[DataProvider('classesProvider')]
 	public function testInvalidRange(string $className): void
 	{
 		$numericField = $this->constructField($className, true, 2, 10);

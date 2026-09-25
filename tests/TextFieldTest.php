@@ -2,6 +2,7 @@
 require_once(dirname(__FILE__)."/../vendor/autoload.php");
 
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use SBData\Model\Field\Field;
 use SBData\Model\Field\TextField;
 use SBData\Model\Field\RawTextField;
@@ -13,7 +14,7 @@ use SBData\Model\Field\KeyLinkField;
 
 class TextFieldTest extends TestCase
 {
-	public function classesProvider(): array
+	public static function classesProvider(): array
 	{
 		return [
 			["SBData\\Model\\Field\\TextField"],
@@ -36,9 +37,7 @@ class TextFieldTest extends TestCase
 			return new $className("Test", $mandatory);
 	}
 
-	/**
-	 * @dataProvider classesProvider
-	 */
+	#[DataProvider('classesProvider')]
 	public function testSuccessOnEmpty(string $className): void
 	{
 		$textField = $this->createUnrestrictedLengthField($className, false);
@@ -46,9 +45,7 @@ class TextFieldTest extends TestCase
 		$this->assertTrue($textField->checkField("Test"));
 	}
 
-	/**
-	 * @dataProvider classesProvider
-	 */
+	#[DataProvider('classesProvider')]
 	public function testFailOnEmpty(string $className): void
 	{
 		$textField = $this->createUnrestrictedLengthField($className, true);
@@ -68,9 +65,7 @@ class TextFieldTest extends TestCase
 			return new $className("Test", true, 5, 5);
 	}
 
-	/**
-	 * @dataProvider classesProvider
-	 */
+	#[DataProvider('classesProvider')]
 	public function testMaxLength(string $className): void
 	{
 		$textField = $this->createLengthRestrictedField($className);
@@ -78,9 +73,7 @@ class TextFieldTest extends TestCase
 		$this->assertTrue($textField->checkField("Test"));
 	}
 
-	/**
-	 * @dataProvider classesProvider
-	 */
+	#[DataProvider('classesProvider')]
 	public function testExceedMaxLength(string $className): void
 	{
 		$textField = $this->createLengthRestrictedField($className);
@@ -88,9 +81,7 @@ class TextFieldTest extends TestCase
 		$this->assertFalse($textField->checkField("Test"));
 	}
 
-	/**
-	 * @dataProvider classesProvider
-	 */
+	#[DataProvider('classesProvider')]
 	public function testTrim(string $className): void
 	{
 		$textField = $this->createUnrestrictedLengthField($className, true);
